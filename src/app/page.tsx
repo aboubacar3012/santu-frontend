@@ -1,113 +1,179 @@
-import Image from "next/image";
+"use client"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
+import { loginReducer, updateToken } from "../redux/features/authSlice"
+import { loginUser, changePassword } from "../services/user"
+import { RootState } from "../redux/store"
 
-export default function Home() {
+const LoginPage = () => {
+  const router = useRouter()
+  const dispatch = useDispatch()
+  const [editPassword, setEditPassword] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmNewPassword, setConfirmNewPassword] = useState("")
+
+
+  const auth = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if(auth.isAuthenticated && auth.loggedUserInfos) {
+      return router.push("/dashboard/admin/partners")
+    }
+  }
+  , [auth.isAuthenticated, auth.loggedUserInfos])
+
+  const handleLogin = () => {
+    if (editPassword){
+      if(newPassword !== confirmNewPassword){
+        toast.error("Les mots de passe ne correspondent pas")
+        return
+      }
+
+      // mot de passe doit contenir au moins 8 caractères, 
+      // une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial
+      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+      if(!passwordRegex.test(newPassword)){
+        toast.error("Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial")
+        return
+      }
+
+      return changePassword(auth.loggedUserInfos?._id, newPassword).then((data) => {
+        if(data.success){
+          dispatch(loginReducer({isAuthenticated: true, loggedUserInfos: data.user}))
+          dispatch(updateToken(data.token))
+          toast.success("Mot de passe changé avec succès")
+          toast.success("Veillez vous connecter avec votre nouveau mot de passe")
+          setEditPassword(false)
+        } else {
+          toast.error(data.message)
+        }
+      })
+    }
+
+    const passwordToUse = editPassword ? newPassword : password;
+    return loginUser(email, passwordToUse).then((data) => {
+      if (data.success) {
+        if(data.user && data.user.isFirstLogin){
+          dispatch(loginReducer({isAuthenticated: false, loggedUserInfos: data.user}))
+          toast.info("Veuillez changer votre mot de passe")
+          setPassword("")
+          setEditPassword(true)
+        }else{
+          dispatch(loginReducer({isAuthenticated: true, loggedUserInfos: data.user}))
+          dispatch(updateToken(data.token))
+          toast.success("Connexion réussie")
+          if(data.user.role === "PARTNER") return router.push("/dashboard/partner")
+          else return router.push("/dashboard/admin/partners")
+        }
+      } else {
+        toast.error(data.message)
+      }
+    })
+  }
+
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <div className="min-h-screen text-gray-900 flex justify-center">
+      <div
+        className="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1"
+      >
+        <div className="flex-1 bg-indigo-100 text-center hidden lg:flex">
+          <div
+            className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
+            style={{ "backgroundImage": "url('/santuLoginImg.png')" }}
+          ></div>
+        </div>
+        <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
+          <div>
+            <img
+              src="/logo.png"
+              className="w-32 mx-auto"
             />
-          </a>
+          </div>
+          <div className={`${editPassword ? "mt-4 md:mt-20" : "mt-12 md:mt-36"}  flex flex-col items-center justify-center`}>
+            <h1 className="text-2xl xl:text-3xl font-extrabold">
+              CONNEXION
+            </h1>
+            <div className="w-full flex-1 mt-8">
+              <div className="mx-auto max-w-xs">
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                  type="email"
+                  placeholder="Entrez votre email"
+                />
+                {
+                  !editPassword ? (
+                    <input
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                      type="password"
+                      placeholder="Entrez votre mot de passe"
+                    />
+                  ) : (
+                    <div>
+                      <div className="my-4 border-b text-center">
+                        <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+                          Nouveau mot de passe
+                        </div>
+                      </div>
+                      <input
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        className="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                        type="password"
+                        placeholder="Entrez le nouveau mot de passe"
+                      />
+                      <input
+                        value={confirmNewPassword}
+                        onChange={(e) => setConfirmNewPassword(e.target.value)}
+                        className="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                        type="password"
+                        placeholder="Confirmer le nouveau mot de passe"
+                      />
+                      <p className="text-xs text-gray-500 mt-2">
+                        Le mot de passe doit contenir au moins:
+                        <ul className="list-disc list-inside">
+                          <li>8 caractères</li>
+                          <li>Une lettre majuscule</li>
+                          <li>Une lettre minuscule</li>
+                          <li>Un chiffre</li>
+                          <li>Un caractère spécial</li>
+                        </ul>
+                      </p>
+                    </div>
+                  )
+                }
+                <button onClick={handleLogin}
+                  className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                >
+                  {
+                    editPassword ? "ENREGISTRER" : "SE CONNECTER"
+                  }
+                </button>
+                {/* <p className="mt-6 text-xs text-gray-600 text-center">
+                  J&apos;accepte les{" "}
+                  <a href="#" className="border-b border-gray-500 border-dotted">
+                    Conditions d&apos;utilisation{" "}
+                  </a>
+                  et la {" "}
+                  <a href="#" className="border-b border-gray-500 border-dotted">
+                    Politique de confidentialité
+                  </a>
+                </p> */}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
 }
+
+export default LoginPage;
