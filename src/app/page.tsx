@@ -20,11 +20,11 @@ const LoginPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    if(auth.isAuthenticated && auth.loggedUserInfos) {
-      return router.push("/dashboard/admin/partners")
-    }
+    // if(auth.isAuthenticated && auth.loggedUserInfos) {
+      return router.push("/dashboard")
+    // }
   }
-  , [auth.isAuthenticated, auth.loggedUserInfos])
+  , [])
 
   const handleLogin = () => {
     if (editPassword){
