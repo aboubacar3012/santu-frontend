@@ -44,7 +44,7 @@ const DashboardPage = ({ params }: { params: { partnerId: string } }) => {
   // }
 
   return (
-    <div className="w-3/4 m-auto h-[92vh] overflow-y-auto flex flex-col">
+    <div className="w-3/4 h-[96vh] overflow-y-auto flex flex-col">
       {/* <div className="relative flex flex-col text-gray-700 bg-white shadow-md w-full rounded-xl bg-clip-border">
         <div
           className="relative grid mx-4 mb-3 -mt-6 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-gray-900 to-gray-800 bg-clip-border shadow-gray-900/20">
