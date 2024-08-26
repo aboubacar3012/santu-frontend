@@ -9,6 +9,8 @@ const SingleInvoicePage = () => {
   const handlePushLeft = () => {
     router.back();
   }
+
+
   return (
     <div className="w-4/6  h-[96vh] overflow-hidden flex flex-col justify-start">
       <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer">
@@ -187,13 +189,13 @@ const SingleInvoicePage = () => {
         <div className="w-1/6 flex flex-col gap-4">
           <div className="bg-white rounded-xl w-54 p-2 flex flex-col">
             {/* <h3>Facture pas encore envoyée?</h3> */}
-            <button type="button" className="text-xs text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-lg text-sm px-3 py-2.5">
+            <button type="button" className=" text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-lg text-sm px-3 py-2.5">
               Imprimer la facture
             </button>
           </div>
           <div className="bg-white rounded-xl w-54 p-2 flex flex-col">
             {/* <h3>Facture pas encore envoyée?</h3> */}
-            <button type="button" className="text-xs text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-3 py-2.5">
+            <button type="button" className=" text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-3 py-2.5">
               Envoyer la facture par mail
             </button>
           </div>

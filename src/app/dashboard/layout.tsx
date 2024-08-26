@@ -103,7 +103,7 @@ export default function DashboardLayout({
   }
   return (
 
-    <div className="flex flex-row w-full h-screen items-center gap-10">
+    <div className="flex flex-row w-full h-screen items-center justify-center gap-10">
       {/* Left Section */}
       <div className="relative flex flex-col w-1/6 h-[96vh] bg-white text-black rounded-2xl">
         <div className="flex flex-col items-center justify-center h-20 w-full ">

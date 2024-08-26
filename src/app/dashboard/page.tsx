@@ -7,6 +7,7 @@ import StatCard from "@/src/components/StatCard";
 import { IoMdAdd } from "react-icons/io";
 import Badge from "@/src/components/Badge";
 import { useRouter } from "next/navigation";
+import InvoiceForm from "../../components/InvoiceForm";
 
 const DashboardPage = ({ params }: { params: { partnerId: string } }) => {
   const [partnerData, setPartnerData] = useState<Partner>();
@@ -32,7 +33,7 @@ const DashboardPage = ({ params }: { params: { partnerId: string } }) => {
   }
 
   const handleOpenInvoice = () => {
-    router.push(`/dashboard/invoice/${12345}`)
+    router.push(`/dashboard/invoice`)
   }
 
   // if (loading) {
@@ -45,15 +46,16 @@ const DashboardPage = ({ params }: { params: { partnerId: string } }) => {
 
   return (
     <div className="w-3/4 h-[96vh] overflow-y-auto flex flex-col">
-      {/* <div className="relative flex flex-col text-gray-700 bg-white shadow-md w-full rounded-xl bg-clip-border">
+      <InvoiceForm isOpen={false}  isEdit={false} onClose={() => {}} />
+      <div className="relative flex flex-col text-gray-700 bg-white shadow-md w-full rounded-xl bg-clip-border">
         <div
-          className="relative grid mx-4 mb-3 -mt-6 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-gray-900 to-gray-800 bg-clip-border shadow-gray-900/20">
+          className="relative grid mx-4 mb-3 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-gray-900 to-gray-800 bg-clip-border shadow-gray-900/20">
           <h3 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-white">
             Banima group SARL
           </h3>
         </div>
-      </div> */}
-      <div className="grid grid-cols-4 gap-4">
+      </div>
+      <div className="grid grid-cols-4 gap-4 py-2">
         <StatCard title="Montant" value={'20 000 GNF'} unit="Aujourd'hui" />
         <StatCard title="Montant" value={'20 000 GNF'} unit="Aujourd'hui" />
         <StatCard title="Montant" value={'20 000 GNF'} unit="Aujourd'hui" />
