@@ -14,7 +14,7 @@ type ClientFormProps = {
 const ClientForm = (
   { isOpen, onClose, isEdit }: ClientFormProps
 ) => {
-  const [logoUrl, setLogoUrl] = useState("");
+  const [logoUrl, setLogoUrl] = useState("")
   const [partnerName, setPartnerName] = useState("");
   const [partnerDescription, setPartnerDescription] = useState("");
   const [partnerSiret, setPartnerSiret] = useState("");
