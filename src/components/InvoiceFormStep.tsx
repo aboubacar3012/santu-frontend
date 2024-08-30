@@ -1,10 +1,21 @@
-const InvoiceFormStep = () => {
+type InvoiceInfoFormProps = {
+  step: number;
+};
+const InvoiceFormStep = ({step}:InvoiceInfoFormProps) => {
+  const getActiveStyle = (stepVal:number) => {
+    if(step >= stepVal) {
+      return "text-white bg-gray-900";
+    }else{
+      return "text-gray-900 bg-gray-300"; 
+    }
+  }
   return (
     <div className="w-full px-10 py-2 mb-10">
       <div className="relative flex items-center justify-between w-full">
-        <div className="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-gray-300" />
-        <div className="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-gray-900 transition-all duration-500"></div>
-        <div className="relative z-10 grid w-10 h-10 font-bold text-white transition-all duration-300 bg-gray-900 rounded-full place-items-center">
+        <div className={`absolute left-0 top-2/4 h-0.5 w-1/2 -translate-y-2/4 ${step >= 2 ? "bg-gray-900" : "bg-gray-300"}`} />
+        <div className={`absolute right-0 top-2/4 h-0.5 w-1/2 -translate-y-2/4 ${step >= 3 ? "bg-gray-900" : "bg-gray-300"}  transition-all duration-500`}></div>
+        
+        <div className={`relative z-10 grid w-10 h-10 font-bold ${getActiveStyle(1)} transition-all duration-300 rounded-full place-items-center`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -26,7 +37,8 @@ const InvoiceFormStep = () => {
             </h6>
           </div>
         </div>
-        <div className="relative z-10 grid w-10 h-10 font-bold text-white transition-all duration-300 bg-gray-900 rounded-full place-items-center">
+        
+        <div className={`relative z-10 grid w-10 h-10 font-bold ${getActiveStyle(2)} transition-all duration-300 rounded-full place-items-center`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -48,7 +60,8 @@ const InvoiceFormStep = () => {
             </h6>
           </div>
         </div>
-        <div className="relative z-10 grid w-10 h-10 font-bold text-gray-900 transition-all duration-300 bg-gray-300 rounded-full place-items-center">
+        
+        <div className={`relative z-10 grid w-10 h-10 font-bold ${getActiveStyle(3)} transition-all duration-300 rounded-full place-items-center`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
