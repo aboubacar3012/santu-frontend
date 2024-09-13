@@ -1,20 +1,20 @@
 
-import { Campaign, Partner, User } from "@/src/types";
+import { Campaign, Partner, Account } from "@/src/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 type Auth = {
   isAuthenticated?: boolean;
-  loggedUserInfos?: User | null;
+  loggedAccountInfos?: Account | null;
   token?: string;
-  userToEdit?: Partial<User> | null;
+  userToEdit?: Partial<Account> | null;
   partnerToEdit?: Partial<Partner> | null;
   campaignToEdit?: Partial<Campaign> | null;
 };
 
 let initialState: Auth = {
   isAuthenticated: false,
-  loggedUserInfos: null,
+  loggedAccountInfos: null,
   userToEdit: null,
   partnerToEdit: null,
   campaignToEdit: null,
@@ -35,12 +35,12 @@ export const authSlice = createSlice({
     },
     loginReducer: (state, action: PayloadAction<Auth>) => {
       state.isAuthenticated = action.payload.isAuthenticated;
-      if (action.payload.loggedUserInfos) {
-        state.loggedUserInfos = action.payload.loggedUserInfos;
+      if (action.payload.loggedAccountInfos) {
+        state.loggedAccountInfos = action.payload.loggedAccountInfos;
       }
       return state;
     },
-    updateUserToEdit: (state, action: PayloadAction<Partial<User>>) => {
+    updateAccountToEdit: (state, action: PayloadAction<Partial<Account>>) => {
       state.userToEdit = action.payload;
       return state;
     },
@@ -56,7 +56,7 @@ export const authSlice = createSlice({
     logout: () => {
       return initialState;
     },
-    resetUserToEdit: (state) => {
+    resetAccountToEdit: (state) => {
       state.userToEdit = null;
       return state;
     },
@@ -76,10 +76,10 @@ export const {
   logout, 
   setIsAuthenticated, 
   updateToken, 
-  updateUserToEdit, 
+  updateAccountToEdit, 
   updatePartnerToEdit, 
   updateCampaignToEdit,
-  resetUserToEdit, 
+  resetAccountToEdit, 
   resetPartnerToEdit,
   resetCampaignToEdit,
 } = authSlice.actions;

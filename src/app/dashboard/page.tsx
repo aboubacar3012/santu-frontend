@@ -16,8 +16,8 @@ const DashboardPage = ({ params }: { params: { partnerId: string } }) => {
   const [selectedDateFilterBtn, setSelectedDateFilterBtn] = useState<"all" | "today" | "thisWeek" | "thisMonth">("all");
   const router = useRouter();
   // const auth = useSelector((state: RootState) => state.auth);
-  // const loggedUser = auth.loggedUserInfos;
-  // const partner = loggedUser && loggedUser.partnerId;
+  // const loggedAccount = auth.loggedAccountInfos;
+  // const partner = loggedAccount && loggedAccount.partnerId;
 
   
 

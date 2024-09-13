@@ -1,7 +1,6 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CampaignStatus, Campaign, User, Partner } from "@/src/types";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/redux/store";
 import { toast } from "react-toastify";
@@ -19,7 +18,6 @@ const InvoiceForm = (
   const [step, setStep] = useState<number>(1); // 1: Informations générales, 2: Produits/Services, 3: Confirmation
   const [campaignName, setCampaignName] = useState<string>("")
   const [description, setDescription] = useState<string>("")
-  const [status, setStatus] = useState<CampaignStatus>(CampaignStatus.PREPARATION)
   const [partnerId, setPartnerId] = useState<string>("")
   const [objective, setObjective] = useState<string>("")
   const [tool, setTool] = useState<string>("")
@@ -32,7 +30,6 @@ const InvoiceForm = (
   const [faces, setFaces] = useState<number>()
   const [tva, setTva] = useState<number>(20)
 
-  const [partnersData, setPartnersData] = useState<Partner[]>([])
 
   const router = useRouter()
   const auth = useSelector((state: RootState) => state.auth);
@@ -102,11 +99,11 @@ const InvoiceForm = (
           </div>
           <InvoiceFormStep step={step} />
           <form onSubmit={onSubmit}>
-            {
+            {/* {
               step === 1 && (
                 <InvoiceInfoForm />
               )
-            }
+            } */}
 
             {
               step === 2 && (
@@ -155,13 +152,13 @@ const InvoiceForm = (
                       <label htmlFor="product" className="block mb-2 text-sm font-medium text-gray-900">
                         Nom du produit/service
                       </label>
-                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="text" id="product" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
+                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="text" id="product" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
                     </div>
                   </div>
                   <div className="flex flex-col gap-1 px-4 py-2">
                     <div className="relative w-full min-w-[200px]">
                       <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900">Description</label>
-                      <textarea value={objective} onChange={(e) => setObjective(e.target.value)} id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez la description de la campagne" required />
+                      <textarea value={objective} onChange={(e) => setObjective(e.target.value)} id="description" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez la description de la campagne" required />
                     </div>
                   </div>
                   <div className="flex gap-2 px-4 py-2">
@@ -169,13 +166,13 @@ const InvoiceForm = (
                       <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-900">
                         Quantité
                       </label>
-                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="number" id="quantity" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
+                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="number" id="quantity" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
                     </div>
                     <div className="relative w-full min-w-[200px]">
                       <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900">
                         Prix
                       </label>
-                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="number" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
+                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="number" id="price" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
                     </div>
                   </div>
                 </>

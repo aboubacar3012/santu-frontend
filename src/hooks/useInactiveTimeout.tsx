@@ -19,7 +19,7 @@ function useInactiveTimeout(inactiveTime = 15 * 60 * 1000) { // 15 minutes par d
     }
 
     // Réinitialiser le délai d'inactivité chaque fois qu'il y a une interaction utilisateur
-    function handleUserActivity() {
+    function handleAccountActivity() {
       setIsInactive(false);
       resetTimer();
     }
@@ -28,13 +28,13 @@ function useInactiveTimeout(inactiveTime = 15 * 60 * 1000) { // 15 minutes par d
     resetTimer();
 
     // Écouter les événements d'interaction utilisateur pour réinitialiser le délai d'inactivité
-    window.addEventListener('mousemove', handleUserActivity);
-    window.addEventListener('keydown', handleUserActivity);
+    window.addEventListener('mousemove', handleAccountActivity);
+    window.addEventListener('keydown', handleAccountActivity);
 
     // Nettoyer les écouteurs d'événements lors du démontage du composant
     return () => {
-      window.removeEventListener('mousemove', handleUserActivity);
-      window.removeEventListener('keydown', handleUserActivity);
+      window.removeEventListener('mousemove', handleAccountActivity);
+      window.removeEventListener('keydown', handleAccountActivity);
       clearTimeout(timeoutId);
     };
   }, [inactiveTime]);

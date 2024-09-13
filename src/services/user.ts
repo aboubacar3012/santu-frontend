@@ -1,12 +1,12 @@
 
 import { apiUrl } from "../constants";
-import { User } from "../types";
-const baseUrl = `${apiUrl}/users`;
+import { Account } from "../types";
+const baseUrl = `${apiUrl}/accounts`;
 
-export type UserToAdd = Omit<User, 'partnerId'> & { partnerId: string };
+export type AccountToAdd = Omit<Account, 'partnerId'> & { partnerId: string };
 
 // Create a new user
-export const createUser = async (user: Partial<UserToAdd>, token?:string) => {
+export const createAccount = async (user: Partial<AccountToAdd>, token?:string) => {
   const response = await fetch(`${baseUrl}/create`, {
     method: "POST",
     headers: {
@@ -21,19 +21,19 @@ export const createUser = async (user: Partial<UserToAdd>, token?:string) => {
   return data;
 }
 
-// Get all users
-export const getUsers = async (): Promise<{ success: boolean, users: User[] }> => {
+// Get all accounts
+export const getAccounts = async (): Promise<{ success: boolean, accounts: Account[] }> => {
   const response = await fetch(baseUrl);
 
   if (!response.ok) {
-    throw new Error("Failed to fetch users");
+    throw new Error("Failed to fetch accounts");
   }
 
   return response.json();
 }
 
 // Login a user
-export const loginUser = async (email: string, password: string) => {
+export const loginAccount = async (email: string, password: string) => {
   const response = await fetch(`${baseUrl}/login`, {
     method: "POST",
     headers: {
@@ -63,7 +63,7 @@ export const changePassword = async (userId?: string, password?: string) => {
 }
 
 // Delete a user
-export const deleteUser = async (userId: string, token?:string) => {
+export const deleteAccount = async (userId: string, token?:string) => {
   const response = await fetch(`${baseUrl}/${userId}`, {
     method: "DELETE",
     headers: {
@@ -78,7 +78,7 @@ export const deleteUser = async (userId: string, token?:string) => {
 }
 
 // Update a user
-export const updateUser = async (userId?: string, user?: Partial<User>, token?:string) => {
+export const updateAccount = async (userId?: string, user?: Partial<Account>, token?:string) => {
   const response = await fetch(`${baseUrl}/update/${userId}`, {
     method: "PUT",
     headers: {

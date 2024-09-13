@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { RootState } from "@/src/redux/store";
+import { createClient } from "@/src/services/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -14,10 +15,12 @@ const ClientForm = (
   { isOpen, onClose, isEdit }: ClientFormProps
 ) => {
   const [clientName, setClientName] = useState<string>("");
+  const [clientFirstName, setClientFirstName] = useState<string>("");
+  const [clientLastName, setClientLastName] = useState<string>("");
   const [clientPhone, setClientPhone] = useState<string>("");
   const [clientEmail, setClientEmail] = useState<string>("");
   const [clientAddress, setClientAddress] = useState<string>("");
-  const [clientCity, setClientCity] = useState<string>("");
+  const [clientType, setClientType] = useState<string | "particular" | "company">("particular");
 
   const router = useRouter()
   const [errorMessage, setErrorMessage] = useState("");
@@ -29,34 +32,34 @@ const ClientForm = (
       // const partner = auth.partnerToEdit;
       // if (partner) {
       //   setLogoUrl(partner.logo || "");
-      //   setPartnerName(partner.name || "");
-      //   setPartnerDescription(partner.description || "");
-      //   setPartnerSiret(partner.siret || "");
-      //   setPartnerCapital(partner.capital || "");
-      //   setPartnerEmail(partner.email || "");
-      //   setPartnerPhone(partner.phone || "");
-      //   setPartnerAddress(partner.address || "");
-      //   setPartnerPostalCode(partner.postalCode || "");
-      //   setPartnerCity(partner.city || "");
+      //   setClientName(partner.name || "");
+      //   setClientDescription(partner.description || "");
+      //   setClientSiret(partner.siret || "");
+      //   setClientCapital(partner.capital || "");
+      //   setClientEmail(partner.email || "");
+      //   setClientPhone(partner.phone || "");
+      //   setClientAddress(partner.address || "");
+      //   setClientPostalCode(partner.postalCode || "");
+      //   setClientCity(partner.city || "");
       // }
     }
 
     return () => {
       // setLogoUrl("");
-      // setPartnerName("");
-      // setPartnerDescription("");
-      // setPartnerSiret("");
-      // setPartnerCapital("");
-      // setPartnerEmail("");
-      // setPartnerPhone("");
-      // setPartnerAddress("");
-      // setPartnerPostalCode("");
-      // setPartnerCity("");
+      // setClientName("");
+      // setClientDescription("");
+      // setClientSiret("");
+      // setClientCapital("");
+      // setClientEmail("");
+      // setClientPhone("");
+      // setClientAddress("");
+      // setClientPostalCode("");
+      // setClientCity("");
       // setErrorMessage("");
     }
   }, [auth, isEdit, isOpen]);
 
-  const deletePartner = (id: string) => {
+  const deleteClient = (id: string) => {
     if (window.confirm("Etes vous sure de vouloir ")) {
       console.log("Deleted")
     }
@@ -67,29 +70,43 @@ const ClientForm = (
   const onSubmit = (e: any) => {
     e.preventDefault();
     if (isEdit) return handleEdit();
-    const partnerToAdd = {
-      // logo: logoUrl,
-      // name: partnerName,
-      // description: partnerDescription,
-      // siret: partnerSiret,
-      // capital: partnerCapital,
-      // email: partnerEmail,
-      // phone: partnerPhone,
-      // address: partnerAddress,
-      // postalCode: partnerPostalCode,
-      // city: partnerCity
-    };
+    if (!clientName && (!clientFirstName || !clientLastName)) {
+      return toast.error("Veuillez renseigner le nom du client");
+    }
+    if (!clientPhone || !clientEmail || !clientAddress) {
+      return toast.error("Veuillez renseigner tous les champs");
+    }
 
-    // createPartner(partnerToAdd, "token").then((response) => {
-    //   if (response.success) {
-    //     toast.success("Partner créé avec succès");
-    //     onClose();
-    //   } else if (!response.success) {
-    //     setErrorMessage(response.message);
-    //   } else {
-    //     setErrorMessage("Erreur lors de la création du partenaire");
-    //   }
-    // });
+    let clientToAdd = {};
+    if (clientType === "company") {
+      clientToAdd = {
+        company: clientName,
+        phone: clientPhone,
+        email: clientEmail,
+        address: clientAddress,
+        type: clientType
+      }
+    } else {
+      clientToAdd = {
+        firstName: clientFirstName,
+        lastName: clientLastName,
+        phone: clientPhone,
+        email: clientEmail,
+        address: clientAddress,
+        type: clientType
+      }
+    }
+
+    createClient(clientToAdd, "token").then((response) => {
+      if (response.success) {
+        toast.success("Client créé avec succès");
+        onClose();
+      } else if (!response.success) {
+        setErrorMessage(response.message);
+      } else {
+        setErrorMessage("Erreur lors de la création du client");
+      }
+    });
   }
 
   const handleEdit = () => {
@@ -98,53 +115,53 @@ const ClientForm = (
     //   return toast.error("Erreur lors de la récupération de l'utilisateur à modifier");
     // }
     // // Verifier que par exemple partner.logoUrl est différent de logoUrl
-    // let newPartner = {}
+    // let newClient = {}
     // if (partner.logo !== logoUrl) {
-    //   newPartner = { ...newPartner, logo: logoUrl }
+    //   newClient = { ...newClient, logo: logoUrl }
     // }
 
     // if (partner.name !== partnerName) {
-    //   newPartner = { ...newPartner, name: partnerName }
+    //   newClient = { ...newClient, name: partnerName }
     // }
 
     // if (partner.description !== partnerDescription) {
-    //   newPartner = { ...newPartner, description: partnerDescription }
+    //   newClient = { ...newClient, description: partnerDescription }
     // }
 
     // if (partner.siret !== partnerSiret) {
-    //   newPartner = { ...newPartner, siret: partnerSiret }
+    //   newClient = { ...newClient, siret: partnerSiret }
     // }
 
     // if (partner.capital !== partnerCapital) {
-    //   newPartner = { ...newPartner, capital: partnerCapital }
+    //   newClient = { ...newClient, capital: partnerCapital }
     // }
 
     // if (partner.email !== partnerEmail) {
-    //   newPartner = { ...newPartner, email: partnerEmail }
+    //   newClient = { ...newClient, email: partnerEmail }
     // }
 
     // if (partner.phone !== partnerPhone) {
-    //   newPartner = { ...newPartner, phone: partnerPhone }
+    //   newClient = { ...newClient, phone: partnerPhone }
     // }
 
     // if (partner.address !== partnerAddress) {
-    //   newPartner = { ...newPartner, address: partnerAddress }
+    //   newClient = { ...newClient, address: partnerAddress }
     // }
 
     // if (partner.postalCode !== partnerPostalCode) {
-    //   newPartner = { ...newPartner, postalCode: partnerPostalCode }
+    //   newClient = { ...newClient, postalCode: partnerPostalCode }
     // }
 
     // if (partner.city !== partnerCity) {
-    //   newPartner = { ...newPartner, city: partnerCity }
+    //   newClient = { ...newClient, city: partnerCity }
     // }
 
 
-    // if (Object.keys(newPartner).length === 0) {
+    // if (Object.keys(newClient).length === 0) {
     //   return toast.error("Aucune modification n'a été effectuée");
     // }
 
-    // updatePartner(partner._id, newPartner, auth.token).then((response) => {
+    // updateClient(partner._id, newClient, auth.token).then((response) => {
     //   if (response.success) {
     //     toast.success("Utilisateur modifié avec succès");
     //     onClose();
@@ -156,7 +173,7 @@ const ClientForm = (
     //   toast.error("Erreur lors de la modification de l'utilisateur");
     // });
   }
-  
+
   if (!isOpen) return null;
   return (
     <>
@@ -166,26 +183,67 @@ const ClientForm = (
         <div
           className="relative m-4 w-2/6 overflow-auto  rounded-lg bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl"
         >
-          <div className="w-full flex justify-between items-center px-6 py-4">
+          <div className="w-full flex justify-center items-center px-6 py-4">
             <h1 className="text-2xl font-semibold">
               Ajouter un client
             </h1>
           </div>
-            <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit}>
             <div className="flex flex-col gap-1 p-6">
               <div className="relative h-11 w-full min-w-[200px]">
                 <label htmlFor="clientName" className="block mb-2 text-sm font-medium text-gray-900">
-                  Nom de l&apos;entreprise/client
+                  Choisir le type de client
                 </label>
-                <input value={clientName} onChange={(e) => setClientName(e.target.value)} type="text" id="clientName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du partenaire" required />
+                <select value={clientType} onChange={(e) => setClientType(e.target.value)} id="status" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
+                  <option value="particular">
+                    Particulier
+                  </option>
+                  <option value="company">
+                    Entreprise
+                  </option>
+                </select>
               </div>
             </div>
+            {
+              clientType === "company" && (
+                <div className="flex flex-col gap-1 p-6">
+                  <div className="relative h-11 w-full min-w-[200px]">
+                    <label htmlFor="clientName" className="block mb-2 text-sm font-medium text-gray-900">
+                      Nom de l&apos;entreprise/client
+                    </label>
+                    <input value={clientName} onChange={(e) => setClientName(e.target.value)} type="text" id="clientName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
+                  </div>
+                </div>
+              )
+            }
+            {
+              clientType === "particular" && (
+                <div className="w-full flex gap-1 p-6">
+                  <div className="w-full flex flex-col">
+                    <div className="relative h-11 w-full min-w-[200px]">
+                      <label htmlFor="clientFirstName" className="block mb-2 text-sm font-medium text-gray-900">
+                        Prénom
+                      </label>
+                      <input value={clientFirstName} onChange={(e) => setClientFirstName(e.target.value)} type="text" id="clientFirstName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le prénom" required />
+                    </div>
+                  </div>
+                  <div className="w-full flex flex-col">
+                    <div className="relative h-11 w-full min-w-[200px]">
+                      <label htmlFor="clientLastName" className="block mb-2 text-sm font-medium text-gray-900">
+                        Nom
+                      </label>
+                      <input value={clientLastName} onChange={(e) => setClientLastName(e.target.value)} type="text" id="clientLastName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le nom" required />
+                    </div>
+                  </div>
+                </div>
+              )
+            }
             <div className="flex flex-col gap-1 p-6">
               <div className="relative h-11 w-full min-w-[200px]">
                 <label htmlFor="clientPhone" className="block mb-2 text-sm font-medium text-gray-900">
                   Téléphone
                 </label>
-                <input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} type="text" id="clientPhone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du partenaire" required />
+                <input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} type="text" id="clientPhone" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
               </div>
             </div>
             <div className="flex flex-col gap-1 p-6">
@@ -193,21 +251,18 @@ const ClientForm = (
                 <label htmlFor="clientEmail" className="block mb-2 text-sm font-medium text-gray-900">
                   E-mail
                 </label>
-                <input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} type="email" id="clientEmail" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez l'adresse email du partenaire" required />
-                </div>
+                <input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} type="email" id="clientEmail" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez l'adresse email du client" required />
+              </div>
             </div>
             <div className="flex flex-col gap-1 p-6">
               <div className="relative h-11 w-full min-w-[200px]">
                 <label htmlFor="clientAdresse" className="block mb-2 text-sm font-medium text-gray-900">
                   Adresse
                 </label>
-                <input value={clientAddress} onChange={(e) => setClientAddress(e.target.value)} type="text" id="clientAdresse" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du partenaire" required />
+                <input value={clientAddress} onChange={(e) => setClientAddress(e.target.value)} type="text" id="clientAdresse" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
               </div>
             </div>
-          
-
-          
-            <div className="px-2">
+            <div className="p-2">
               {errorMessage && <div
                 className="px-2 relative block w-full p-4 text-base leading-5 text-white bg-red-500 rounded-lg opacity-100 font-regular">
                 {errorMessage}

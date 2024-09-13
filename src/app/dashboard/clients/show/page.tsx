@@ -16,7 +16,7 @@ const SingleClient = () => {
       <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer">
         <FaAngleLeft className="w-8 h-8" />
         <h3 className="text-xl font-light">
-          Adverco SARL
+          Santu Pro
         </h3>
       </div>
       <div className="w-full flex gap-4 h-dvh">
@@ -24,7 +24,7 @@ const SingleClient = () => {
           <div className="w-full flex justify-between">
             <div className="flex gap-2">
               <img
-                src="https://adverco.fr/wp-content/uploads/2024/01/cropped-ADVERCO-1-png.png"
+                src="https://santupro.fr/wp-content/uploads/2024/01/cropped-ADVERCO-1-png.png"
                 className="w-32 h-20 mx-auto"
               />
               <div className="flex flex-col gap-1">

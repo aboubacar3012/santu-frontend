@@ -1,18 +1,12 @@
 "use client"
 import Link from "next/link";
 import { MdDashboard, MdOutlinePhoneInTalk } from "react-icons/md";
-import { MdCampaign } from "react-icons/md";
-import { BsFillPeopleFill } from "react-icons/bs";
-import { FaQuestionCircle, FaUserCog } from "react-icons/fa";
-import { TbFileEuro } from "react-icons/tb";
-import { LiaNewspaper } from "react-icons/lia";
-import { MdManageAccounts } from "react-icons/md";
-import { FaUsers } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/src/redux/features/authSlice";
 import { useRouter } from "next/navigation";
 import { RootState } from "@/src/redux/store";
 import { usePathname } from 'next/navigation';
+import { FaUserCog, FaUsers } from "react-icons/fa";
 
 export default function DashboardLayout({
   children
@@ -21,7 +15,7 @@ export default function DashboardLayout({
 }) {
 
   const auth = useSelector((state: RootState) => state.auth);
-  const partnerId = auth.loggedUserInfos?.partnerId?._id;
+  const partnerId = auth.loggedAccountInfos?.partnerId?._id;
 
   const dispatch = useDispatch();
   const router = useRouter()
@@ -125,7 +119,7 @@ export default function DashboardLayout({
           }
           )}
           <hr className="w-full border-gray-50" />
-          <Link href="/account" className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-gray-200 `}>
+          <Link href="/dashboard/account/121342" className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-gray-200 `}>
             <FaUserCog className="w-6 h-6" />
             <span className="text-xl">Mon compte</span>
           </Link>

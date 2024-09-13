@@ -37,7 +37,7 @@ const SingleInvoicePage = () => {
           <div className="w-full flex justify-between">
             <div className="flex gap-2">
               <img
-                src="https://adverco.fr/wp-content/uploads/2024/01/cropped-ADVERCO-1-png.png"
+                src="https://santupro.fr/wp-content/uploads/2024/01/cropped-ADVERCO-1-png.png"
                 className="w-24 h-20 mx-auto"
               />
               <div className="flex flex-col gap-1">
@@ -95,7 +95,7 @@ const SingleInvoicePage = () => {
             </div>
             <div className="w-full">
               <h3 className="text-md font-light">Adresse de facturation</h3>
-              <div className="h-0.5 w-full bg-gray-50"></div>
+              <div className="h-0.5 w-full "></div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg font-semibold">Banima Group SARL</h3>
                 <p className="text-sm text-gray-500">

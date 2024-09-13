@@ -4,8 +4,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 type Controls = {
   spinner: boolean;
-  openUserForm: boolean;
-  editUser: boolean;
+  openAccountForm: boolean;
+  editAccount: boolean;
   openPartnerForm: boolean;
   editPartner: boolean;
   openCampaignForm: boolean;
@@ -14,8 +14,8 @@ type Controls = {
 
 const initialState: Controls = {
   spinner: false,
-  openUserForm: false,
-  editUser: false,
+  openAccountForm: false,
+  editAccount: false,
   openPartnerForm: false,
   editPartner: false,
   openCampaignForm: false,

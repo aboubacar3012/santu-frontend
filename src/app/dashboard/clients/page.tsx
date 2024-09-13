@@ -45,7 +45,7 @@ const ClientsPage = () => {
         </div>
         <input
           type="text"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full ps-10 p-2.5  "
+          className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full ps-10 p-2.5  "
           placeholder="Rechercher un client"
         />
       </div>
