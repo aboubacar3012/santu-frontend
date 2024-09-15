@@ -32,12 +32,13 @@ const InvoiceInfoForm = ({
   errorMessage,
   setErrorMessage
 }: InvoiceInfoFormProps) => {
+  
   return (
     <>
       <div className="flex flex-col gap-1 px-4 py-2">
         <div className="relative w-full min-w-[200px]">
           <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900">Numéro de la facture</label>
-          <p className=" border font-semibold border-gray-100 text-gray-900 text-sm rounded-lg  block w-full p-2.5" >
+          <p className="bg-gray-50 border font-semibold border-gray-100 text-gray-900 text-sm rounded-lg  block w-full p-2.5" >
             #INV-2024-01-00002343
           </p>
         </div>
@@ -50,7 +51,7 @@ const InvoiceInfoForm = ({
               Choisir le client
             </label>
             <div className="flex gap-2">
-              <select value={1234} onChange={(e) => { }} id="status" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
+              <select value={1234} onChange={(e) => { }} id="status" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
                 <option selected value="">
                   Choisir un client
                 </option>
@@ -77,7 +78,7 @@ const InvoiceInfoForm = ({
       <div className="flex flex-col gap-1 px-4 py-2">
         <div className="relative w-full min-w-[200px]">
           <label htmlFor="invoiceName" className="block mb-2 text-sm font-medium text-gray-900">Donner un titre a votre facture</label>
-          <input value={invoiceName} onChange={(e) => setInvoiceName(e.target.value)} type="text" id="invoiceName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom de la facture" required />
+          <input value={invoiceName} onChange={(e) => setInvoiceName(e.target.value)} type="text" id="invoiceName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom de la facture" required />
         </div>
       </div>
       <div className="flex flex-col gap-1 px-4 py-2">
@@ -88,7 +89,7 @@ const InvoiceInfoForm = ({
             value={invoiceDate}
             onChange={(e) => setInvoiceDate(e.target.value)}
             id="invoiceDate"
-            className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
             placeholder="Entrez le titre de la campagne"
             required
             // min aujourdhui
@@ -104,7 +105,7 @@ const InvoiceInfoForm = ({
           <label htmlFor="paymentMode" className="block text-sm font-medium text-gray-900 ">
             Mode de règlement
           </label>
-          <select value={invoicePaymentMethod} onChange={(e) => setInvoicePaymentMethod(e.target.value)} id="paymentMode" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
+          <select value={invoicePaymentMethod} onChange={(e) => setInvoicePaymentMethod(e.target.value)} id="paymentMode" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
             <option value="1">
               Espèces
             </option>
@@ -123,7 +124,7 @@ const InvoiceInfoForm = ({
           <label htmlFor="status" className="block text-sm font-medium text-gray-900 ">
             Conditions de règlement
           </label>
-          <select value={invoicePaymentCondition} onChange={(e) => setInvoicePaymentCondition(e.target.value)} id="status" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
+          <select value={invoicePaymentCondition} onChange={(e) => setInvoicePaymentCondition(e.target.value)} id="status" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
             <option value="1">
               Immédiat
             </option>
@@ -142,14 +143,14 @@ const InvoiceInfoForm = ({
       <div className="flex flex-col gap-1 px-4 py-2">
         <div className="relative w-full min-w-[200px]">
           <label htmlFor="tva" className="block mb-2 text-sm font-medium text-gray-900">TVA (en %)</label>
-          <input value={invoiceTva} onChange={(e) => setInvoiceTva(Number(e.target.value))} type="number" id="tva" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="TVA" required />
+          <input value={invoiceTva} onChange={(e) => setInvoiceTva(Number(e.target.value))} type="number" id="tva" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="TVA" required />
         </div>
       </div>
       {/* Rémarque */}
       <div className="flex flex-col gap-1 px-4 py-2">
         <div className="relative w-full min-w-[200px]">
           <label htmlFor="objective" className="block mb-2 text-sm font-medium text-gray-900">Rémarque</label>
-          <textarea value={invoiceRemark} onChange={(e) => setInvoiceRemark(e.target.value)} id="objective" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez la description de la campagne" required />
+          <textarea value={invoiceRemark} onChange={(e) => setInvoiceRemark(e.target.value)} id="objective" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez la description de la campagne" required />
         </div>
       </div>
 

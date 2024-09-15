@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
+import { refreshAccount } from "@/src/libs/refreshAccount";
 import { RootState } from "@/src/redux/store";
 import { createClient } from "@/src/services/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 type ClientFormProps = {
@@ -26,6 +27,8 @@ const ClientForm = (
   const [errorMessage, setErrorMessage] = useState("");
 
   const auth = useSelector((state: RootState) => state.auth);
+  const accountId = auth.loggedAccountInfos?._id;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isEdit) {
@@ -80,6 +83,7 @@ const ClientForm = (
     let clientToAdd = {};
     if (clientType === "company") {
       clientToAdd = {
+        accountId: accountId,
         company: clientName,
         phone: clientPhone,
         email: clientEmail,
@@ -88,6 +92,7 @@ const ClientForm = (
       }
     } else {
       clientToAdd = {
+        accountId: accountId,
         firstName: clientFirstName,
         lastName: clientLastName,
         phone: clientPhone,
@@ -97,8 +102,9 @@ const ClientForm = (
       }
     }
 
-    createClient(clientToAdd, "token").then((response) => {
+    createClient(clientToAdd, auth.token).then( async (response) => {
       if (response.success) {
+        await refreshAccount(dispatch, accountId!, auth.token!);
         toast.success("Client créé avec succès");
         onClose();
       } else if (!response.success) {
@@ -194,7 +200,7 @@ const ClientForm = (
                 <label htmlFor="clientName" className="block mb-2 text-sm font-medium text-gray-900">
                   Choisir le type de client
                 </label>
-                <select value={clientType} onChange={(e) => setClientType(e.target.value)} id="status" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
+                <select value={clientType} onChange={(e) => setClientType(e.target.value)} id="status" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
                   <option value="particular">
                     Particulier
                   </option>
@@ -211,7 +217,7 @@ const ClientForm = (
                     <label htmlFor="clientName" className="block mb-2 text-sm font-medium text-gray-900">
                       Nom de l&apos;entreprise/client
                     </label>
-                    <input value={clientName} onChange={(e) => setClientName(e.target.value)} type="text" id="clientName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
+                    <input value={clientName} onChange={(e) => setClientName(e.target.value)} type="text" id="clientName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
                   </div>
                 </div>
               )
@@ -224,7 +230,7 @@ const ClientForm = (
                       <label htmlFor="clientFirstName" className="block mb-2 text-sm font-medium text-gray-900">
                         Prénom
                       </label>
-                      <input value={clientFirstName} onChange={(e) => setClientFirstName(e.target.value)} type="text" id="clientFirstName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le prénom" required />
+                      <input value={clientFirstName} onChange={(e) => setClientFirstName(e.target.value)} type="text" id="clientFirstName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le prénom" required />
                     </div>
                   </div>
                   <div className="w-full flex flex-col">
@@ -232,7 +238,7 @@ const ClientForm = (
                       <label htmlFor="clientLastName" className="block mb-2 text-sm font-medium text-gray-900">
                         Nom
                       </label>
-                      <input value={clientLastName} onChange={(e) => setClientLastName(e.target.value)} type="text" id="clientLastName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le nom" required />
+                      <input value={clientLastName} onChange={(e) => setClientLastName(e.target.value)} type="text" id="clientLastName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le nom" required />
                     </div>
                   </div>
                 </div>
@@ -243,7 +249,7 @@ const ClientForm = (
                 <label htmlFor="clientPhone" className="block mb-2 text-sm font-medium text-gray-900">
                   Téléphone
                 </label>
-                <input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} type="text" id="clientPhone" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
+                <input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} type="text" id="clientPhone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
               </div>
             </div>
             <div className="flex flex-col gap-1 p-6">
@@ -251,7 +257,7 @@ const ClientForm = (
                 <label htmlFor="clientEmail" className="block mb-2 text-sm font-medium text-gray-900">
                   E-mail
                 </label>
-                <input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} type="email" id="clientEmail" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez l'adresse email du client" required />
+                <input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} type="email" id="clientEmail" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez l'adresse email du client" required />
               </div>
             </div>
             <div className="flex flex-col gap-1 p-6">
@@ -259,7 +265,7 @@ const ClientForm = (
                 <label htmlFor="clientAdresse" className="block mb-2 text-sm font-medium text-gray-900">
                   Adresse
                 </label>
-                <input value={clientAddress} onChange={(e) => setClientAddress(e.target.value)} type="text" id="clientAdresse" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
+                <input value={clientAddress} onChange={(e) => setClientAddress(e.target.value)} type="text" id="clientAdresse" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
               </div>
             </div>
             <div className="p-2">

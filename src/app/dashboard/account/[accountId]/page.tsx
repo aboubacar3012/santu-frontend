@@ -3,51 +3,83 @@ import { IoMdAdd } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/redux/store";
 import { useEffect, useState } from "react";
-import { Client } from "@/src/types";
+import { Account } from "@/src/types";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { getAccountById } from "@/src/services/account";
 
-const ProfilePage = ({ params }: { params: { clientId: string } }) => {
+const ProfilePage = ({ params }: { params: { accountId: string } }) => {
+  const [accountData, setAccountData] = useState<Account | null>(null);
   const [logoUrl, setLogoUrl] = useState("");
-  const [clientName, setClientName] = useState<string>("");
-  const [clientFirstName, setClientFirstName] = useState<string>("");
-  const [clientLastName, setClientLastName] = useState<string>("");
-  const [clientPhone, setClientPhone] = useState<string>("");
-  const [clientEmail, setClientEmail] = useState<string>("");
-  const [clientAddress, setClientAddress] = useState<string>("");
-  const [clientType, setClientType] = useState<string | "particular" | "company">("particular");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [company, setCompany] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [actualPassword, setActualPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
 
   const router = useRouter()
   const [errorMessage, setErrorMessage] = useState("");
 
   const auth = useSelector((state: RootState) => state.auth);
 
+  const fetchData = async () => {
+    getAccountById(params.accountId, auth.token).then((data) => {
+      if (data.success) {
+        setAccountData(data.account);
+        setLoading(false);
+      } else if (!data.success) {
+        setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
+        setLoading(false);
+      }
+    }).catch((error) => {
+      setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
+      setLoading(false);
+    });
+  }
+
   useEffect(() => {
-    // const fetchData = async () => {
-    //   getClientById(params.clientId).then((data) => {
-    //     if (data.success) {
-    //       setClientData(data?.client);
-    //       setError(null);
-    //       setLoading(false);
-    //     } else if (!data.success) {
-    //       setError("Une erreur s'est produite lors de la récupération des stagiaires");
-    //       setLoading(false);
-    //     }
-    //   }).catch((error) => {
-    //     setError("Une erreur s'est produite lors de la récupération des stagiaires");
-    //     setLoading(false);
-    //   });
-    // }
-    // fetchData();
+    fetchData();
   }, [])
 
-  // if (loading) {
-  //   return <div>Loading...</div>
-  // }
+  useEffect(() => {
+    console.log("useEffect")
+    if (accountData) {
+      console.log("useEffect accountData")
+      setLogoUrl(accountData.logoUrl || "");
+      setFirstName(accountData.firstName || "");
+      setLastName(accountData.lastName || "");
+      setCompany(accountData.company || "");
+      setEmail(accountData.email);
+      setPhone(accountData.phone);
+      setAddress(accountData.address);
+    }
+  }, [accountData])
 
-  // if (!clientData) {
-  //   return <div>Client not found</div>
-  // }
+  if (loading) {
+    return <div>
+      Loading...
+    </div>
+  }
+
+  console.log({
+    accountData,
+    logoUrl,
+    firstName,
+    lastName,
+    company,
+    email,
+    phone,
+    address,
+    actualPassword,
+    newPassword,
+    confirmNewPassword
+  })
 
   return (
     <div className="w-3/4 m-auto h-screen py-4 overflow-y-hidden">
@@ -58,7 +90,7 @@ const ProfilePage = ({ params }: { params: { clientId: string } }) => {
         Ici, vous pouvez gérer vos informations personnelles
       </p>
       <div className="h-0.5 my-8 w-full bg-gray-200"></div>
-      {/* Client profile */}
+      {/* Account profile */}
       <div className="w-min px-4 my-2 py-2 gap-2 flex flex-col justify-end text-gray-700 bg-white  rounded-lg ">
         <p className="text-nowrap text-lg font-normal text-gray-900">
           Inscrit depuis le <span className="font-semibold">13 septembre 2024</span>
@@ -71,7 +103,8 @@ const ProfilePage = ({ params }: { params: { clientId: string } }) => {
       </div>
       <div className="flex gap-2 py-2">
         <div className="w-1/2 h-min py-2 gap-4  flex flex-col text-gray-700 bg-white  rounded-lg ">
-        <div className="flex items-center">
+          <div className="flex items-center">
+            {accountData && accountData.logoUrl && (
               <div className="w-full flex flex-col gap-1 p-6">
                 <div className="relative h-11 w-full min-w-[200px]">
                   <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900">
@@ -96,70 +129,61 @@ const ProfilePage = ({ params }: { params: { clientId: string } }) => {
                       }
                     }}
                     id="title"
-                    className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez l'url du logo" />
+                    className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Entrez l'url du logo" />
                 </div>
               </div>
-              {
-                logoUrl && (
-                  <div className="w-max border border-gray-300 rounded-lg p-2.5">
-                    <img src={logoUrl} alt="logo" className="w-32 h-22" />
-                  </div>
-                )
-              }
-            </div>
+            )}
 
+            {
+              logoUrl && (
+                <div className="w-max border border-gray-300 rounded-lg p-2.5">
+                  <img src={logoUrl} alt="logo" className="w-32 h-22" />
+                </div>
+              )
+            }
+          </div>
           <div className="flex flex-col gap-1 px-6">
             <div className="relative w-full min-w-[200px]">
-              <label htmlFor="clientName" className="block mb-2 text-sm font-medium text-gray-900">
+              <label htmlFor="company" className="block mb-2 text-sm font-medium text-gray-900">
                 Nom de l&apos;entreprise/client
               </label>
-              <input value={clientName} onChange={(e) => setClientName(e.target.value)} type="text" id="clientName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
+              <input value={company} onChange={(e) => setCompany(e.target.value)} type="text" id="company" className=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Entrez le nom de votre entreprise" required />
             </div>
           </div>
 
           <div className="w-full flex gap-1 px-6">
             <div className="w-full flex flex-col">
               <div className="w-full min-w-[200px]">
-                <label htmlFor="clientFirstName" className="block mb-2 text-sm font-medium text-gray-900">
+                <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900">
                   Prénom
                 </label>
-                <input value={clientFirstName} onChange={(e) => setClientFirstName(e.target.value)} type="text" id="clientFirstName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le prénom" required />
+                <input value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" id="firstName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Entrez le prénom" required />
               </div>
             </div>
             <div className="w-full flex flex-col">
               <div className="w-full min-w-[200px]">
-                <label htmlFor="clientLastName" className="block mb-2 text-sm font-medium text-gray-900">
+                <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-gray-900">
                   Nom
                 </label>
-                <input value={clientLastName} onChange={(e) => setClientLastName(e.target.value)} type="text" id="clientLastName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le nom" required />
+                <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" id="lastName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Entrez le nom" required />
               </div>
             </div>
           </div>
 
           <div className="flex flex-col gap-1 px-6">
             <div className=" w-full min-w-[200px]">
-              <label htmlFor="clientPhone" className="block mb-2 text-sm font-medium text-gray-900">
+              <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900">
                 Téléphone
               </label>
-              <input value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} type="text" id="clientPhone" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" id="phone" className=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Entrez votre téléphone" required />
             </div>
           </div>
-
           <div className="flex flex-col gap-1 px-6">
             <div className=" w-full min-w-[200px]">
-              <label htmlFor="clientEmail" className="block mb-2 text-sm font-medium text-gray-900">
-                E-mail
-              </label>
-              <input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} type="email" id="clientEmail" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez l'adresse email du client" required />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1 px-6">
-            <div className=" w-full min-w-[200px]">
-              <label htmlFor="clientAdresse" className="block mb-2 text-sm font-medium text-gray-900">
+              <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900">
                 Adresse
               </label>
-              <input value={clientAddress} onChange={(e) => setClientAddress(e.target.value)} type="text" id="clientAdresse" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
+              <input value={address} onChange={(e) => setAddress(e.target.value)} type="text" id="address" className=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Entrez votre adresse" required />
             </div>
           </div>
 
@@ -173,34 +197,34 @@ const ProfilePage = ({ params }: { params: { clientId: string } }) => {
         <div className="w-1/2 h-min py-2 gap-2 flex flex-col text-gray-700 bg-white  rounded-lg ">
           <div className="flex flex-col gap-1 px-6">
             <div className=" w-full min-w-[200px]">
-              <label htmlFor="clientEmail" className="block mb-2 text-sm font-medium text-gray-900">
+              <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">
                 E-mail
               </label>
-              <input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} type="email" id="clientEmail" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez l'adresse email du client" required />
+              <input disabled={true} value={email} onChange={(e) => setEmail(e.target.value)} type="email" id="email" className=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
             </div>
           </div>
           <div className="flex flex-col gap-1 px-6">
             <div className=" w-full min-w-[200px]">
-              <label htmlFor="clientAdresse" className="block mb-2 text-sm font-medium text-gray-900">
+              <label htmlFor="actualPassword" className="block mb-2 text-sm font-medium text-gray-900">
                 Mot de passe actuel
               </label>
-              <input value={clientAddress} onChange={(e) => setClientAddress(e.target.value)} type="text" id="clientAdresse" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
+              <input value={actualPassword} onChange={(e) => setActualPassword(e.target.value)} type="text" id="actualPassword" className=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Entrez le mot de passe actuel" required />
             </div>
           </div>
           <div className="flex flex-col gap-1 px-6">
             <div className=" w-full min-w-[200px]">
-              <label htmlFor="clientAdresse" className="block mb-2 text-sm font-medium text-gray-900">
+              <label htmlFor="newPassword" className="block mb-2 text-sm font-medium text-gray-900">
                 Nouveau mot de passe
               </label>
-              <input value={clientAddress} onChange={(e) => setClientAddress(e.target.value)} type="text" id="clientAdresse" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
+              <input value={newPassword} onChange={(e) => setNewPassword(e.target.value)} type="text" id="newPassword" className=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Entrez le nouveau mot de passe" required />
             </div>
           </div>
           <div className="flex flex-col gap-1 px-6">
             <div className=" w-full min-w-[200px]">
-              <label htmlFor="clientAdresse" className="block mb-2 text-sm font-medium text-gray-900">
+              <label htmlFor="confirmNewPassword" className="block mb-2 text-sm font-medium text-gray-900">
                 Confirmer le mot de passe
               </label>
-              <input value={clientAddress} onChange={(e) => setClientAddress(e.target.value)} type="text" id="clientAdresse" className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Entrez le titre du client" required />
+              <input value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} type="text" id="confirmNewPassword" className=" border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Confirmez le nouveau mot de passe" required />
             </div>
           </div>
           <button onClick={() => { }}

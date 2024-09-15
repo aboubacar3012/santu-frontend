@@ -22,7 +22,7 @@ export const createAccount = async (user: Partial<AccountToAdd>, token?:string) 
 }
 
 // Get all accounts
-export const getAccounts = async (): Promise<{ success: boolean, accounts: Account[] }> => {
+export const getAccounts = async () => {
   const response = await fetch(baseUrl);
 
   if (!response.ok) {
@@ -32,9 +32,25 @@ export const getAccounts = async (): Promise<{ success: boolean, accounts: Accou
   return response.json();
 }
 
-// Login a user
-export const loginAccount = async (email: string, password: string) => {
-  const response = await fetch(`${baseUrl}/login`, {
+// Get a single account
+export const getAccountById = async (userId: string, token?:string) => {
+  const response = await fetch(`${baseUrl}/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch account");
+  }
+
+  return response.json();
+}
+
+
+// authenticates a user
+export const authenticate = async (email: string, password: string) => {
+  const response = await fetch(`${baseUrl}/auth`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

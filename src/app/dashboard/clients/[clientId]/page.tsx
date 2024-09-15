@@ -1,15 +1,44 @@
 "use client";
 import Badge from "@/src/components/Badge";
+import { RootState } from "@/src/redux/store";
+import { getClientById } from "@/src/services/client";
+import { Client } from "@/src/types";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
-const SingleClient = () => {
+const SingleClient = ({ params }: { params: { clientId: string } }) => {
+  const [clientData, setClientData] = useState<Client>();
   const router = useRouter();
+  const auth = useSelector((state: RootState) => state.auth);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    getClientById(params.clientId, auth.token).then((data) => {
+      if (data.success) {
+        setClientData(data.client);
+        setLoading(false);
+      } else if (!data.success) {
+        setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
+        setLoading(false);
+      }
+    }).catch((error) => {
+      setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
+      setLoading(false);
+    });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [])
 
   const handlePushLeft = () => {
     router.back();
   }
 
+  if(!clientData) return <div>Not found</div>
 
   return (
     <div className="w-3/5  h-[96vh] overflow-hidden flex flex-col justify-start gap-4">
@@ -23,22 +52,26 @@ const SingleClient = () => {
         <div className="w-full flex flex-col gap-2 bg-white p-4 rounded-xl">
           <div className="w-full flex justify-between">
             <div className="flex gap-2">
-              <img
-                src="https://santupro.fr/wp-content/uploads/2024/01/cropped-ADVERCO-1-png.png"
-                className="w-32 h-20 mx-auto"
-              />
+              {clientData?.logo && (
+                <img
+                  src="https://santupro.fr/wp-content/uploads/2024/01/cropped-ADVERCO-1-png.png"
+                  className="w-32 h-20 mx-auto"
+                />
+              )}
               <div className="flex flex-col gap-1">
-                <h3 className="text-md font-semibold">Banima Group SARL</h3>
+                <h3 className="text-md font-semibold">
+                {clientData.company && clientData.company?.length > 0 ? clientData.company : `${clientData.firstName} ${clientData.lastName}`}
+                </h3>
                 <p className="text-sm text-gray-500">
-                  123 rue de la paix, Conakry
+                  {clientData.address}
                 </p>
                 {/* Tel */}
                 <p className="text-sm text-gray-500">
-                  +224 666 666 666
+                 {clientData.phone}
                 </p>
                 {/* Email */}
                 <p className="text-sm text-gray-500">
-                  contact@gmail.com
+                  {clientData.email}
                 </p>
               </div>
             </div>

@@ -95,7 +95,7 @@ const SingleInvoicePage = () => {
             </div>
             <div className="w-full">
               <h3 className="text-md font-light">Adresse de facturation</h3>
-              <div className="h-0.5 w-full "></div>
+              <div className="h-0.5 w-full bg-gray-50"></div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-lg font-semibold">Banima Group SARL</h3>
                 <p className="text-sm text-gray-500">

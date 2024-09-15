@@ -4,48 +4,50 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 import { loginReducer, updateToken } from "../redux/features/authSlice"
-import { loginAccount, changePassword } from "../services/user"
+import { changePassword, authenticate } from "../services/account"
 import { RootState } from "../redux/store"
+import RegistrationInfoForm from "../components/auth/RegistrationInfoForm"
+import SuccessRegistration from "../components/auth/SuccessRegistration"
 
 const LoginPage = () => {
   const router = useRouter()
   const dispatch = useDispatch()
-  const [userOnlyExists, setUserOnlyExists] = useState(false)
   const [showPasswordInput, setShowPasswordInput] = useState(false)
-  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [email, setEmail] = useState('');
+  const [registrationStep, setRegistrationStep] = useState(1)
 
 
   const auth = useSelector((state: RootState) => state.auth);
 
-  useEffect(() => {
-    if (auth.isAuthenticated && auth.loggedAccountInfos) {
-      return router.push("/dashboard")
-    }
-  }
-    , [])
+  // useEffect(() => {
+  //   if (auth.isAuthenticated && auth.loggedAccountInfos) {
+  //     return router.push("/dashboard")
+  //   }
+  // },[])
 
   const handleLogin = () => {
-    setUserOnlyExists(true)
-    setShowPasswordInput(true)
-    router.push("/dashboard")
-    // return loginAccount(email, password).then((data) => {
-    //   if (data.success) {
-    //     if (data.user && data.user.isFirstLogin) {
-    //       dispatch(loginReducer({ isAuthenticated: false, loggedAccountInfos: data.user }))
-    //       toast.info("Veuillez changer votre mot de passe")
-    //       setPassword("")
-    //     } else {
-    //       dispatch(loginReducer({ isAuthenticated: true, loggedAccountInfos: data.user }))
-    //       dispatch(updateToken(data.token))
-    //       toast.success("Connexion réussie")
-    //       if (data.user.role === "PARTNER") return router.push("/dashboard/partner")
-    //       else return router.push("/dashboard/admin/partners")
-    //     }
-    //   } else {
-    //     toast.error(data.message)
-    //   }
-    // })
+    // setUserOnlyExists(true)
+    // setShowPasswordInput(true)
+
+    return authenticate(email, password).then((data) => {
+      if (data.success) {
+        console.log(data)
+        if (data.account && data.created) {
+          setShowPasswordInput(true)
+        } else if (data.account && data.exist) {
+          setShowPasswordInput(true)
+        }
+        else if (data.token) {
+          dispatch(loginReducer({ isAuthenticated: true, loggedAccountInfos: data.account }))
+          dispatch(updateToken(data.token))
+          if (data.account.isFirstLogin) setRegistrationStep(2);
+          else router.push("/dashboard")
+        }
+      } else {
+        toast.error(data.message)
+      }
+    })
   }
 
 
@@ -60,44 +62,67 @@ const LoginPage = () => {
             style={{ "backgroundImage": "url('/images/authimg.png')" }}
           ></div>
         </div>
-        <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-          <div>
-            <img
-              src="/images/logo.png"
-              className="w-32 mx-auto rounded-full"
-            />
-          </div>
-          <div className={`mt-12 md:mt-36 flex flex-col items-center justify-center`}>
-            <h1 className="text-xl font-extrabold">
-              Authentification
-            </h1>
-            <div className="w-full flex-1 mt-8">
-              <div className="mx-auto max-w-xs">
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  type="email"
-                  placeholder="Entrez votre email"
-                />
-                {
-                  showPasswordInput && (
-                    <input
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                      type="password"
-                      placeholder="Entrez votre mot de passe"
-                    />
-                  )
-                }
+        {registrationStep === 1 && (
+          <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
+            <div>
+              <img
+                src="/images/logo.png"
+                className="w-32 mx-auto rounded-full"
+              />
+            </div>
+            <div className={`mt-12 md:mt-36 flex flex-col items-center justify-center`}>
+              <h1 className="text-xl font-extrabold">
+                Authentification
+              </h1>
+              <div className="w-full flex-1 mt-8">
+                <div className="mx-auto max-w-xs">
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="email" className="block  text-sm font-medium text-gray-900">
+                      Entrez votre adresse email
+                    </label>
+                    {
+                      showPasswordInput && (
+                        <p className="mt-2 text-xs text-gray-900 text-right hover:underline cursor-pointer" onClick={() => setShowPasswordInput(false)}>
+                          Modifier
+                        </p>
+                      )
+                    }
+                  </div>
+                  <input
+                    onClick={() => setShowPasswordInput(false)}
+                    disabled={showPasswordInput}
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg font-medium  border border-gray-200 placeholder-gray-500 text-sm"
+                    type="email"
+                    placeholder="Entrez votre email"
+                  />
 
-                <button onClick={handleLogin}
-                  className="mt-5 font-semibold bg-blue-600 text-white w-full py-3 rounded-lg hover:bg-blue-700"
-                >
-                  Continuer
-                </button>
-                {/* <p className="mt-6 text-xs text-gray-600 text-center">
+                  {
+                    showPasswordInput && (
+                      <div className="mt-3">
+                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">
+                          Entrez votre mot de passe
+                        </label>
+                        <input
+                          id="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="w-full px-4 py-3 rounded-lg font-medium  border border-gray-200 placeholder-gray-500 text-sm"
+                          type="password"
+                          placeholder="Entrez votre mot de passe"
+                        />
+                      </div>
+                    )
+                  }
+
+                  <button onClick={handleLogin}
+                    className="mt-5 font-semibold bg-blue-600 text-white w-full py-3 rounded-lg hover:bg-blue-700"
+                  >
+                    {showPasswordInput ? "Se connecter" : "Continuer"}
+                  </button>
+                  {/* <p className="mt-6 text-xs text-gray-600 text-center">
                   J&apos;accepte les{" "}
                   <a href="#" className="border-b border-gray-500 border-dotted">
                     Conditions d&apos;utilisation{" "}
@@ -107,10 +132,17 @@ const LoginPage = () => {
                     Politique de confidentialité
                   </a>
                 </p> */}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+        {registrationStep === 2 && (
+          <RegistrationInfoForm setRegistrationStep={setRegistrationStep} />
+        )}
+        {registrationStep === 3 && (
+          <SuccessRegistration />
+        )}
       </div>
     </div>
   );

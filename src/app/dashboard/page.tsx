@@ -60,7 +60,7 @@ const DashboardPage = ({ params }: { params: { partnerId: string } }) => {
         <div
           className="relative grid mx-4 mb-3 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-gray-900 to-gray-800 bg-clip-border shadow-gray-900/20">
           <h3 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-white">
-            Banima group SARL
+            Santu Pro - Dashboard
           </h3>
         </div>
       </div>

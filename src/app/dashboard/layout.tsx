@@ -15,7 +15,7 @@ export default function DashboardLayout({
 }) {
 
   const auth = useSelector((state: RootState) => state.auth);
-  const partnerId = auth.loggedAccountInfos?.partnerId?._id;
+  const accountId = auth.loggedAccountInfos?._id;
 
   const dispatch = useDispatch();
   const router = useRouter()
@@ -89,14 +89,12 @@ export default function DashboardLayout({
 
   ];
 
-
-
   const handleLogout = () => {
     dispatch(logout())
     return router.push("/")
   }
-  return (
 
+  return (
     <div className="flex flex-row w-full h-screen items-center justify-center gap-10">
       {/* Left Section */}
       <div className="relative flex flex-col w-1/6 h-[96vh] bg-white text-black rounded-2xl">
@@ -105,7 +103,6 @@ export default function DashboardLayout({
         </div>
         {/* divider */}
         <div className="h-0.5 w-full bg-gray-100"></div>
-
         <div className="flex flex-col items-start justify-center w-full gap-4">
           {menuItems.map((item: any) => {
             // if (item.roles.includes("partner")) {
@@ -119,7 +116,7 @@ export default function DashboardLayout({
           }
           )}
           <hr className="w-full border-gray-50" />
-          <Link href="/dashboard/account/121342" className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-gray-200 `}>
+          <Link href={`/dashboard/account/${accountId}`} className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-gray-200 `}>
             <FaUserCog className="w-6 h-6" />
             <span className="text-xl">Mon compte</span>
           </Link>

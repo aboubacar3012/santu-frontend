@@ -24,6 +24,7 @@ export type Client = {
 
 export type Account = {
   _id: string;
+  logoUrl?: string;
   firstName?: string;
   lastName?: string;
   company?: string;
@@ -31,6 +32,8 @@ export type Account = {
   email: string;
   phone: string;
   role: Role;
+  clients: Client[];
+  // invoices: Invoice[];
   password: string;
   isActive: boolean;
   createdAt: string;

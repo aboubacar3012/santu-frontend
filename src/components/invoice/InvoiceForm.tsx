@@ -17,23 +17,16 @@ const InvoiceForm = (
 ) => {
   const [step, setStep] = useState<number>(1); // 1: Informations générales, 2: Produits/Services, 3: Confirmation
   const [campaignName, setCampaignName] = useState<string>("")
-  const [description, setDescription] = useState<string>("")
-  const [partnerId, setPartnerId] = useState<string>("")
-  const [objective, setObjective] = useState<string>("")
-  const [tool, setTool] = useState<string>("")
-  const [budget, setBudget] = useState<number>()
-  const [startDate, setStartDate] = useState<string>("")
-  const [endDate, setEndDate] = useState<string>("")
-  const [city, setCity] = useState<string>("Marseille")
-  const [zones, setZones] = useState<string[]>([])
-  const [camions, setCamions] = useState<number>()
-  const [faces, setFaces] = useState<number>()
-  const [tva, setTva] = useState<number>(20)
-
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [invoiceName, setInvoiceName] = useState<string>("");
+  const [invoiceDate, setInvoiceDate] = useState<string>("");
+  const [invoiceTva, setInvoiceTva] = useState<number>(0);
+  const [invoicePaymentMethod, setInvoicePaymentMethod] = useState<string>("");
+  const [invoicePaymentCondition, setInvoicePaymentCondition] = useState<string>("");
+  const [invoiceRemark, setInvoiceRemark] = useState<string>("");
 
   const router = useRouter()
   const auth = useSelector((state: RootState) => state.auth);
-  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,8 +44,8 @@ const InvoiceForm = (
     isOpen && fetchData();
 
     return () => {
-       setStep(1); 
-      }
+      setStep(1);
+    }
   }, [isOpen]);
 
   useEffect(() => {
@@ -99,11 +92,26 @@ const InvoiceForm = (
           </div>
           <InvoiceFormStep step={step} />
           <form onSubmit={onSubmit}>
-            {/* {
+            {
               step === 1 && (
-                <InvoiceInfoForm />
+                <InvoiceInfoForm
+                  invoiceName={invoiceName}
+                  setInvoiceName={setInvoiceName}
+                  invoiceDate={invoiceDate}
+                  setInvoiceDate={setInvoiceDate}
+                  invoiceTva={invoiceTva}
+                  setInvoiceTva={setInvoiceTva}
+                  invoicePaymentMethod={invoicePaymentMethod}
+                  setInvoicePaymentMethod={setInvoicePaymentMethod}
+                  invoicePaymentCondition={invoicePaymentCondition}
+                  setInvoicePaymentCondition={setInvoicePaymentCondition}
+                  invoiceRemark={invoiceRemark}
+                  setInvoiceRemark={setInvoiceRemark}
+                  errorMessage={errorMessage}
+                  setErrorMessage={setErrorMessage}
+                />
               )
-            } */}
+            }
 
             {
               step === 2 && (
@@ -152,13 +160,13 @@ const InvoiceForm = (
                       <label htmlFor="product" className="block mb-2 text-sm font-medium text-gray-900">
                         Nom du produit/service
                       </label>
-                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="text" id="product" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
+                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="text" id="product" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
                     </div>
                   </div>
                   <div className="flex flex-col gap-1 px-4 py-2">
                     <div className="relative w-full min-w-[200px]">
                       <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900">Description</label>
-                      <textarea value={objective} onChange={(e) => setObjective(e.target.value)} id="description" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez la description de la campagne" required />
+                      <textarea value={objective} onChange={(e) => setObjective(e.target.value)} id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez la description de la campagne" required />
                     </div>
                   </div>
                   <div className="flex gap-2 px-4 py-2">
@@ -166,13 +174,13 @@ const InvoiceForm = (
                       <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-900">
                         Quantité
                       </label>
-                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="number" id="quantity" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
+                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="number" id="quantity" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
                     </div>
                     <div className="relative w-full min-w-[200px]">
                       <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900">
                         Prix
                       </label>
-                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="number" id="price" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
+                      <input value={campaignName} onChange={(e) => setCampaignName(e.target.value)} type="number" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
                     </div>
                   </div>
                 </>
@@ -182,7 +190,7 @@ const InvoiceForm = (
             <div className="flex flex-wrap items-center justify-end p-4 shrink-0 text-blue-gray-500">
               <button
                 onClick={() => {
-                  if(step === 1) return onClose();
+                  if (step === 1) return onClose();
                   else setStep(step - 1);
                 }}
                 className="cursor-pointer px-6 py-3 mr-1 font-sans text-xs font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -192,7 +200,7 @@ const InvoiceForm = (
               <button
                 type="button"
                 onClick={() => {
-                  if(step>0 && step < 3) setStep(step + 1);
+                  if (step > 0 && step < 3) setStep(step + 1);
                 }}
                 className="cursor-pointer middle none center rounded-lg bg-gradient-to-tr from-green-600 to-green-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               >

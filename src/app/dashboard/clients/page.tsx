@@ -1,21 +1,27 @@
 "use client";
 import Badge from "@/src/components/Badge";
 import ClientForm from "@/src/components/client/ClientForm";
+import { RootState } from "@/src/redux/store";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import { GoSearch } from "react-icons/go";
 import { IoMdAdd } from "react-icons/io";
+import { useSelector } from "react-redux";
 
 const ClientsPage = () => {
   const [addClient, setAddClient] = useState(false);
 
   const router = useRouter();
 
+  const auth = useSelector((state: RootState) => state.auth);
+  const clients = auth.loggedAccountInfos?.clients;
+
   const handlePushLeft = () => {
     router.back();
   }
 
+  console.log(clients);
 
   return (
     <div className="w-3/5  h-[96vh] overflow-hidden flex flex-col justify-start">
@@ -45,7 +51,7 @@ const ClientsPage = () => {
         </div>
         <input
           type="text"
-          className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full ps-10 p-2.5  "
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full ps-10 p-2.5  "
           placeholder="Rechercher un client"
         />
       </div>
@@ -62,6 +68,12 @@ const ClientsPage = () => {
                   Nom du Client/Entreprise
                 </th>
                 <th scope="col" className="px-6 py-3">
+                  Email
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Téléphone
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Nb de factures
                 </th>
                 <th scope="col" className="px-6 py-3">
@@ -71,18 +83,28 @@ const ClientsPage = () => {
             </thead>
             <tbody>
               {
-                [1, 2, 3, 4, 6, 1, 2, 3, 4, 6, 1, 2, 3, 4, 6, 1, 2, 3, 4, 6,].map((invoice, index) => (
-                  <tr onClick={() => router.push("/dashboard/clients/show")} key={index} className="border-b cursor-pointer hover:bg-gray-200">
+                clients && clients.map((client, index) => (
+                  <tr onClick={() => router.push(`/dashboard/clients/${client._id}`)} key={index} className="border-b cursor-pointer hover:bg-gray-200">
                     <th
                       scope="row"
                       className="text-xs px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                     >
                       {index + 1}
                     </th>
-                    <td className="text-xs px-6 py-4">Facture, MacBook Pro 16&#34;</td>
-                    <td className="text-xs px-6 py-4">2</td>
                     <td className="text-xs px-6 py-4">
-                      $2999
+                      {client.company && client.company?.length > 0 ? client.company : `${client.firstName} ${client.lastName}`}
+                    </td>
+                    <td className="text-xs px-6 py-4">
+                      {client.email}
+                    </td>
+                    <td className="text-xs px-6 py-4">
+                      {client.phone}
+                    </td>
+                    <td className="text-xs px-6 py-4">
+                    0
+                    </td>
+                    <td className="text-xs px-6 py-4">
+                      0
                     </td>
                   </tr>
                 ))
