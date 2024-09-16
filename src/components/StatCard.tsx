@@ -10,17 +10,17 @@ const StatCard = ({ title, value, unit }: StatCardProps) => {
   return (
     <div className="flex flex-col justify-between p-4 pb-4 bg-white rounded-md shadow-md h-40">
       <div className="flex justify-between">
-        <p className="text-xl font-light">
+        <p className="text-lg font-semibold">
           {title}
         </p>
         <GiMoneyStack className="w-8 h-8" />
       </div>
 
       <div className="">
-        <p className="text-4xl font-normal whitespace-nowrap">
+        <p className="text-3xl font-normal whitespace-nowrap">
           {value}
         </p>
-        <p className="text-lg">
+        <p className="text-md">
           {unit}
         </p>
       </div>

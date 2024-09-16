@@ -5,6 +5,32 @@ export enum Role {
   ACCOUNT = "ACCOUNT",
 };
 
+export type Article = {
+  _id?: string;
+  name: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type Invoice = {
+  _id?: string;
+  invoiceNumber: string;
+  name: string;
+  link: string;
+  date: string;
+  amount: number;
+  paymentMode: string;
+  paymentCondition: string;
+  status: "draft" | "sent" | "paid" | "cancelled";
+  tva: number;
+  remark: string;
+  articles: Article[]
+  createdAt?: string;
+  updatedAt?: string;
+};
 
 export type Client = {
   _id: string;
@@ -33,7 +59,7 @@ export type Account = {
   phone: string;
   role: Role;
   clients: Client[];
-  // invoices: Invoice[];
+  invoices: Invoice[];
   password: string;
   isActive: boolean;
   createdAt: string;

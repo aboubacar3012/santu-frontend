@@ -68,10 +68,8 @@ const ClientForm = (
     }
   }
 
-  console.log("partner", auth.partnerToEdit)
 
-  const onSubmit = (e: any) => {
-    e.preventDefault();
+  const onSubmit = () => {
     if (isEdit) return handleEdit();
     if (!clientName && (!clientFirstName || !clientLastName)) {
       return toast.error("Veuillez renseigner le nom du client");
@@ -102,7 +100,7 @@ const ClientForm = (
       }
     }
 
-    createClient(clientToAdd, auth.token).then( async (response) => {
+    createClient(clientToAdd, auth.token!).then( async (response) => {
       if (response.success) {
         await refreshAccount(dispatch, accountId!, auth.token!);
         toast.success("Client créé avec succès");
@@ -184,7 +182,7 @@ const ClientForm = (
   return (
     <>
       <div
-        className=" fixed inset-0 z-[999] grid place-items-center bg-black bg-opacity-60  backdrop-blur-sm transition-opacity duration-300"
+        className=" fixed inset-0 z-[999] grid place-items-center bg-black bg-opacity-60   transition-opacity duration-300"
       >
         <div
           className="relative m-4 w-2/6 overflow-auto  rounded-lg bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl"
@@ -282,7 +280,7 @@ const ClientForm = (
                 Annuler
               </button>
               <button
-                // type="submit"
+                onClick={onSubmit}
                 className="cursor-pointer middle none center rounded-lg bg-gradient-to-tr from-green-600 to-green-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               >
                 Enregistrer

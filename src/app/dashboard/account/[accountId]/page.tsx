@@ -29,7 +29,7 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
   const auth = useSelector((state: RootState) => state.auth);
 
   const fetchData = async () => {
-    getAccountById(params.accountId, auth.token).then((data) => {
+    getAccountById(params.accountId, auth.token!).then((data) => {
       if (data.success) {
         setAccountData(data.account);
         setLoading(false);

@@ -1,3 +1,8 @@
+import { RootState } from "@/src/redux/store";
+import { useSelector } from "react-redux";
+import ClientForm from "../client/ClientForm";
+import { useState } from "react";
+
 type InvoiceInfoFormProps = {
   invoiceName: string;
   setInvoiceName: (name: string) => void;
@@ -5,12 +10,15 @@ type InvoiceInfoFormProps = {
   setInvoiceDate: (date: string) => void;
   invoiceTva: number;
   setInvoiceTva: (tva: number) => void;
-  invoicePaymentMethod: string;
-  setInvoicePaymentMethod: (method: string) => void;
+  invoicePaymentMode: string;
+  setInvoicePaymentMode: (method: string) => void;
   invoicePaymentCondition: string;
   setInvoicePaymentCondition: (condition: string) => void;
   invoiceRemark: string;
   setInvoiceRemark: (remark: string) => void;
+  selectedClient: string;
+  setSelectedClient: (client: string) => void;
+  invoiceId: string;
   errorMessage: string;
   setErrorMessage: (message: string) => void;
 
@@ -23,23 +31,30 @@ const InvoiceInfoForm = ({
   setInvoiceDate,
   invoiceTva,
   setInvoiceTva,
-  invoicePaymentMethod,
-  setInvoicePaymentMethod,
+  invoicePaymentMode,
+  setInvoicePaymentMode,
   invoicePaymentCondition,
   setInvoicePaymentCondition,
   invoiceRemark,
   setInvoiceRemark,
+  selectedClient,
+  setSelectedClient,
+  invoiceId,
   errorMessage,
   setErrorMessage
 }: InvoiceInfoFormProps) => {
-  
+  const [addClient, setAddClient] = useState(false);
+  const auth = useSelector((state: RootState) => state.auth);
+  const clients = auth.loggedAccountInfos?.clients;
+
   return (
     <>
+      <ClientForm isOpen={addClient} isEdit={false} onClose={() => setAddClient(false)} />
       <div className="flex flex-col gap-1 px-4 py-2">
         <div className="relative w-full min-w-[200px]">
           <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900">Numéro de la facture</label>
           <p className="bg-gray-50 border font-semibold border-gray-100 text-gray-900 text-sm rounded-lg  block w-full p-2.5" >
-            #INV-2024-01-00002343
+            {invoiceId}
           </p>
         </div>
       </div>
@@ -51,24 +66,25 @@ const InvoiceInfoForm = ({
               Choisir le client
             </label>
             <div className="flex gap-2">
-              <select value={1234} onChange={(e) => { }} id="status" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
-                <option selected value="">
+              <select value={selectedClient} onChange={(e) => setSelectedClient(e.target.value!)} id="status" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
+                <option value="">
                   Choisir un client
                 </option>
-                {/* {
-                              partnersData.map((partner) => (
-                                <option key={partner._id} value={partner._id}>
-                                  {partner.name}
-                                </option>
-                              ))
-                            } */}
+                {
+                  clients && clients.map((client) => (
+                    <option key={client._id} value={client._id}>
+                      {client.company || `${client.firstName} ${client.lastName}`}
+                    </option>
+                  ))
+                }
               </select>
               {/* Nouveau client */}
               <button
                 type="button"
+                onClick={() => setAddClient(true)}
                 className="w-2/5 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 "
               >
-                + Nouveau client
+                + Créer un client
               </button>
             </div>
           </div>
@@ -90,7 +106,6 @@ const InvoiceInfoForm = ({
             onChange={(e) => setInvoiceDate(e.target.value)}
             id="invoiceDate"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
-            placeholder="Entrez le titre de la campagne"
             required
             // min aujourdhui
             min={new Date().toISOString().split('T')[0]}
@@ -105,17 +120,17 @@ const InvoiceInfoForm = ({
           <label htmlFor="paymentMode" className="block text-sm font-medium text-gray-900 ">
             Mode de règlement
           </label>
-          <select value={invoicePaymentMethod} onChange={(e) => setInvoicePaymentMethod(e.target.value)} id="paymentMode" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
-            <option value="1">
+          <select value={invoicePaymentMode} onChange={(e) => setInvoicePaymentMode(e.target.value)} id="paymentMode" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
+            <option value="CASH"> 
               Espèces
             </option>
-            <option disabled value="2">
+            <option disabled value="OM">
               Orange Money
             </option>
-            <option disabled value="3">
+            <option disabled value="CB">
               Carte Bancaire
             </option>
-            <option disabled value="4">
+            <option disabled value="VIREMENT">
               Virement
             </option>
           </select>
@@ -125,17 +140,24 @@ const InvoiceInfoForm = ({
             Conditions de règlement
           </label>
           <select value={invoicePaymentCondition} onChange={(e) => setInvoicePaymentCondition(e.target.value)} id="status" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
-            <option value="1">
+            <option value="NOW">
               Immédiat
             </option>
-            <option value="2">
+            <option value="15">
               15 jours
             </option>
-            <option value="3">
+            <option value="30">
               30 jours
             </option>
-            <option value="4">
-              Non défini
+            <option value="45">
+            45 jours
+            </option>
+            <option value="60">
+              60 jours
+            </option>
+            <option value="UPONRECEIPT">
+              {/* updonreceipt veut dire  "Jusqu'à réception" */}
+              Jusqu'à réception
             </option>
           </select>
         </div>
@@ -150,7 +172,7 @@ const InvoiceInfoForm = ({
       <div className="flex flex-col gap-1 px-4 py-2">
         <div className="relative w-full min-w-[200px]">
           <label htmlFor="objective" className="block mb-2 text-sm font-medium text-gray-900">Rémarque</label>
-          <textarea value={invoiceRemark} onChange={(e) => setInvoiceRemark(e.target.value)} id="objective" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez la description de la campagne" required />
+          <textarea value={invoiceRemark} onChange={(e) => setInvoiceRemark(e.target.value)} id="objective" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez une remarque" />
         </div>
       </div>
 

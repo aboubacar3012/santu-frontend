@@ -29,7 +29,7 @@ const RegistrationInfoForm = ({ setRegistrationStep }: RegistrationInfoFormProps
   }, []);
 
   const handleUpdateAccount = () => {
-    return updateAccount(userId, { firstName, lastName, company, phone, address }, auth.token)
+    return updateAccount(userId, { firstName, lastName, company, phone, address }, auth.token!)
       .then((data) => {
         if (data.success) {
           dispatch(loginReducer({ isAuthenticated: true, loggedAccountInfos: data.account }))

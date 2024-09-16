@@ -16,7 +16,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchData = async () => {
-    getClientById(params.clientId, auth.token).then((data) => {
+    getClientById(params.clientId, auth.token!).then((data) => {
       if (data.success) {
         setClientData(data.client);
         setLoading(false);

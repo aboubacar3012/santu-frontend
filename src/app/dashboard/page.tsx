@@ -1,28 +1,43 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Partner } from "@/src/types";
 import StatCard from "@/src/components/StatCard";
 import { IoMdAdd } from "react-icons/io";
 import Badge from "@/src/components/Badge";
 import { useRouter } from "next/navigation";
 import InvoiceForm from "../../components/invoice/InvoiceForm";
+import { getDashboard } from "@/src/services/invoice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/src/redux/store";
 
-const DashboardPage = ({ params }: { params: { partnerId: string } }) => {
-  const [partnerData, setPartnerData] = useState<Partner>();
+const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [dashboardData, setDashboardData] = useState<any | null>(null);
   const [addInvoice, setAddInvoice] = useState(false);
   const [selectedPaymentFilterBtn, setSelectPaymentFilterBtn] = useState<"all" | "paid" | "unpaid" | "cancelled">("all");
   const [selectedDateFilterBtn, setSelectedDateFilterBtn] = useState<"all" | "today" | "thisWeek" | "thisMonth">("all");
   const router = useRouter();
-  // const auth = useSelector((state: RootState) => state.auth);
+  const auth = useSelector((state: RootState) => state.auth);
   // const loggedAccount = auth.loggedAccountInfos;
-  // const partner = loggedAccount && loggedAccount.partnerId;
+  // const partner = loggedAccount && loggedAccount.accountId;
 
-  
+  const fetchData = async () => {
+    getDashboard(auth.loggedAccountInfos?._id!, auth.token!).then((data) => {
+      if (data.success) {
+        setDashboardData(data);
+        setLoading(false);
+      } else if (!data.success) {
+        setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
+        setLoading(false);
+      }
+    }).catch((error) => {
+      setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
+      setLoading(false);
+    });
+  }
 
   useEffect(() => {
-
+    fetchData();
   }, [])
 
   const getSelectedPaymentFilterBtn = (btn: "all" | "paid" | "unpaid" | "cancelled") => {
@@ -53,6 +68,8 @@ const DashboardPage = ({ params }: { params: { partnerId: string } }) => {
   //   return <div>Partner not found</div>
   // }
 
+  console.log({ dashboardData });
+
   return (
     <div className="w-3/4 h-[96vh] overflow-y-auto flex flex-col">
       <InvoiceForm isOpen={addInvoice}  isEdit={false} onClose={() => setAddInvoice(false)} />
@@ -65,10 +82,10 @@ const DashboardPage = ({ params }: { params: { partnerId: string } }) => {
         </div>
       </div>
       <div className="grid grid-cols-4 gap-4 py-2">
-        <StatCard title="Montant" value={'20 000 GNF'} unit="total vendu" />
+        <StatCard title="Montant" value={'20 000 GNF'} unit="Aujourd'hui" />
+        <StatCard title="Chiffres d'affaire" value={'20 000 GNF'} unit="Toute les factures" />
         <StatCard title="Nombre de clients" value={'20'} unit="clients" />
         <StatCard title="Nombre de factures" value={'30'} unit="factures" />
-        <StatCard title="Montant" value={'20 000 GNF'} unit="Aujourd'hui" />
       </div>
       <div className="flex justify-between items-center">
       <div className="flex gap-1">
