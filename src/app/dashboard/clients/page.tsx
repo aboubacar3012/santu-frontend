@@ -24,7 +24,7 @@ const ClientsPage = () => {
   console.log(clients);
 
   return (
-    <div className="w-3/5  h-[96vh] overflow-hidden flex flex-col justify-start">
+    <div>
       <ClientForm isOpen={addClient} isEdit={false} onClose={() => setAddClient(false)} />
       <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer">
         <FaAngleLeft className="w-8 h-8" />

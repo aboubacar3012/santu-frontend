@@ -8,6 +8,15 @@ import InvoiceForm from "../../components/invoice/InvoiceForm";
 import { getDashboard } from "@/src/services/invoice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/redux/store";
+import { Invoice } from "@/src/types";
+import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
+import { GiMoneyStack } from "react-icons/gi";
+import { FaUserFriends } from "react-icons/fa";
+import { formatCurrency } from "@/src/libs/formatCurrency";
+
+
+
+let count = 0;
 
 const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +33,7 @@ const DashboardPage = () => {
   const fetchData = async () => {
     getDashboard(auth.loggedAccountInfos?._id!, auth.token!).then((data) => {
       if (data.success) {
-        setDashboardData(data);
+        setDashboardData(data.dashboardData);
         setLoading(false);
       } else if (!data.success) {
         setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
@@ -38,7 +47,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [])
+  }, [addInvoice])
 
   const getSelectedPaymentFilterBtn = (btn: "all" | "paid" | "unpaid" | "cancelled") => {
     if (selectedPaymentFilterBtn === btn) {
@@ -56,40 +65,41 @@ const DashboardPage = () => {
 
 
 
-  const handleOpenInvoice = () => {
-    router.push(`/dashboard/invoice`)
+  const handleOpenInvoice = (invoiceId: string) => {
+    router.push(`/dashboard/invoice/${invoiceId}`)
   }
 
-  // if (loading) {
-  //   return <div>Loading...</div>
-  // }
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
-  // if (!partnerData) {
-  //   return <div>Partner not found</div>
-  // }
+  if (!dashboardData) {
+    return <div>Dashboard data not found</div>
+  }
 
-  console.log({ dashboardData });
+
+  console.log(dashboardData);
 
   return (
-    <div className="w-3/4 h-[96vh] overflow-y-auto flex flex-col">
-      <InvoiceForm isOpen={addInvoice}  isEdit={false} onClose={() => setAddInvoice(false)} />
+    <div>
+      <InvoiceForm isOpen={addInvoice} isEdit={false} onClose={() => setAddInvoice(false)} />
       <div className="relative flex flex-col text-gray-700 bg-white shadow-md w-full rounded-xl bg-clip-border">
         <div
-          className="relative grid mx-4 mb-3 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-gray-900 to-gray-800 bg-clip-border shadow-gray-900/20">
+          className="relative grid mx-4 mb-3 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-my-raspberry to-my-eggplant bg-clip-border shadow-my-raspberry-900/20">
           <h3 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-white">
-            Santu Pro - Dashboard
+            Santu Pro - Tableau de bord
           </h3>
         </div>
       </div>
       <div className="grid grid-cols-4 gap-4 py-2">
-        <StatCard title="Montant" value={'20 000 GNF'} unit="Aujourd'hui" />
-        <StatCard title="Chiffres d'affaire" value={'20 000 GNF'} unit="Toute les factures" />
-        <StatCard title="Nombre de clients" value={'20'} unit="clients" />
-        <StatCard title="Nombre de factures" value={'30'} unit="factures" />
+        <StatCard title="Aujourd'hui" value={`${formatCurrency(dashboardData.totalToday)}`} unit="Total vendu" icon={<GiMoneyStack className="w-8 h-8" />} />
+        <StatCard title="Chiffres d'affaire" value={`${formatCurrency(dashboardData.total)}`} unit="Toute les factures" icon={<GiMoneyStack className="w-8 h-8" />} />
+        <StatCard title="Nombre de clients" value={formatCurrency(dashboardData.clientsCount)} unit="clients" icon={<FaUserFriends className="w-8 h-8" />} />
+        <StatCard title="Nombre de factures" value={formatCurrency(dashboardData.invoicesCount)} unit="factures" icon={<LiaFileInvoiceDollarSolid className="w-8 h-8" />} />
       </div>
-      <div className="flex justify-between items-center">
-      <div className="flex gap-1">
-        <button onClick={() => setSelectedDateFilterBtn("all")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedDateFilterBtn("all")}`}>
+      <div className="flex justify-end items-center">
+        {/* <div className="flex gap-1">
+          <button onClick={() => setSelectedDateFilterBtn("all")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedDateFilterBtn("all")}`}>
             Tous
           </button>
           <button onClick={() => setSelectedDateFilterBtn("today")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedDateFilterBtn("today")}`}>
@@ -106,16 +116,16 @@ const DashboardPage = () => {
           <button onClick={() => setSelectPaymentFilterBtn("all")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedPaymentFilterBtn("all")}`}>
             Tous
           </button>
+          <button onClick={() => setSelectPaymentFilterBtn("unpaid")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedPaymentFilterBtn("unpaid")}`}>
+            Brouillons
+          </button>
           <button onClick={() => setSelectPaymentFilterBtn("paid")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedPaymentFilterBtn("paid")}`}>
             Payées
-          </button>
-          <button onClick={() => setSelectPaymentFilterBtn("unpaid")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedPaymentFilterBtn("unpaid")}`}>
-            Non payées
           </button>
           <button onClick={() => setSelectPaymentFilterBtn("cancelled")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedPaymentFilterBtn("cancelled")}`}>
             Annulées
           </button>
-        </div>
+        </div> */}
         <button onClick={() => setAddInvoice(true)} className=" mt-4 select-none font-sans font-bold text-center uppercase transition-all text-xs py-3 px-2 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none flex items-center gap-1">
           <IoMdAdd className="w-6 h-6" />
           Créer une facture
@@ -147,21 +157,44 @@ const DashboardPage = () => {
           </thead>
           <tbody>
             {
-              [1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15].map((invoice, index) => (
-                <tr onClick={handleOpenInvoice} key={index} className="border-b cursor-pointer hover:bg-gray-200">
+              dashboardData.invoices.map((invoice: Partial<Invoice>, index: number) => (
+                <tr onClick={() => handleOpenInvoice(invoice._id!)} key={index} className="border-b cursor-pointer hover:bg-gray-200">
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    Facture, MacBook Pro 16&#34;
+                    {invoice.name}
                   </th>
-                  <td className="px-6 py-4">INV-2024-005</td>
-                  <td className="px-6 py-4">$2999</td>
                   <td className="px-6 py-4">
-                    08/12/2021
+                    {invoice.invoiceNumber}
+                  </td>
+                  <td className="px-6 py-4">
+                    {invoice.amount} GNF
+                  </td>
+                  <td className="px-6 py-4">
+                    {invoice.date}
                   </td>
                   <td className="px-6 py-4 flex">
-                    <Badge type="green" text="Payée" />
+                    {
+                      invoice.status === "DRAFT" && (
+                        <Badge type="gray" text="Brouillon" />
+                      )
+                    }
+                    {
+                      invoice.status === "SENT" && (
+                        <Badge type="blue" text="Envoyée" />
+                      )
+                    }
+                    {
+                      invoice.status === "PAID" && (
+                        <Badge type="green" text="Déjà payée" />
+                      )
+                    }
+                    {
+                      invoice.status === "CANCELLED" && (
+                        <Badge type="red" text="Annulée" />
+                      )
+                    }
                   </td>
                 </tr>
               ))

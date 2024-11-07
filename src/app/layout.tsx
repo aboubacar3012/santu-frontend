@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Karla } from "next/font/google";
 import "./globals.css";
 import ProvidersLayout from "./Providers";
 import Link from "next/link";
 
+const karla = Karla({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+});
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="fr">
+      <body className={karla.className}>
         <ProvidersLayout>
           {children}
         </ProvidersLayout>

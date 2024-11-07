@@ -41,7 +41,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
   if(!clientData) return <div>Not found</div>
 
   return (
-    <div className="w-3/5  h-[96vh] overflow-hidden flex flex-col justify-start gap-4">
+    <div>
       <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer">
         <FaAngleLeft className="w-8 h-8" />
         <h3 className="text-xl font-light">

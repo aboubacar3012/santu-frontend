@@ -82,7 +82,7 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
   })
 
   return (
-    <div className="w-3/4 m-auto h-screen py-4 overflow-y-hidden">
+    <div>
       <h1 className="text-2xl font-semibold text-gray-900">
         Mon compte
       </h1>

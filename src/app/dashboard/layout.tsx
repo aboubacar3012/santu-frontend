@@ -95,19 +95,19 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex flex-row w-full h-screen items-center justify-center gap-10">
+    <div className="flex flex-row w-full h-screen gap-10">
       {/* Left Section */}
-      <div className="relative flex flex-col w-1/6 h-[96vh] bg-white text-black rounded-2xl">
-        <div className="flex flex-col items-center justify-center h-20 w-full ">
+      <div className="relative flex flex-col w-64 h-screen bg-white text-black">
+        <Link href="/dashboard" className="flex flex-col items-center justify-center h-20 w-full cursor-pointer">
           <h3 className="text-2xl font-sans font-bold">Santu Pro</h3>
-        </div>
+        </Link>
         {/* divider */}
         <div className="h-0.5 w-full bg-gray-100"></div>
         <div className="flex flex-col items-start justify-center w-full gap-4">
           {menuItems.map((item: any) => {
             // if (item.roles.includes("partner")) {
             return (
-              <Link key={item.name} href={item.href} className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-gray-200 ${item.isActive && 'bg-gray-200'}`}>
+              <Link key={item.name} href={item.href} className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-my-eggplant hover:text-white ${item.isActive && 'bg-my-raspberry text-white'}`}>
                 {item.icon}
                 <span className="text-xl">{item.name}</span>
               </Link>
@@ -116,7 +116,7 @@ export default function DashboardLayout({
           }
           )}
           <hr className="w-full border-gray-50" />
-          <Link href={`/dashboard/account/${accountId}`} className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-gray-200 `}>
+          <Link href={`/dashboard/account/${accountId}`} className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-my-eggplant hover:text-white `}>
             <FaUserCog className="w-6 h-6" />
             <span className="text-xl">Mon compte</span>
           </Link>
@@ -130,7 +130,9 @@ export default function DashboardLayout({
         </div>
       </div>
       {/* Right Section */}
-      {children}
+      <div className="w-4/6 h-[98] my-4 overflow-y-auto flex flex-col">
+        {children}
+      </div>
     </div>
   )
 }

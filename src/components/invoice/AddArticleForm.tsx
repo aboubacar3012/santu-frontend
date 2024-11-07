@@ -26,13 +26,12 @@ const AddArticleForm = ({
 }: AddArticleFormProps) => {
 
   const addArticle = () => {
-    if (!articleName || !articleQuantity || !articlePrice) alert("Veuillez remplir tous les champs");
+    if (!articleName || !articlePrice) alert("Veuillez remplir tous les champs");
 
-    if (articleName && articleQuantity && articlePrice) {
+    if (articleName && articlePrice) {
       const article: Partial<Article> = {
         name: articleName,
-        quantity: parseInt(articleQuantity),
-        unitPrice: parseInt(articlePrice),
+        price: parseInt(articlePrice),
         description: articleDescription
       }
       setArticles([...articles, article]);
@@ -45,11 +44,11 @@ const AddArticleForm = ({
 
   return (
     <>
-      <div className="overflow-auto flex flex-col gap-2 bg-white py-4 px-2 h-48">
+      <div className="overflow-auto flex flex-col gap-2 bg-white py-4 px-2 h-32">
         {articles && articles.length > 0 && (
           <div className="shadow-md  mt-2 bg-white ">
             <table className="w-full text-sm text-left text-gray-500 sticky">
-              <thead className="text-xs text-white text-gray-900 uppercase bg-gray-700 ">
+              <thead className="text-xs text-white uppercase bg-gray-700 ">
                 <tr>
                   <th scope="col" className="px-6 py-3">
                     ID
@@ -57,11 +56,11 @@ const AddArticleForm = ({
                   <th scope="col" className="px-6 py-3">
                     Product/Service
                   </th>
-                  <th scope="col" className="px-6 py-3">
+                  {/* <th scope="col" className="px-6 py-3">
                     Quantité
-                  </th>
+                  </th> */}
                   <th scope="col" className="px-6 py-3">
-                    Prix
+                    Montant toal (GNF)
                   </th>
                 </tr>
               </thead>
@@ -74,11 +73,11 @@ const AddArticleForm = ({
                         {article.name}
                         <p className="text-xs text-gray-400">{article.description}</p>
                       </td>
-                      <td className="px-6 py-2 text-gray-900">
+                      {/* <td className="px-6 py-2 text-gray-900">
                         {article.quantity}
-                      </td>
+                      </td> */}
                       <td className="px-6 py-2 text-gray-900">
-                        {article.unitPrice} GNF
+                        {article.price} GNF
                       </td>
                     </tr>
                   ))
@@ -89,7 +88,7 @@ const AddArticleForm = ({
         )}
         {
           articles && articles.length === 0 && (
-            <p className="text-gray-800 text-center mt-16">
+            <p className="text-gray-900 font-semibold text-center mt-12">
               Veillez ajouter un produit ou service
             </p>
           )
@@ -106,27 +105,27 @@ const AddArticleForm = ({
       </div>
       <div className="flex flex-col gap-1 px-4 py-2">
         <div className="relative w-full min-w-[200px]">
-          <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900">Description</label>
-          <textarea value={articleDescription} onChange={(e) => setProductDescription(e.target.value)} id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez la description de la campagne" required />
+          <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900">Description (optionnel)</label>
+          <textarea value={articleDescription} onChange={(e) => setProductDescription(e.target.value)} id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez une description du produit ou service" required />
         </div>
       </div>
       <div className="flex gap-2 px-4 py-2">
-        <div className="relative w-full min-w-[200px]">
+        {/* <div className="relative w-full min-w-[200px]">
           <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-900">
             Quantité
           </label>
           <input value={articleQuantity} onChange={(e) => setProductQuantity(e.target.value)} type="number" id="quantity" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
-        </div>
+        </div> */}
         <div className="relative w-full min-w-[200px]">
           <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900">
-            Prix
+            Montant total (GNF)
           </label>
-          <input value={articlePrice} onChange={(e) => setProductPrice(e.target.value)} type="number" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
+          <input value={articlePrice} onChange={(e) => setProductPrice(e.target.value)} type="number" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le montant total du produit ou service" required />
         </div>
       </div>
       <button
         type="button"
-        disabled={!articleName || !articleQuantity || !articlePrice}
+        disabled={!articleName && !articlePrice}
         onClick={addArticle}
         className="mx-4 w-min px-6 font-semibold bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
       >

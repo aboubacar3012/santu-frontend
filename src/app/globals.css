@@ -22,7 +22,7 @@ body {
   color: var(--black-santu);
   background: var(--background-santu);
   max-width: 1824px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 @layer utilities {
@@ -30,3 +30,5 @@ body {
     text-wrap: balance;
   }
 }
+
+/*  */

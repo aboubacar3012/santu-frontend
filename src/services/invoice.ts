@@ -15,6 +15,7 @@ export const getDashboard = async (accountId:string, token?:string) => {
   return data;
 }
 
+
 // Create a new invoice
 export const createInvoice = async (invoice: Partial<Invoice>, token?:string) => {
   const response = await fetch(`${baseUrl}/create`, {

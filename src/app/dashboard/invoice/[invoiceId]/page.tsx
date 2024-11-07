@@ -1,18 +1,49 @@
 "use client";
 import Badge from "@/src/components/Badge";
+import { RootState } from "@/src/redux/store";
+import { getInvoiceById } from "@/src/services/invoice";
+import { Invoice } from "@/src/types";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
-const SingleInvoicePage = () => {
+const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [invoiceData, setInvoiceData] = useState<Invoice | null>(null);
   const router = useRouter();
+
+  const auth = useSelector((state: RootState) => state.auth);
+  const loggedAccount = auth.loggedAccountInfos;
 
   const handlePushLeft = () => {
     router.back();
   }
 
+  const fetchData = async () => {
+    getInvoiceById(params.invoiceId, auth.token!).then((data) => {
+      if (data.success) {
+        setInvoiceData(data.invoice);
+        setLoading(false);
+      } else if (!data.success) {
+        setError("Une erreur s'est produite lors de la récupération de la facture");
+        setLoading(false);
+      }
+    }).catch((error) => {
+      setError("Une erreur s'est produite lors de la récupération de la facture");
+      setLoading(false);
+    });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [])
+
+  if (!invoiceData) return <div>Not found</div>
 
   return (
-    <div className="w-4/6  h-[96vh] overflow-hidden flex flex-col justify-start">
+    <div>
       <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer">
         <FaAngleLeft className="w-8 h-8" />
         <h3 className="text-xl font-light">
@@ -20,49 +51,77 @@ const SingleInvoicePage = () => {
         </h3>
       </div>
       <div className="w-5/6 pr-4 flex justify-between items-center">
-      <div className="flex flex-col py-4 px-1">
-        <h2 className="text-lg font-semibold">Facture n° #INV-2020-05-0001</h2>
-        <p className="font-light text-xs text-gray-500">
-          Payé le 27 Juin 2023
-        </p>
-      </div>
-      <div className="bg-white rounded-xl w-60 p-2 flex flex-col">
-            <button type="button" className="text-xs hover:text-white border border-green-700 hover:bg-green-800 text-green-800  font-medium rounded-lg text-sm px-3 py-2.5">
-              Marqué comme payé
-            </button>
-          </div>
+        <div className="flex flex-col py-4 px-1">
+          <h2 className="text-lg font-semibold">Facture n° {invoiceData.invoiceNumber}</h2>
+          <p className="font-light text-xs text-gray-500">
+            Payé le 27 Juin 2023
+          </p>
+        </div>
+        {
+          invoiceData.status === "DRAFT" && (
+            <div className="bg-white rounded-xl w-60 p-2 flex flex-col">
+              <button type="button" className="text-xs hover:text-white border border-green-700 hover:bg-green-800 text-green-800  font-medium rounded-lg px-3 py-2.5">
+                Marqué comme payé
+              </button>
+            </div>
+          )
+        }
       </div>
       <div className="flex gap-4 h-dvh">
         <div className="w-5/6  flex flex-col gap-2 bg-white p-4 rounded-xl">
           <div className="w-full flex justify-between">
             <div className="flex gap-2">
-              <img
-                src="https://santupro.fr/wp-content/uploads/2024/01/cropped-ADVERCO-1-png.png"
-                className="w-24 h-20 mx-auto"
-              />
+              {
+                loggedAccount && loggedAccount.logo && (
+                  <img
+                    src={invoiceData?.client.logo}
+                    className="w-32 h-20 mx-auto"
+                  />
+                )
+              }
               <div className="flex flex-col gap-1">
-                <h3 className="text-sm font-semibold">Banima Group SARL</h3>
-                <p className="text-xs text-gray-500">
-                  123 rue de la paix, Conakry
+                <h3 className="text-sm font-semibold">
+                  {loggedAccount && loggedAccount.company &&
+                    loggedAccount.company?.length > 0
+                    ? loggedAccount.company
+                    : `${loggedAccount?.firstName} ${loggedAccount?.lastName}`
+                  }
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {loggedAccount?.address}
                 </p>
                 {/* Tel */}
-                <p className="text-xs text-gray-500">
-                  +224 666 666 666
+                <p className="text-sm text-gray-500">
+                  {loggedAccount?.phone}
                 </p>
                 {/* Email */}
-                <p className="text-xs text-gray-500">
-                  contact@gmail.com
+                <p className="text-sm text-gray-500">
+                  {loggedAccount?.email}
                 </p>
               </div>
             </div>
             <div className="flex flex-col justify-between items-end gap-6">
               <div className="flex gap-4">
-              <Badge type="green" text="Facture déjà payé" />
-              <Badge type="gray" text="#INV-2024-05-0001" />
+                {
+                  invoiceData.status === "DRAFT" && (<Badge type="gray" text="Facture en brouillon" />)
+                }
+                {
+                  invoiceData.status === "SENT" && (<Badge type="blue" text="Facture envoyée au client" />)
+                }
+                {
+                  invoiceData.status === "PAID" && (<Badge type="green" text="Facture payée" />)
+                }
+                {
+                  invoiceData.status === "CANCELLED" && (<Badge type="red" text="Facture annulée" />)
+                }
+
+                <Badge type="gray" text={invoiceData.invoiceNumber} />
               </div>
               <div className="text-right">
                 <p className="font-light text-xs">Montant total</p>
-                <p className="font-bold text-lg">3 030,00€</p>
+                <p className="font-bold text-lg">
+                  {invoiceData.amount} GNF
+                </p>
               </div>
             </div>
           </div>
@@ -71,19 +130,15 @@ const SingleInvoicePage = () => {
               <div>
                 <h2 className="text-xs font-light">Date de facture</h2>
                 <p className="text-xs font-semibold text-gray-700">
-                  03/05/2024
-                </p>
-              </div>
-              <div>
-                <h2 className="text-xs font-light">Date de livraison</h2>
-                <p className="text-xs font-semibold text-gray-700">
-                  03/05/2024
+                  {invoiceData.date}
                 </p>
               </div>
               <div>
                 <h2 className="text-xs font-light">Conditions de règlement</h2>
                 <p className="text-xs font-semibold text-gray-700">
-                  Immédiat
+                  {
+                    invoiceData.paymentCondition === 'NOW' ? 'Immédiat' : `Dans ${invoiceData.paymentCondition} jours`
+                  }
                 </p>
               </div>
               <div>
@@ -97,17 +152,23 @@ const SingleInvoicePage = () => {
               <h3 className="text-md font-light">Adresse de facturation</h3>
               <div className="h-0.5 w-full bg-gray-50"></div>
               <div className="flex flex-col gap-1">
-                <h3 className="text-lg font-semibold">Banima Group SARL</h3>
+                <h3 className="text-lg font-semibold">
+                  {invoiceData.client && invoiceData.client.company
+                    && invoiceData.client.company?.length > 0
+                    ? invoiceData.client.company
+                    : `${invoiceData.client.firstName} ${invoiceData.client.lastName}`
+                  }
+                </h3>
                 <p className="text-sm text-gray-500">
-                  123 rue de la paix, Conakry
+                  {invoiceData.client.address}
                 </p>
                 {/* Tel */}
                 <p className="text-sm text-gray-500">
-                  +224 666 666 666
+                  {invoiceData.client.phone}
                 </p>
                 {/* Email */}
                 <p className="text-sm text-gray-500">
-                  contact@gmail.com
+                  {invoiceData.client.email}
                 </p>
               </div>
             </div>
@@ -126,19 +187,13 @@ const SingleInvoicePage = () => {
                     Quantité
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Prix unité HT
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    TVA
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Montant TTC
+                    Montant
                   </th>
                 </tr>
               </thead>
               <tbody className="">
                 {
-                  [1, 2, 3, 4, 6, 6].map((invoice, index) => (
+                  invoiceData?.articles.map((article, index) => (
                     <tr onClick={() => { }} key={index} className="border-b cursor-pointer hover:bg-gray-200">
                       <th
                         scope="row"
@@ -146,16 +201,15 @@ const SingleInvoicePage = () => {
                       >
                         {index + 1}
                       </th>
-                      <td className="text-xs px-6 py-4">Facture, MacBook Pro 16&#34;</td>
-                      <td className="text-xs px-6 py-4">2</td>
                       <td className="text-xs px-6 py-4">
-                        $2999
+                        {article.name}
+                        <p className="text-xs text-gray-400">{article.description}</p>
                       </td>
                       <td className="text-xs px-6 py-4">
-                        20%
+                        {article.quantity}
                       </td>
                       <td className="text-xs px-6 py-4">
-                        $3999
+                        {article.price * article.quantity} GNF
                       </td>
                     </tr>
                   ))
@@ -168,20 +222,22 @@ const SingleInvoicePage = () => {
             <div className="w-56 flex flex-col gap-2 mt-4">
               <div className="w-full flex justify-between">
                 <h3 className="text-sm font-semibold">Total HT</h3>
-                <p className="text-xs text-gray-500">3 030,00€</p>
+                <p className="text-xs text-gray-500">
+                  {invoiceData.amount} GNF
+                </p>
               </div>
               <div className="w-full flex justify-between">
                 <h3 className="text-sm font-semibold">TVA</h3>
                 <p className="text-xs text-gray-500">0%</p>
               </div>
-              <div className="w-full flex justify-between">
+              {/* <div className="w-full flex justify-between">
                 <h3 className="text-sm font-semibold">Réduction</h3>
-                <p className="text-xs text-gray-500">3 636,00€</p>
-              </div>
+                <p className="text-xs text-gray-500">0 GNF</p>
+              </div> */}
               <hr className="w-full border-gray-50" />
               <div className="w-full flex justify-between">
                 <h3 className="text-sm font-semibold">Total TTC</h3>
-                <p className="text-xs text-gray-500">3 636,00€</p>
+                <p className="text-xs text-gray-500">{invoiceData.amount} GNF</p>
               </div>
             </div>
           </div>

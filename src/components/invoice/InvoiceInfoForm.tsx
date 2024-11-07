@@ -97,19 +97,28 @@ const InvoiceInfoForm = ({
           <input value={invoiceName} onChange={(e) => setInvoiceName(e.target.value)} type="text" id="invoiceName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom de la facture" required />
         </div>
       </div>
-      <div className="flex flex-col gap-1 px-4 py-2">
-        <div className="relative w-full min-w-[200px]">
-          <label htmlFor="invoiceDate" className="block mb-2 text-sm font-medium text-gray-900">Date de la facture</label>
-          <input
-            type="date"
-            value={invoiceDate}
-            onChange={(e) => setInvoiceDate(e.target.value)}
-            id="invoiceDate"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
-            required
-            // min aujourdhui
-            min={new Date().toISOString().split('T')[0]}
-          />
+
+      <div className="flex gap-2 px-4">
+        <div className="w-1/2 flex flex-col gap-1 py-2">
+          <div className="relative w-full min-w-[200px]">
+            <label htmlFor="invoiceDate" className="block mb-2 text-sm font-medium text-gray-900">Date de la facture</label>
+            <input
+              type="date"
+              value={invoiceDate}
+              onChange={(e) => setInvoiceDate(e.target.value)}
+              id="invoiceDate"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
+              required
+              // min aujourdhui
+              min={new Date().toISOString().split('T')[0]}
+            />
+          </div>
+        </div>
+        <div className="w-1/2 flex flex-col gap-1 py-2">
+          <div className="relative w-full min-w-[200px]">
+            <label htmlFor="tva" className="block mb-2 text-sm font-medium text-gray-900">TVA (en %)</label>
+            <input value={invoiceTva} onChange={(e) => setInvoiceTva(Number(e.target.value))} type="number" id="tva" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="TVA" required />
+          </div>
         </div>
       </div>
 
@@ -121,7 +130,7 @@ const InvoiceInfoForm = ({
             Mode de règlement
           </label>
           <select value={invoicePaymentMode} onChange={(e) => setInvoicePaymentMode(e.target.value)} id="paymentMode" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 ">
-            <option value="CASH"> 
+            <option value="CASH">
               Espèces
             </option>
             <option disabled value="OM">
@@ -150,7 +159,7 @@ const InvoiceInfoForm = ({
               30 jours
             </option>
             <option value="45">
-            45 jours
+              45 jours
             </option>
             <option value="60">
               60 jours
@@ -162,12 +171,7 @@ const InvoiceInfoForm = ({
           </select>
         </div>
       </div>
-      <div className="flex flex-col gap-1 px-4 py-2">
-        <div className="relative w-full min-w-[200px]">
-          <label htmlFor="tva" className="block mb-2 text-sm font-medium text-gray-900">TVA (en %)</label>
-          <input value={invoiceTva} onChange={(e) => setInvoiceTva(Number(e.target.value))} type="number" id="tva" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="TVA" required />
-        </div>
-      </div>
+
       {/* Rémarque */}
       <div className="flex flex-col gap-1 px-4 py-2">
         <div className="relative w-full min-w-[200px]">

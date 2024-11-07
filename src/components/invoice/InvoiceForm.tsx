@@ -12,6 +12,7 @@ import SuccessAddInvoice from "./SuccessAddInvoice";
 import { createInvoice } from "@/src/services/invoice";
 import { refreshAccount } from "@/src/libs/refreshAccount";
 import { loginReducer } from "@/src/redux/features/authSlice";
+import { StatusEnum } from "@/src/types";
 
 type InvoiceFormProps = {
   isEdit: boolean;
@@ -51,50 +52,7 @@ const InvoiceForm = (
     setInvoiceId(invoiceId);
   }, []);
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      // getPartners().then((data) => {
-      //   if (data.success) {
-      //     setPartnersData(data.partners);
-      //   } else if (!data.success) {
-      //     setErrorMessage("Une erreur s'est produite lors de la récupération des partenaires");
-      //   }
-      // }).catch((error) => {
-      //   setErrorMessage("Une erreur s'est produite lors de la récupération des partenaires");
-      // });
-    }
-
-    isOpen && fetchData();
-
-    return () => {
-      // setStep(1);
-    }
-  }, [isOpen]);
-
-  // useEffect(() => {
-  //   if (isEdit) {
-
-
-
-  //   }
-
-  //   return () => {
-
-  //   }
-  // }, [auth, isEdit, isOpen]);
-
   const onSubmit = () => {
-    console.log({
-      invoiceId,
-      selectedClient,
-      invoiceName,
-      invoiceDate,
-      invoicePaymentMode,
-      invoicePaymentCondition,
-      invoiceTva,
-      articles,
-    })
     if (
       !invoiceId ||
       !selectedClient ||
@@ -107,11 +65,12 @@ const InvoiceForm = (
       return;
     }
 
-    const amount = articles && articles.length > 0
-      ? articles.reduce((acc, article) => {
-        return acc + article.quantity * article.price;
-      })
-      : 0;
+    let amount = 0;
+    if(articles.length > 0) {
+      articles.forEach((article) => {
+        amount += Number(article.price)
+      });
+    }
 
     const invoiceToAdd = {
       accountId: accountId,
@@ -121,6 +80,7 @@ const InvoiceForm = (
       date: invoiceDate,
       paymentMode: invoicePaymentMode,
       paymentCondition: invoicePaymentCondition,
+      status: invoicePaymentCondition === "NOW" ? StatusEnum.PAID : StatusEnum.DRAFT,
       tva: invoiceTva,
       articles,
       amount,
