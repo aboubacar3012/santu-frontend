@@ -122,7 +122,7 @@ const LoginPage = () => {
                   >
                     {showPasswordInput ? "Se connecter" : "Continuer"}
                   </button>
-                  {/* <p className="mt-6 text-xs text-gray-600 text-center">
+                  <p className="mt-6 text-xs text-gray-600 text-center">
                   J&apos;accepte les{" "}
                   <a href="#" className="border-b border-gray-500 border-dotted">
                     Conditions d&apos;utilisation{" "}
@@ -131,7 +131,7 @@ const LoginPage = () => {
                   <a href="#" className="border-b border-gray-500 border-dotted">
                     Politique de confidentialité
                   </a>
-                </p> */}
+                </p>
                 </div>
               </div>
             </div>
