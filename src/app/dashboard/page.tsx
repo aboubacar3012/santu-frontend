@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import StatCard from "@/src/components/StatCard";
 import { IoMdAdd } from "react-icons/io";
 import Badge from "@/src/components/Badge";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import InvoiceForm from "../../components/invoice/InvoiceForm";
 import { getDashboard } from "@/src/services/invoice";
 import { useSelector } from "react-redux";
@@ -19,13 +19,14 @@ const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [dashboardData, setDashboardData] = useState<any | null>(null);
-  const [addInvoice, setAddInvoice] = useState(false);
   const [selectedPaymentFilterBtn, setSelectPaymentFilterBtn] = useState<"all" | "paid" | "unpaid" | "cancelled">("all");
   const [selectedDateFilterBtn, setSelectedDateFilterBtn] = useState<"all" | "today" | "thisWeek" | "thisMonth">("all");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const auth = useSelector((state: RootState) => state.auth);
-  // const loggedAccount = auth.loggedAccountInfos;
-  // const partner = loggedAccount && loggedAccount.accountId;
+  
+  // Vérifier si le formulaire de facture doit être affiché
+  const showInvoiceForm = searchParams.get('addInvoice') === 'true';
 
   const fetchData = async () => {
     getDashboard(auth.loggedAccountInfos?._id!, auth.token!).then((data) => {
@@ -44,7 +45,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [addInvoice])
+  }, [showInvoiceForm])
 
   const getSelectedPaymentFilterBtn = (btn: "all" | "paid" | "unpaid" | "cancelled") => {
     if (selectedPaymentFilterBtn === btn) {
@@ -60,7 +61,15 @@ const DashboardPage = () => {
     return "hover:bg-blue-700 hover:text-white border border-blue-300 text-black"
   }
 
+  // Fonction pour ouvrir le formulaire de facture
+  const openInvoiceForm = () => {
+    router.push('/dashboard?addInvoice=true');
+  }
 
+  // Fonction pour fermer le formulaire de facture
+  const closeInvoiceForm = () => {
+    router.push('/dashboard');
+  }
 
   const handleOpenInvoice = (invoiceId: string) => {
     router.push(`/dashboard/invoice/${invoiceId}`)
@@ -74,12 +83,9 @@ const DashboardPage = () => {
     return <div>Dashboard data not found</div>
   }
 
-
-  console.log(dashboardData);
-
   return (
     <div>
-      <InvoiceForm isOpen={addInvoice} isEdit={false} onClose={() => setAddInvoice(false)} />
+      <InvoiceForm isOpen={showInvoiceForm} isEdit={false} onClose={closeInvoiceForm} />
       <div className="relative flex flex-col text-black bg-white shadow-md w-full rounded-xl bg-clip-border">
         <div
           className="relative grid mx-4 mb-3 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-my-raspberry to-my-eggplant bg-clip-border shadow-my-raspberry-900/20">
@@ -126,7 +132,7 @@ const DashboardPage = () => {
             Annulées
           </button>
         </div> */}
-        <button onClick={() => setAddInvoice(true)} className=" mt-4 select-none font-sans font-bold text-center uppercase transition-all text-xs py-3 px-2 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none flex items-center gap-1">
+        <button onClick={openInvoiceForm} className=" mt-4 select-none font-sans font-bold text-center uppercase transition-all text-xs py-3 px-2 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none flex items-center gap-1">
           <IoMdAdd className="w-6 h-6" />
           Créer une facture
         </button>
