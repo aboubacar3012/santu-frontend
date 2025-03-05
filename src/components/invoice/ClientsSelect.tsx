@@ -56,7 +56,7 @@ const ClientsSelect = ({ selectedClient, setSelectedClient }: ClientsSelectProps
           noOptionsMessage={() => "Aucun client disponible"}
         />
         {/* Nouveau client */}
-        <Link href="/dashboard/clients"
+        <Link href="/dashboard/clients?addClient=true" passHref
           className="w-2/5 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5"
         >
           + Créer un client

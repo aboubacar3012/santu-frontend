@@ -19,8 +19,8 @@ const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [dashboardData, setDashboardData] = useState<any | null>(null);
-  const [selectedPaymentFilterBtn, setSelectPaymentFilterBtn] = useState<"all" | "paid" | "unpaid" | "cancelled">("all");
-  const [selectedDateFilterBtn, setSelectedDateFilterBtn] = useState<"all" | "today" | "thisWeek" | "thisMonth">("all");
+  const [selectedPaymentFilterBtn, setSelectPaymentFilterBtn] = useState<"all" | "draft" | "paid" | "cancelled" | "pending">("all");
+  const [selectedDateFilterBtn, setSelectedDateFilterBtn] = useState<"today" | "week" | "month" | "year">("today");
   const router = useRouter();
   const { hasParam, setParam, deleteParam } = useUrlParams();
   const auth = useSelector((state: RootState) => state.auth);
@@ -47,18 +47,18 @@ const DashboardPage = () => {
     fetchData();
   }, [showInvoiceForm])
 
-  const getSelectedPaymentFilterBtn = (btn: "all" | "paid" | "unpaid" | "cancelled") => {
+  const getSelectedPaymentFilterBtn = (btn: "all" | "draft" | "paid" | "cancelled" | "pending") => {
     if (selectedPaymentFilterBtn === btn) {
-      return "bg-gray-700 text-white border";
+      return "bg-gray-800 text-white";
     }
-    return "hover:bg-gray-700 hover:text-white border border-gray-300 text-black"
+    return "bg-white text-gray-700 hover:bg-gray-100";
   }
 
-  const getSelectedDateFilterBtn = (btn: "all" | "today" | "thisWeek" | "thisMonth") => {
+  const getSelectedDateFilterBtn = (btn: "today" | "week" | "month" | "year") => {
     if (selectedDateFilterBtn === btn) {
-      return "bg-blue-700 text-white border";
+      return "bg-gradient-to-tr from-my-raspberry to-my-eggplant text-white";
     }
-    return "hover:bg-blue-700 hover:text-white border border-blue-300 text-black"
+    return "bg-white text-gray-700 hover:bg-gray-100";
   }
 
   // Utilisation du hook personnalisé pour les fonctions d'ouverture/fermeture
@@ -72,6 +72,42 @@ const DashboardPage = () => {
 
   const handleOpenInvoice = (invoiceId: string) => {
     router.push(`/dashboard/invoice/${invoiceId}`)
+  }
+
+  const handleDateFilterChange = (period: "today" | "week" | "month" | "year") => {
+    setSelectedDateFilterBtn(period);
+    // Recharger les données avec le nouveau filtre
+    setLoading(true);
+    getDashboard(auth.loggedAccountInfos?._id!, auth.token!, period, selectedPaymentFilterBtn).then((data) => {
+      if (data.success) {
+        setDashboardData(data.dashboardData);
+        setLoading(false);
+      } else {
+        setError("Une erreur s'est produite lors du filtrage des données");
+        setLoading(false);
+      }
+    }).catch((error) => {
+      setError("Une erreur s'est produite lors du filtrage des données");
+      setLoading(false);
+    });
+  }
+
+  const handlePaymentFilterChange = (status: "all" | "draft" | "paid" | "cancelled" | "pending") => {
+    setSelectPaymentFilterBtn(status);
+    // Recharger les données avec le nouveau filtre
+    setLoading(true);
+    getDashboard(auth.loggedAccountInfos?._id!, auth.token!, selectedDateFilterBtn, status).then((data) => {
+      if (data.success) {
+        setDashboardData(data.dashboardData);
+        setLoading(false);
+      } else {
+        setError("Une erreur s'est produite lors du filtrage des données");
+        setLoading(false);
+      }
+    }).catch((error) => {
+      setError("Une erreur s'est produite lors du filtrage des données");
+      setLoading(false);
+    });
   }
 
   if (loading) {
@@ -93,30 +129,90 @@ const DashboardPage = () => {
           </h3>
         </div>
       </div>
-      <h2 className="text-lg font-bold text-black my-4 mt-8 text-center">
+      {/* <h2 className="text-lg font-bold text-black my-4 mt-8 text-center">
         Statistiques générales de l&apos;entreprise pour le mois de {new Date().toLocaleString('default', { month: 'long' })}
-      </h2>
+      </h2> */}
+
+      {/* Filtre */}
+      <section className="mb-6 mt-4">
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex justify-between items-start flex-wrap gap-4">
+            <div>
+              <h3 className="text-sm font-medium text-gray-700 mb-3">Filtrer par période</h3>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => handleDateFilterChange("today")} 
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedDateFilterBtn("today")}`}
+                >
+                  Aujourd'hui
+                </button>
+                <button 
+                  onClick={() => handleDateFilterChange("week")} 
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedDateFilterBtn("week")}`}
+                >
+                  Cette semaine
+                </button>
+                <button 
+                  onClick={() => handleDateFilterChange("month")} 
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedDateFilterBtn("month")}`}
+                >
+                  Ce mois
+                </button>
+                <button 
+                  onClick={() => handleDateFilterChange("year")} 
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedDateFilterBtn("year")}`}
+                >
+                  Cette année
+                </button>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="text-sm font-medium text-gray-700 mb-3">Filtrer par statut</h3>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => handlePaymentFilterChange("all")} 
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn("all")}`}
+                >
+                  Toutes
+                </button>
+                <button 
+                  onClick={() => handlePaymentFilterChange("draft")} 
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn("draft")}`}
+                >
+                  Brouillons
+                </button>
+                <button 
+                  onClick={() => handlePaymentFilterChange("pending")} 
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn("pending")}`}
+                >
+                  En attente
+                </button>
+                <button 
+                  onClick={() => handlePaymentFilterChange("paid")} 
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn("paid")}`}
+                >
+                  Payées
+                </button>
+                <button 
+                  onClick={() => handlePaymentFilterChange("cancelled")} 
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn("cancelled")}`}
+                >
+                  Annulées
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <div className="grid grid-cols-4 gap-4 py-2">
-        <StatCard title="Aujourd'hui" value={`${formatCurrency(dashboardData.totalToday)}`} unit="Total vendu" icon={<GiMoneyStack className="w-8 h-8" />} />
-        <StatCard title="Chiffres d'affaire" value={`${formatCurrency(dashboardData.total)}`} unit="Toute les factures" icon={<GiMoneyStack className="w-8 h-8" />} />
-        <StatCard title="Nombre de clients" value={formatCurrency(dashboardData.clientsCount)} unit="clients" icon={<FaUserFriends className="w-8 h-8" />} />
-        <StatCard title="Nombre de factures" value={formatCurrency(dashboardData.invoicesCount)} unit="factures" icon={<LiaFileInvoiceDollarSolid className="w-8 h-8" />} />
+        <StatCard title="Aujourd'hui" value={`${formatCurrency(dashboardData.totalToday)}`} unit="Total vendu" icon={<GiMoneyStack className="w-8 h-8 text-green-500" />} />
+        <StatCard title="Chiffres d'affaire" value={`${formatCurrency(dashboardData.total)}`} unit="Toute les factures" icon={<GiMoneyStack className="w-8 h-8 text-blue-500" />} />
+        <StatCard title="Nombre de clients" value={dashboardData.clientsCount} unit="clients" icon={<FaUserFriends className="w-8 h-8 text-purple-500" />} />
+        <StatCard title="Nombre de factures" value={dashboardData.invoicesCount} unit="factures" icon={<LiaFileInvoiceDollarSolid className="w-8 h-8 text-yellow-500" />} />
       </div>
       <div className="flex justify-end items-center">
-        {/* <div className="flex gap-1">
-          <button onClick={() => setSelectedDateFilterBtn("all")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedDateFilterBtn("all")}`}>
-            Tous
-          </button>
-          <button onClick={() => setSelectedDateFilterBtn("today")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedDateFilterBtn("today")}`}>
-            Aujourd&apos;hui
-          </button>
-          <button onClick={() => setSelectedDateFilterBtn("thisWeek")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedDateFilterBtn("thisWeek")}`}>
-            Cette Semaine
-          </button>
-          <button onClick={() => setSelectedDateFilterBtn("thisMonth")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedDateFilterBtn("thisMonth")}`}>
-            Ce Mois
-          </button>
-        </div>
+        {/* 
         <div className="flex gap-1">
           <button onClick={() => setSelectPaymentFilterBtn("all")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedPaymentFilterBtn("all")}`}>
             Tous
