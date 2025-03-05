@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import StatCard from "@/src/components/StatCard";
 import { IoMdAdd } from "react-icons/io";
 import Badge from "@/src/components/Badge";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import InvoiceForm from "../../components/invoice/InvoiceForm";
 import { getDashboard } from "@/src/services/invoice";
 import { useSelector } from "react-redux";
@@ -13,7 +13,7 @@ import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { GiMoneyStack } from "react-icons/gi";
 import { FaUserFriends } from "react-icons/fa";
 import { formatCurrency } from "@/src/libs/formatCurrency";
-
+import { useUrlParams } from "@/src/hooks/useUrlParams";
 
 const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -22,11 +22,11 @@ const DashboardPage = () => {
   const [selectedPaymentFilterBtn, setSelectPaymentFilterBtn] = useState<"all" | "paid" | "unpaid" | "cancelled">("all");
   const [selectedDateFilterBtn, setSelectedDateFilterBtn] = useState<"all" | "today" | "thisWeek" | "thisMonth">("all");
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const { hasParam, setParam, deleteParam } = useUrlParams();
   const auth = useSelector((state: RootState) => state.auth);
   
-  // Vérifier si le formulaire de facture doit être affiché
-  const showInvoiceForm = searchParams.get('addInvoice') === 'true';
+  // Utilisation du hook personnalisé
+  const showInvoiceForm = hasParam('addInvoice');
 
   const fetchData = async () => {
     getDashboard(auth.loggedAccountInfos?._id!, auth.token!).then((data) => {
@@ -61,14 +61,13 @@ const DashboardPage = () => {
     return "hover:bg-blue-700 hover:text-white border border-blue-300 text-black"
   }
 
-  // Fonction pour ouvrir le formulaire de facture
+  // Utilisation du hook personnalisé pour les fonctions d'ouverture/fermeture
   const openInvoiceForm = () => {
-    router.push('/dashboard?addInvoice=true');
+    setParam('addInvoice', 'true');
   }
 
-  // Fonction pour fermer le formulaire de facture
   const closeInvoiceForm = () => {
-    router.push('/dashboard');
+    deleteParam('addInvoice');
   }
 
   const handleOpenInvoice = (invoiceId: string) => {

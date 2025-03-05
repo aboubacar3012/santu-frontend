@@ -2,22 +2,31 @@
 import Badge from "@/src/components/Badge";
 import ClientForm from "@/src/components/client/ClientForm";
 import { useGetClientsAccountById } from "@/src/hooks/useClients";
+import { useUrlParams } from "@/src/hooks/useUrlParams";
 import { RootState } from "@/src/redux/store";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import { GoSearch } from "react-icons/go";
 import { IoMdAdd } from "react-icons/io";
 import { useSelector } from "react-redux";
 
 const ClientsPage = () => {
-  const [addClient, setAddClient] = useState(false);
   const router = useRouter();
+  const { hasParam, setParam, deleteParam } = useUrlParams();
+  const showClientForm = hasParam('addClient');
   const auth = useSelector((state: RootState) => state.auth);
   const { data, isLoading, error } = useGetClientsAccountById(auth.loggedAccountInfos?._id!, auth.token!);
 
   const handlePushLeft = () => {
     router.back();
+  }
+
+  const openClientForm = () => {
+    setParam('addClient', 'true');
+  }
+
+  const closeClientForm = () => {
+    deleteParam('addClient');
   }
 
   if (isLoading) return <p>Loading...</p>;
@@ -36,7 +45,7 @@ const ClientsPage = () => {
 
   return (
     <div>
-      <ClientForm isOpen={addClient} isEdit={false} onClose={() => setAddClient(false)} />
+      <ClientForm isOpen={showClientForm} isEdit={false} onClose={closeClientForm} />
       <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer">
         <FaAngleLeft className="w-8 h-8" />
         <h3 className="text-xl font-light">
@@ -50,7 +59,7 @@ const ClientsPage = () => {
             27 clients enregistrés
           </p>
         </div>
-        <button onClick={() => setAddClient(true)} className=" mt-4 select-none font-sans font-bold text-center uppercase transition-all text-xs py-3 px-2 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none flex items-center gap-1">
+        <button onClick={openClientForm} className=" mt-4 select-none font-sans font-bold text-center uppercase transition-all text-xs py-3 px-2 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none flex items-center gap-1">
           <IoMdAdd className="w-6 h-6" />
           Ajouter un client
         </button>
