@@ -2,7 +2,6 @@
 export enum RoleEnum {
   ADMIN = "ADMIN",
   PARTNER = "PARTNER",
-  ACCOUNT = "ACCOUNT",
 };
 
 export enum StatusEnum {

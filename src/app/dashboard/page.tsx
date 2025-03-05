@@ -15,9 +15,6 @@ import { FaUserFriends } from "react-icons/fa";
 import { formatCurrency } from "@/src/libs/formatCurrency";
 
 
-
-let count = 0;
-
 const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -83,7 +80,7 @@ const DashboardPage = () => {
   return (
     <div>
       <InvoiceForm isOpen={addInvoice} isEdit={false} onClose={() => setAddInvoice(false)} />
-      <div className="relative flex flex-col text-gray-700 bg-white shadow-md w-full rounded-xl bg-clip-border">
+      <div className="relative flex flex-col text-black bg-white shadow-md w-full rounded-xl bg-clip-border">
         <div
           className="relative grid mx-4 mb-3 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-my-raspberry to-my-eggplant bg-clip-border shadow-my-raspberry-900/20">
           <h3 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-white">
@@ -91,6 +88,9 @@ const DashboardPage = () => {
           </h3>
         </div>
       </div>
+      <h2 className="text-lg font-bold text-black my-4 mt-8 text-center">
+        Statistiques générales de l&apos;entreprise pour le mois de {new Date().toLocaleString('default', { month: 'long' })}
+      </h2>
       <div className="grid grid-cols-4 gap-4 py-2">
         <StatCard title="Aujourd'hui" value={`${formatCurrency(dashboardData.totalToday)}`} unit="Total vendu" icon={<GiMoneyStack className="w-8 h-8" />} />
         <StatCard title="Chiffres d'affaire" value={`${formatCurrency(dashboardData.total)}`} unit="Toute les factures" icon={<GiMoneyStack className="w-8 h-8" />} />
@@ -135,7 +135,7 @@ const DashboardPage = () => {
 
       {/* Invoices list */}
       <div className="relative overflow-x-auto shadow-md rounded-lg mt-4 bg-white ">
-        <table className="w-full text-sm text-left text-gray-500 sticky">
+        <table className="w-full text-sm text-left text-black sticky">
           <thead className="text-xs text-white uppercase bg-gray-700 ">
             <tr>
               <th scope="col" className="px-6 py-3">
@@ -161,7 +161,7 @@ const DashboardPage = () => {
                 <tr onClick={() => handleOpenInvoice(invoice._id!)} key={index} className="border-b cursor-pointer hover:bg-gray-200">
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                    className="px-6 py-4 font-medium text-black whitespace-nowrap"
                   >
                     {invoice.name}
                   </th>

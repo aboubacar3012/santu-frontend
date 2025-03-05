@@ -52,7 +52,7 @@ const LoginPage = () => {
 
 
   return (
-    <div className="min-h-screen text-gray-900 flex justify-center">
+    <div className="min-h-screen text-black flex justify-center">
       <div
         className="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1"
       >
@@ -77,12 +77,12 @@ const LoginPage = () => {
               <div className="w-full flex-1 mt-8">
                 <div className="mx-auto max-w-xs">
                   <div className="flex items-center justify-between mb-2">
-                    <label htmlFor="email" className="block  text-sm font-medium text-gray-900">
+                    <label htmlFor="email" className="block  text-sm font-medium text-black">
                       Entrez votre adresse email
                     </label>
                     {
                       showPasswordInput && (
-                        <p className="mt-2 text-xs text-gray-900 text-right hover:underline cursor-pointer" onClick={() => setShowPasswordInput(false)}>
+                        <p className="mt-2 text-xs text-black text-right hover:underline cursor-pointer" onClick={() => setShowPasswordInput(false)}>
                           Modifier
                         </p>
                       )
@@ -102,7 +102,7 @@ const LoginPage = () => {
                   {
                     showPasswordInput && (
                       <div className="mt-3">
-                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">
+                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-black">
                           Entrez votre mot de passe
                         </label>
                         <input
@@ -122,7 +122,7 @@ const LoginPage = () => {
                   >
                     {showPasswordInput ? "Se connecter" : "Continuer"}
                   </button>
-                  <p className="mt-6 text-xs text-gray-600 text-center">
+                  <p className="mt-6 text-xs text-black text-center">
                   J&apos;accepte les{" "}
                   <a href="#" className="border-b border-gray-500 border-dotted">
                     Conditions d&apos;utilisation{" "}

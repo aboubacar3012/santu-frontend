@@ -43,12 +43,12 @@ const RegistrationInfoForm = ({ setRegistrationStep }: RegistrationInfoFormProps
   }
 
   return (
-    <div className="w-1/2 h-min py-2 gap-2 flex flex-col text-gray-700 bg-white  rounded-lg ">
+    <div className="w-1/2 h-min py-2 gap-2 flex flex-col text-black bg-white  rounded-lg ">
       <div className="flex flex-col gap-1 px-6 mb-6">
-        <h1 className="text-2xl font-semibold text-gray-900 p-0">
+        <h1 className="text-2xl font-semibold text-black p-0">
           Bienvenue sur Santu Pro
         </h1>
-        <p className="text-gray-700 text-sm  p-0">
+        <p className="text-black text-sm  p-0">
           Votre logiciel de facturation pour vous faciliter la vie
         </p>
         <div className="h-0.5 w-full bg-gray-100 mb-2"></div>
@@ -56,57 +56,57 @@ const RegistrationInfoForm = ({ setRegistrationStep }: RegistrationInfoFormProps
           <h2 className="text-lg font-semibold">
             Nous sommes ravis de vous compter parmi nous !
           </h2>
-          <p className="text-gray-500">
+          <p className="text-black">
             Pour profiter pleinement de toutes les fonctionnalités de notre plateforme, veuillez finaliser votre inscription.
           </p>
         </div>
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900">
+          <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-black">
             Prénom
           </label>
-          <input value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" id="firstName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez votre prénom" required />
+          <input value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" id="firstName" className=" border border-gray-300 text-black text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez votre prénom" required />
         </div>
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-gray-900">
+          <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-black">
             Nom
           </label>
-          <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" id="lastName" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez votre nom de famille" required />
+          <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" id="lastName" className=" border border-gray-300 text-black text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez votre nom de famille" required />
         </div>
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label htmlFor="company" className="block mb-2 text-sm font-medium text-gray-900">
+          <label htmlFor="company" className="block mb-2 text-sm font-medium text-black">
             Nom de l&apos;entreprise
           </label>
-          <input value={company} onChange={(e) => setCompany(e.target.value)} type="text" id="company" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom de votre entreprise" required />
+          <input value={company} onChange={(e) => setCompany(e.target.value)} type="text" id="company" className=" border border-gray-300 text-black text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom de votre entreprise" required />
         </div>
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">
+          <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">
             Adresse mail
           </label>
-          <input value={email} disabled={true} type="text" id="email" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" required />
+          <input value={email} disabled={true} type="text" id="email" className=" border border-gray-300 text-black text-sm rounded-lg  block w-full p-2.5" required />
         </div>
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900">
+          <label htmlFor="phone" className="block mb-2 text-sm font-medium text-black">
             Téléphone
           </label>
-          <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" id="phone" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez votre téléphone" required />
+          <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" id="phone" className=" border border-gray-300 text-black text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez votre téléphone" required />
         </div>
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900">
+          <label htmlFor="address" className="block mb-2 text-sm font-medium text-black">
             Adresse
           </label>
-          <input value={address} onChange={(e) => setAddress(e.target.value)} type="text" id="address" className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez votre téléphone" required />
+          <input value={address} onChange={(e) => setAddress(e.target.value)} type="text" id="address" className=" border border-gray-300 text-black text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez votre téléphone" required />
         </div>
       </div>
       <button onClick={handleUpdateAccount}

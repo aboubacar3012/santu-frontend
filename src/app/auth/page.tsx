@@ -14,7 +14,7 @@ const LoginPage = () => {
     router.push("/dashboard/partner")
   }
   return (
-    <div className="min-h-screen text-gray-900 flex justify-center">
+    <div className="min-h-screen text-black flex justify-center">
       <div
         className="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1"
       >
@@ -52,7 +52,7 @@ const LoginPage = () => {
                 >
                   SE CONNECTER
                 </button>
-                <p className="mt-6 text-xs text-gray-600 text-center">
+                <p className="mt-6 text-xs text-black text-center">
                   J&apos;accepte les{" "}
                   <a href="#" className="border-b border-gray-500 border-dotted">
                     Conditions d&apos;utilisation{" "}

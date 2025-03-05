@@ -7,12 +7,12 @@ type SuccessAddInvoiceProps = {
 const SuccessAddInvoice = ({ onClick }: SuccessAddInvoiceProps) => {
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="h-min py-8 px-2 gap-2 flex flex-col items-center text-gray-700 bg-gray-100  rounded-lg m-2">
+      <div className="h-min py-8 px-2 gap-2 flex flex-col items-center text-black bg-gray-100  rounded-lg m-2">
         <img src="/animated/animatedCheck.gif" alt="registration success" className="w-32 mx-auto" />
         <p className="text-lg font-semibold">
           Facture créée avec succès.
         </p>
-        <p className="text-gray-800 md:w-4/5 text-center">
+        <p className="text-black md:w-4/5 text-center">
           Pour terminer la creation de la facture, veillez appuyer sur le bouton ci-dessous.
         </p>
         <button

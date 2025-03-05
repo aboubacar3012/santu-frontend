@@ -6,7 +6,7 @@ const InvoiceFormStep = ({step}:InvoiceInfoFormProps) => {
     if(step >= stepVal) {
       return "text-white bg-gray-900";
     }else{
-      return "text-gray-900 bg-gray-300"; 
+      return "text-black bg-gray-300"; 
     }
   }
   return (
@@ -32,7 +32,7 @@ const InvoiceFormStep = ({step}:InvoiceInfoFormProps) => {
             ></path>
           </svg>
           <div className="absolute -bottom-[2rem] w-max text-center ml-4">
-            <h6 className="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700">
+            <h6 className="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-black">
               Informations
             </h6>
           </div>
@@ -55,7 +55,7 @@ const InvoiceFormStep = ({step}:InvoiceInfoFormProps) => {
             ></path>
           </svg>
           <div className="absolute -bottom-[2rem] w-max text-center">
-            <h6 className="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-900">
+            <h6 className="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-black">
               Produits/Services
             </h6>
           </div>
@@ -78,7 +78,7 @@ const InvoiceFormStep = ({step}:InvoiceInfoFormProps) => {
             ></path>
           </svg>
           <div className="absolute -bottom-[2rem] w-max text-center mr-4">
-            <h6 className="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-gray-700">
+            <h6 className="block font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-black">
               Confirmation
             </h6>
           </div>

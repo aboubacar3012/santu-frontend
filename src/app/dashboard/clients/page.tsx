@@ -1,9 +1,10 @@
 "use client";
 import Badge from "@/src/components/Badge";
 import ClientForm from "@/src/components/client/ClientForm";
+import { useGetClientsAccountById } from "@/src/hooks/useClients";
 import { RootState } from "@/src/redux/store";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import { GoSearch } from "react-icons/go";
 import { IoMdAdd } from "react-icons/io";
@@ -11,17 +12,27 @@ import { useSelector } from "react-redux";
 
 const ClientsPage = () => {
   const [addClient, setAddClient] = useState(false);
-
   const router = useRouter();
-
   const auth = useSelector((state: RootState) => state.auth);
-  const clients = auth.loggedAccountInfos?.clients;
+  const { data, isLoading, error } = useGetClientsAccountById(auth.loggedAccountInfos?._id!, auth.token!);
 
   const handlePushLeft = () => {
     router.back();
   }
 
-  console.log(clients);
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching clients: {error.message}</p>;
+
+  console.log(data.clients);
+  
+  const clients = data.clients;
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching clients: {error}</p>;
+
+  if (!clients || clients.length === 0) {
+    return <p>Aucun client enregistré.</p>;
+  }
 
   return (
     <div>
@@ -35,7 +46,7 @@ const ClientsPage = () => {
       <div className="pr-4 flex justify-between items-center">
         <div className="flex flex-col py-4 px-1">
           <h2 className="text-lg font-semibold">Listes des clients enregistrées</h2>
-          <p className="font-light text-xs text-gray-500">
+          <p className="font-light text-xs text-black">
             27 clients enregistrés
           </p>
         </div>
@@ -51,14 +62,14 @@ const ClientsPage = () => {
         </div>
         <input
           type="text"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full ps-10 p-2.5  "
+          className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full ps-10 p-2.5  "
           placeholder="Rechercher un client"
         />
       </div>
 
       <div className=" h-dvh rounded-lg overflow-auto flex flex-col gap-2 bg-white p-4">
         <div className=" shadow-md rounded-lg mt-2 bg-white ">
-          <table className="w-full text-sm text-left text-gray-500 sticky">
+          <table className="w-full text-sm text-left text-black sticky">
             <thead className="text-xs rounded-lg text-white bg-gray-700 ">
               <tr>
                 <th scope="col" className="px-6 py-3">
@@ -87,7 +98,7 @@ const ClientsPage = () => {
                   <tr onClick={() => router.push(`/dashboard/clients/${client._id}`)} key={index} className="border-b cursor-pointer hover:bg-gray-200">
                     <th
                       scope="row"
-                      className="text-xs px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                      className="text-xs px-6 py-4 font-medium text-black whitespace-nowrap"
                     >
                       {index + 1}
                     </th>
@@ -101,7 +112,7 @@ const ClientsPage = () => {
                       {client.phone}
                     </td>
                     <td className="text-xs px-6 py-4">
-                    0
+                      0
                     </td>
                     <td className="text-xs px-6 py-4">
                       0

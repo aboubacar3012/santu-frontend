@@ -62,15 +62,15 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
                 <h3 className="text-md font-semibold">
                 {clientData.company && clientData.company?.length > 0 ? clientData.company : `${clientData.firstName} ${clientData.lastName}`}
                 </h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-black">
                   {clientData.address}
                 </p>
                 {/* Tel */}
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-black">
                  {clientData.phone}
                 </p>
                 {/* Email */}
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-black">
                   {clientData.email}
                 </p>
               </div>
@@ -90,7 +90,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
           <div className="flex justify-between items-center">
             <div className="flex flex-col py-4 px-1">
               <h2 className="text-lg font-semibold">Listes des clients enregistrées</h2>
-              <p className="font-light text-xs text-gray-500">
+              <p className="font-light text-xs text-black">
                 27 clients enregistrés
               </p>
             </div>
@@ -98,7 +98,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
 
           <div className="overflow-auto flex flex-col gap-2 bg-white py-4">
             <div className=" shadow-md  mt-2 bg-white ">
-              <table className="w-full text-sm text-left text-gray-500 sticky">
+              <table className="w-full text-sm text-left text-black sticky">
                 <thead className="text-xs text-white uppercase bg-gray-700 ">
                   <tr>
                     <th scope="col" className="px-6 py-3">
@@ -124,7 +124,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
                       <tr onClick={() => { }} key={index} className="border-b cursor-pointer hover:bg-gray-200">
                         <th
                           scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                          className="px-6 py-4 font-medium text-black whitespace-nowrap"
                         >
                           Facture, MacBook Pro 16&#34;
                         </th>

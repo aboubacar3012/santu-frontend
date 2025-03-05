@@ -71,7 +71,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
         <div className="w-5/6 pr-4 flex justify-between items-center">
           <div className="flex flex-col py-4 px-1">
             <h2 className="text-lg font-semibold">Facture n° {invoiceData.invoiceNumber}</h2>
-            <p className="font-light text-xs text-gray-500">
+            <p className="font-light text-xs text-black">
               Payé le 27 Juin 2023
             </p>
           </div>
@@ -105,15 +105,15 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
                       : `${loggedAccount?.firstName} ${loggedAccount?.lastName}`
                     }
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-black">
                     {loggedAccount?.address}
                   </p>
                   {/* Tel */}
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-black">
                     {loggedAccount?.phone}
                   </p>
                   {/* Email */}
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-black">
                     {loggedAccount?.email}
                   </p>
                 </div>
@@ -147,13 +147,13 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
               <div className="w-4/12 flex flex-col gap-2 p-6 bg-gray-100 rounded-2xl">
                 <div>
                   <h2 className="text-xs font-light">Date de facture</h2>
-                  <p className="text-xs font-semibold text-gray-700">
+                  <p className="text-xs font-semibold text-black">
                     {invoiceData.date}
                   </p>
                 </div>
                 <div>
                   <h2 className="text-xs font-light">Conditions de règlement</h2>
-                  <p className="text-xs font-semibold text-gray-700">
+                  <p className="text-xs font-semibold text-black">
                     {
                       invoiceData.paymentCondition === 'NOW' ? 'Immédiat' : `Dans ${invoiceData.paymentCondition} jours`
                     }
@@ -161,7 +161,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
                 </div>
                 <div>
                   <h2 className="text-xs font-light">Mode de paiement</h2>
-                  <p className="text-xs font-semibold text-gray-700">
+                  <p className="text-xs font-semibold text-black">
                     Espèces
                   </p>
                 </div>
@@ -177,22 +177,22 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
                       : `${invoiceData.client.firstName} ${invoiceData.client.lastName}`
                     }
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-black">
                     {invoiceData.client.address}
                   </p>
                   {/* Tel */}
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-black">
                     {invoiceData.client.phone}
                   </p>
                   {/* Email */}
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-black">
                     {invoiceData.client.email}
                   </p>
                 </div>
               </div>
             </div>
             <div className="relative overflow-x-auto shadow-md h-56 rounded-lg mt-2 bg-white ">
-              <table className="w-full text-sm text-left text-gray-500 sticky">
+              <table className="w-full text-sm text-left text-black sticky">
                 <thead className="text-xs text-white bg-gray-700 ">
                   <tr>
                     <th scope="col" className="px-6 py-3">
@@ -215,7 +215,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
                       <tr onClick={() => { }} key={index} className="border-b cursor-pointer hover:bg-gray-200">
                         <th
                           scope="row"
-                          className="text-xs px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                          className="text-xs px-6 py-4 font-medium text-black whitespace-nowrap"
                         >
                           {index + 1}
                         </th>
@@ -240,22 +240,22 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
               <div className="w-56 flex flex-col gap-2 mt-4">
                 <div className="w-full flex justify-between">
                   <h3 className="text-sm font-semibold">Total HT</h3>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-black">
                     {invoiceData.amount} GNF
                   </p>
                 </div>
                 <div className="w-full flex justify-between">
                   <h3 className="text-sm font-semibold">TVA</h3>
-                  <p className="text-xs text-gray-500">0%</p>
+                  <p className="text-xs text-black">0%</p>
                 </div>
                 {/* <div className="w-full flex justify-between">
                 <h3 className="text-sm font-semibold">Réduction</h3>
-                <p className="text-xs text-gray-500">0 GNF</p>
+                <p className="text-xs text-black">0 GNF</p>
               </div> */}
                 <hr className="w-full border-gray-50" />
                 <div className="w-full flex justify-between">
                   <h3 className="text-sm font-semibold">Total TTC</h3>
-                  <p className="text-xs text-gray-500">{invoiceData.amount} GNF</p>
+                  <p className="text-xs text-black">{invoiceData.amount} GNF</p>
                 </div>
               </div>
             </div>
