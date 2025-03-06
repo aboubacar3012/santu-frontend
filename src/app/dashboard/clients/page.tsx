@@ -168,9 +168,9 @@ const ClientsPage = () => {
                 <th scope="col" className="px-6 py-3">
                   Nb de factures
                 </th>
-                <th scope="col" className="px-6 py-3">
+                {/* <th scope="col" className="px-6 py-3">
                   Montant total
-                </th>
+                </th> */}
                 <th scope="col" className="px-6 py-3">
                   Actions
                 </th>
@@ -196,11 +196,11 @@ const ClientsPage = () => {
                       {client.phone}
                     </td>
                     <td className="text-xs px-6 py-4">
-                      0
+                      {client.invoices.length}
                     </td>
-                    <td className="text-xs px-6 py-4">
+                    {/* <td className="text-xs px-6 py-4">
                       0
-                    </td>
+                    </td> */}
                     <td className="text-xs px-6 py-4 flex gap-3">
                       <button
                         onClick={(e) => handleEditClient(e, client._id)}

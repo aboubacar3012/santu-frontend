@@ -42,13 +42,13 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
 
   return (
     <div>
-      <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer">
+      <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 mb-2 rounded-xl cursor-pointer">
         <FaAngleLeft className="w-8 h-8" />
         <h3 className="text-xl font-light">
           Santu Pro
         </h3>
       </div>
-      <div className="w-full flex gap-4 h-dvh">
+      <div className="w-full flex gap-4">
         <div className="w-full flex flex-col gap-2 bg-white p-4 rounded-xl">
           <div className="w-full flex justify-between">
             <div className="flex gap-2">
@@ -96,8 +96,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
             </div>
           </div>
 
-          <div className="overflow-auto flex flex-col gap-2 bg-white py-4">
-            <div className=" shadow-md  mt-2 bg-white ">
+          <div className=" shadow-md  mt-2 bg-white h-[38rem] overflow-auto">
               <table className="w-full text-sm text-left text-black sticky">
                 <thead className="text-xs text-white uppercase bg-gray-700 ">
                   <tr>
@@ -142,9 +141,13 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
                 </tbody>
               </table>
             </div>
-          </div>
         </div>
+        
       </div>
+
+   
+           
+    
     </div>
   );
 }
