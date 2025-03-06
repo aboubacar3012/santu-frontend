@@ -1,7 +1,7 @@
 "use client";
 import Badge from "@/src/components/Badge";
 import ClientForm from "@/src/components/client/ClientForm";
-import { useGetClientsAccountById } from "@/src/hooks/useClients";
+import { useGetClientsAccountById, useDeleteClientById } from "@/src/hooks/useClients";
 import { useUrlParams } from "@/src/hooks/useUrlParams";
 import { RootState } from "@/src/redux/store";
 import { useRouter } from "next/navigation";
@@ -11,14 +11,15 @@ import { useSelector } from "react-redux";
 import Select from 'react-select';
 import { useState } from "react";
 import { Client } from "@/src/types";
+import { toast } from "react-toastify";
 
 const ClientsPage = () => {
   const router = useRouter();
   const { hasParams, setParams, deleteParams } = useUrlParams();
   const showClientForm = hasParams('clientForm');
-  // const clientId = hasParam('client') ? hasParam('client') : null;
   const auth = useSelector((state: RootState) => state.auth);
   const { data, isLoading, error } = useGetClientsAccountById(auth.loggedAccountInfos?._id!, auth.token!);
+  const deleteClientMutation = useDeleteClientById(auth.token!);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
 
@@ -40,19 +41,22 @@ const ClientsPage = () => {
     setSelectedClient(null); // Reset the selected client
   }
 
-  // const handleEditClient = (e: React.MouseEvent, client: Client) => {
-  //   e.stopPropagation(); // Empêche la navigation vers la page du client
-  //   setSelectedClient(client);
-  //   setParam('client', client._id);
-  //   setParam('addClient', 'true');
-  // }
-
   const handleDeleteClient = (e: React.MouseEvent, clientId: string) => {
     e.stopPropagation(); // Empêche la navigation vers la page du client
     if (confirm("Êtes-vous sûr de vouloir supprimer ce client ?")) {
-      // Ajouter ici la logique de suppression du client
-      console.log("Suppression du client", clientId);
-      // Après suppression, rafraîchir les données
+      deleteClientMutation.mutate(clientId, {
+        onSuccess: (data) => {
+          if (data.success) {
+            toast.success("Client supprimé avec succès");
+          } else {
+            toast.error(`Erreur lors de la suppression: ${data.message}`);
+          }
+        },
+        onError: (error) => {
+          console.error(`Erreur: ${error.message}`);
+          toast.error("Erreur lors de la suppression du client:");
+        }
+      });
     }
   }
 
@@ -109,7 +113,6 @@ const ClientsPage = () => {
     <div>
       <ClientForm
         isOpen={showClientForm}
-        selectedClientId={selectedClient ? selectedClient._id : null}
         onClose={closeClientForm}
       />
       <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer">

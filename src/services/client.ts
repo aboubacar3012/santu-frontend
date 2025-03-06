@@ -72,3 +72,21 @@ export const updateClient = async (clientId: string, clientData: Partial<Client>
   const data = await response.json();
   return data;
 };
+
+// Delete client by id
+export const deleteClientById = async (id: string, token?: string) => {
+  const response = await fetch(`${baseUrl}/delete/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Erreur lors de la suppression du client");
+  }
+
+  const data = await response.json();
+  return data;
+};
