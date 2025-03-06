@@ -22,11 +22,11 @@ const DashboardPage = () => {
   const [selectedPaymentFilterBtn, setSelectPaymentFilterBtn] = useState<"all" | "draft" | "paid" | "cancelled" | "pending">("all");
   const [selectedDateFilterBtn, setSelectedDateFilterBtn] = useState<"today" | "week" | "month" | "year">("today");
   const router = useRouter();
-  const { hasParam, setParam, deleteParam } = useUrlParams();
+  const { hasParams, setParams, deleteParams } = useUrlParams();
   const auth = useSelector((state: RootState) => state.auth);
   
   // Utilisation du hook personnalisé
-  const showInvoiceForm = hasParam('addInvoice');
+  const showInvoiceForm = hasParams('addInvoice');
 
   const fetchData = async () => {
     getDashboard(auth.loggedAccountInfos?._id!, auth.token!).then((data) => {
@@ -63,11 +63,11 @@ const DashboardPage = () => {
 
   // Utilisation du hook personnalisé pour les fonctions d'ouverture/fermeture
   const openInvoiceForm = () => {
-    setParam('addInvoice', 'true');
+    setParams('addInvoice', 'true');
   }
 
   const closeInvoiceForm = () => {
-    deleteParam('addInvoice');
+    deleteParams('addInvoice');
   }
 
   const handleOpenInvoice = (invoiceId: string) => {
@@ -144,7 +144,7 @@ const DashboardPage = () => {
                   onClick={() => handleDateFilterChange("today")} 
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedDateFilterBtn("today")}`}
                 >
-                  Aujourd'hui
+                  Aujourdhui
                 </button>
                 <button 
                   onClick={() => handleDateFilterChange("week")} 

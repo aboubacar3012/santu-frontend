@@ -11,6 +11,11 @@ export enum StatusEnum {
   CANCELLED = "CANCELLED",
 };
 
+export enum TypeEnum {
+  PARTICULAR = "PARTICULAR",
+  PROFESSIONAL = "PROFESSIONAL",
+}
+
 export type Article = {
   _id?: string;
   name: string;
@@ -41,7 +46,7 @@ export type Invoice = {
 
 export type Client = {
   _id: string;
-  type: "particular" | "company";
+  type: "PARTICULAR" | "PROFESSIONAL";
   firstName?: string;
   lastName?: string;
   company?: string;
@@ -50,6 +55,8 @@ export type Client = {
   website?: string;
   email: string;
   phone: string;
+  account: string;
+  invoices: string[];
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

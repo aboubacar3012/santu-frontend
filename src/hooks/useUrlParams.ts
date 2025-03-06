@@ -9,69 +9,77 @@ export function useUrlParams() {
   const searchParams = useSearchParams();
 
   /**
-   * Vérifie si un paramètre existe dans l'URL
-   * @param {string} paramName - Nom du paramètre à vérifier
-   * @returns {boolean} - True si le paramètre existe, false sinon
+   * Vérifie si un ou plusieurs paramètres existent dans l'URL
+   * @param {string | string[]} paramNames - Nom(s) du/des paramètre(s) à vérifier
+   * @returns {boolean} - True si le(s) paramètre(s) existe(nt), false sinon
    */
-  const hasParam = (paramName: string): boolean => {
-    return searchParams.has(paramName);
+  const hasParams = (paramNames: string | string[]): boolean => {
+    if (typeof paramNames === 'string') {
+      return searchParams.has(paramNames);
+    }
+    return paramNames.every(param => searchParams.has(param));
   };
 
   /**
-   * Récupère la valeur d'un paramètre d'URL
-   * @param {string} paramName - Nom du paramètre à récupérer
-   * @returns {string | null} - Valeur du paramètre ou null si non trouvé
+   * Récupère la valeur d'un ou plusieurs paramètres d'URL
+   * @param {string | string[]} paramNames - Nom(s) du/des paramètre(s) à récupérer
+   * @returns {string | null | Record<string, string | null>} - Valeur(s) du/des paramètre(s) ou null si non trouvé(s)
    */
-  const getParam = (paramName: string): string | null => {
-    return searchParams.get(paramName);
+  const getParams = (paramNames: string | string[]): string | null | Record<string, string | null> => {
+    if (typeof paramNames === 'string') {
+      return searchParams.get(paramNames);
+    }
+    
+    const result: Record<string, string | null> = {};
+    paramNames.forEach(param => {
+      result[param] = searchParams.get(param);
+    });
+    return result;
   };
 
   /**
-   * Définit ou met à jour un paramètre d'URL et navigue vers la nouvelle URL
-   * @param {string} paramName - Nom du paramètre à définir
-   * @param {string} value - Valeur à assigner au paramètre
+   * Définit ou met à jour un ou plusieurs paramètres d'URL et navigue vers la nouvelle URL
+   * @param {string | Record<string, string>} paramNameOrObject - Nom du paramètre ou objet de paires clé-valeur
+   * @param {string} [value] - Valeur à assigner au paramètre (non utilisé si un objet est fourni)
    */
-  const setParam = (paramName: string, value: string): void => {
+  const setParams = (paramNameOrObject: string | Record<string, string>, value?: string): void => {
     const params = new URLSearchParams(searchParams);
-    params.set(paramName, value);
+    
+    if (typeof paramNameOrObject === 'string' && value !== undefined) {
+      params.set(paramNameOrObject, value);
+    } else if (typeof paramNameOrObject === 'object') {
+      Object.entries(paramNameOrObject).forEach(([key, val]) => {
+        params.set(key, val);
+      });
+    }
 
     // Navigue vers la nouvelle URL avec les paramètres mis à jour
     router.push(`?${params.toString()}`);
   };
 
   /**
-   * Supprime un paramètre de l'URL et navigue vers la nouvelle URL
-   * @param {string} paramName - Nom du paramètre à supprimer
+   * Supprime un ou plusieurs paramètres de l'URL et navigue vers la nouvelle URL
+   * @param {string | string[]} paramNames - Nom(s) du/des paramètre(s) à supprimer
    */
-  const deleteParam = (paramName: string): void => {
+  const deleteParams = (paramNames: string | string[]): void => {
     const params = new URLSearchParams(searchParams);
-    params.delete(paramName);
-
-    // Navigue vers la nouvelle URL avec les paramètres
-    router.push(`?${params.toString()}`);
-  };
-
-  /**
-   * Bascule la présence d'un paramètre dans l'URL (l'ajoute s'il n'existe pas, le supprime sinon)
-   * @param {string} paramName - Nom du paramètre à basculer
-   * @param {string} value - Valeur à utiliser si le paramètre est ajouté (par défaut 'true')
-   */
-  const toggleParam = (paramName: string, value: string = 'true'): void => {
-    const params = new URLSearchParams(searchParams);
-    if (params.has(paramName)) {
-      params.delete(paramName);
+    
+    if (typeof paramNames === 'string') {
+      params.delete(paramNames);
     } else {
-      params.set(paramName, value);
+      paramNames.forEach(param => {
+        params.delete(param);
+      });
     }
+
     // Navigue vers la nouvelle URL avec les paramètres mis à jour
     router.push(`?${params.toString()}`);
   };
 
   return {
-    hasParam,
-    getParam,
-    setParam,
-    deleteParam,
-    toggleParam
+    hasParams,
+    getParams,
+    setParams,
+    deleteParams
   };
 }

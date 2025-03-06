@@ -52,3 +52,23 @@ export const getClientsByAccountId = async (accountId: string, token?: string) =
     throw error;
   }
 }
+
+// Update client
+export const updateClient = async (clientId: string, clientData: Partial<Client>, token?: string) => {
+  const response = await fetch(`${baseUrl}/update/${clientId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(clientData),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Erreur lors de la mise à jour du client");
+  }
+
+  const data = await response.json();
+  return data;
+};
