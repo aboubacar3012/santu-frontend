@@ -64,7 +64,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
       <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer no-print">
         <FaAngleLeft className="w-8 h-8" />
         <h3 className="text-xl font-light">
-          Détails de la facture
+          Retour
         </h3>
       </div>
       <section ref={sectionRef}>
@@ -263,7 +263,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
           <div ref={noPrintRef} className="w-1/6 flex flex-col gap-4 no-print">
             <div className="bg-white rounded-xl w-54 p-2 flex flex-col">
               <button type="button" onClick={handlePrintSection} className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-lg text-sm px-3 py-2.5">
-              Imprimer la facture
+                Imprimer la facture
               </button>
             </div>
             <div className="bg-white rounded-xl w-54 p-2 flex flex-col">

@@ -71,18 +71,26 @@ const InvoiceInfoForm = ({
         </div>
       </div>
 
-      <div className="flex gap-2 px-4">
+      <div className="flex gap-2 px-4 justify-center items-center">
         <div className="w-1/2 flex flex-col gap-1 py-2">
           <div className="relative w-full min-w-[200px]">
-            <label htmlFor="invoiceDate" className="block mb-2 text-sm font-medium text-black">Date de la facture</label>
+            <div className="flex justify-between items-center py-1">
+              <label htmlFor="invoiceDate" className="text-sm font-medium text-black">Date de la facture</label>
+              <button 
+                type="button" 
+                onClick={() => setInvoiceDate(new Date().toISOString().split('T')[0])}
+                className="text-xs bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-md"
+              >
+                Aujourd'hui
+              </button>
+            </div>
             <input
               type="date"
               value={invoiceDate}
               onChange={(e) => setInvoiceDate(e.target.value)}
               id="invoiceDate"
-              className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg  block w-full p-2.5"
+              className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg  block w-full p-2"
               required
-              // min aujourdhui
               min={new Date().toISOString().split('T')[0]}
             />
           </div>

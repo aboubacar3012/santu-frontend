@@ -118,7 +118,7 @@ const ClientsPage = () => {
       <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer">
         <FaAngleLeft className="w-8 h-8" />
         <h3 className="text-xl font-light">
-          Mes clients
+          Retour
         </h3>
       </div>
       <div className="pr-4 flex justify-between items-center">

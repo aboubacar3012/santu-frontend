@@ -56,3 +56,25 @@ export const getInvoiceById = async (id: string, token?:string) => {
   
   return data;
 }
+
+// Get all invoices by client id
+export const getInvoicesByClientId = async (clientId: string, token?: string) => {
+  try {
+    const response = await fetch(`${baseUrl}/client/${clientId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Une erreur s'est produite lors de la récupération des factures du client"
+    }
+  }
+}
