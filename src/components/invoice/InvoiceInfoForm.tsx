@@ -23,7 +23,6 @@ type InvoiceInfoFormProps = {
   invoiceId: string;
   errorMessage: string;
   setErrorMessage: (message: string) => void;
-
 }
 
 const InvoiceInfoForm = ({

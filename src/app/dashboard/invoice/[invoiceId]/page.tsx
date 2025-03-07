@@ -8,13 +8,44 @@ import { useEffect, useState, useRef } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
+// Styles pour l'impression
+const printStyles = `
+  @media print {
+    body * {
+      visibility: visible;
+    }
+    .no-print, .no-print * {
+      display: none !important;
+    }
+    .print-section {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      padding: 0 50px;
+      background-color: #F7F7F7;
+    }
+    /* Masquer le header et footer lors de l'impression */
+    @page {
+      margin: 0;
+      size: auto;
+    }
+    header, footer, nav {
+      display: none !important;
+    }
+    body {
+      margin: 1.6cm;
+      background-color: #F7F7F7;
+    }
+  }
+`;
+
 const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [invoiceData, setInvoiceData] = useState<Invoice | null>(null);
   const router = useRouter();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const noPrintRef = useRef<HTMLDivElement>(null);
 
   const auth = useSelector((state: RootState) => state.auth);
   const loggedAccount = auth.loggedAccountInfos;
@@ -42,33 +73,25 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
     fetchData();
   }, [])
 
-  const handlePrint = () => {
-    window.print();
-  }
-
   const handlePrintSection = () => {
-    if (sectionRef.current) {
-      const printContents = sectionRef.current.innerHTML;
-      const originalContents = document.body.innerHTML;
-      document.body.innerHTML = printContents;
-      window.print();
-      document.body.innerHTML = originalContents;
-      window.location.reload();
-    }
+    window.print();
   };
 
   if (!invoiceData) return <div>Not found</div>
 
   return (
     <div>
+      {/* Ajouter les styles d'impression */}
+      <style dangerouslySetInnerHTML={{ __html: printStyles }} />
+
       <div onClick={handlePushLeft} className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer no-print">
         <FaAngleLeft className="w-8 h-8" />
         <h3 className="text-xl font-light">
           Retour
         </h3>
       </div>
-      <section ref={sectionRef}>
-        <div className="w-5/6 pr-4 flex justify-between items-center">
+      <section ref={sectionRef} className="print-section">
+        <div className="w-5/6 print:w-full pr-4 flex justify-between items-center">
           <div className="flex flex-col py-4 px-1">
             <h2 className="text-lg font-semibold">Facture n° {invoiceData.invoiceNumber}</h2>
             <p className="font-light text-xs text-black">
@@ -77,7 +100,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
           </div>
           {
             invoiceData.status === "DRAFT" && (
-              <div className="bg-white rounded-xl w-60 p-2 flex flex-col">
+              <div className="bg-white rounded-xl w-60 p-2 flex flex-col no-print">
                 <button type="button" className="text-xs hover:text-white border border-green-700 hover:bg-green-800 text-green-800  font-medium rounded-lg px-3 py-2.5">
                   Marqué comme payé
                 </button>
@@ -86,7 +109,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
           }
         </div>
         <div className="flex gap-4 h-dvh">
-          <div className="w-5/6  flex flex-col gap-2 bg-white p-4 rounded-xl">
+          <div className="w-5/6 print:w-full flex flex-col gap-2 bg-white p-4 rounded-xl">
             <div className="w-full flex justify-between">
               <div className="flex gap-2">
                 {
@@ -132,7 +155,6 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
                   {
                     invoiceData.status === "CANCELLED" && (<Badge type="red" text="Facture annulée" />)
                   }
-
                   <Badge type="gray" text={invoiceData.invoiceNumber} />
                 </div>
                 <div className="text-right">
@@ -144,7 +166,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
               </div>
             </div>
             <div className="flex gap-12 p-4 border my-2 rounded-lg">
-              <div className="w-4/12 flex flex-col gap-2 p-6 bg-gray-100 rounded-2xl">
+              <div className="w-4/12 print:w-6/12 flex flex-col gap-2 px-6 py-2 bg-gray-200 rounded-2xl">
                 <div>
                   <h2 className="text-xs font-light">Date de facture</h2>
                   <p className="text-xs font-semibold text-black">
@@ -191,7 +213,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
                 </div>
               </div>
             </div>
-            <div className="relative overflow-x-auto shadow-md h-56 rounded-lg mt-2 bg-white ">
+            <div className="relative overflow-x-auto shadow-md h-96 rounded-lg mt-2 bg-white ">
               <table className="w-full text-sm text-left text-black sticky">
                 <thead className="text-xs text-white bg-gray-700 ">
                   <tr>
@@ -260,7 +282,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
               </div>
             </div>
           </div>
-          <div ref={noPrintRef} className="w-1/6 flex flex-col gap-4 no-print">
+          <div className="w-1/6 flex flex-col gap-4 no-print">
             <div className="bg-white rounded-xl w-54 p-2 flex flex-col">
               <button type="button" onClick={handlePrintSection} className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-lg text-sm px-3 py-2.5">
                 Imprimer la facture
@@ -280,8 +302,3 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
 }
 
 export default SingleInvoicePage;
-
-// Numero de la facture
-// Date de la facture
-// Conditions de règlement (Immédiat)
-// Mode de paiement (Espèces)
