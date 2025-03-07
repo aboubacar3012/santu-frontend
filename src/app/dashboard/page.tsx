@@ -11,9 +11,10 @@ import { RootState } from "@/src/redux/store";
 import { Invoice } from "@/src/types";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { GiMoneyStack } from "react-icons/gi";
-import { FaUserFriends } from "react-icons/fa";
+import { FaEdit, FaTrash, FaUserFriends } from "react-icons/fa";
 import { formatCurrency } from "@/src/libs/formatCurrency";
 import { useUrlParams } from "@/src/hooks/useUrlParams";
+import { toast } from "react-toastify";
 
 const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -24,9 +25,10 @@ const DashboardPage = () => {
   const router = useRouter();
   const { hasParams, setParams, deleteParams } = useUrlParams();
   const auth = useSelector((state: RootState) => state.auth);
-  
+
   // Utilisation du hook personnalisé
   const showInvoiceForm = hasParams('addInvoice');
+  const isEditMode = hasParams('invoiceId');
 
   const fetchData = async () => {
     getDashboard(auth.loggedAccountInfos?._id!, auth.token!).then((data) => {
@@ -67,11 +69,24 @@ const DashboardPage = () => {
   }
 
   const closeInvoiceForm = () => {
-    deleteParams('addInvoice');
+    deleteParams(['addInvoice', 'invoiceId']);
   }
 
   const handleOpenInvoice = (invoiceId: string) => {
     router.push(`/dashboard/invoice/${invoiceId}`)
+  }
+
+  const handleEditInvoice = (e: React.MouseEvent, invoiceId: string) => {
+    e.stopPropagation(); // Empêche la navigation vers la page de la facture
+    setParams({ addInvoice: 'true', invoiceId: invoiceId });
+  }
+
+  const handleDeleteInvoice = (e: React.MouseEvent, invoiceId: string) => {
+    e.stopPropagation(); // Empêche la navigation vers la page de la facture
+    if (confirm("Êtes-vous sûr de vouloir supprimer cette facture ?")) {
+      // Ajouter ici la logique pour supprimer la facture
+      toast.success("Fonctionnalité de suppression à implémenter");
+    }
   }
 
   const handleDateFilterChange = (period: "today" | "week" | "month" | "year") => {
@@ -121,6 +136,7 @@ const DashboardPage = () => {
   return (
     <div>
       <InvoiceForm isOpen={showInvoiceForm} isEdit={false} onClose={closeInvoiceForm} />
+      {/* <InvoiceForm isOpen={showInvoiceForm} isEdit={isEditMode} invoiceId={hasParams('invoiceId') ? hasParams('invoiceId') as string : undefined} onClose={closeInvoiceForm} /> */}
       <div className="relative flex flex-col text-black bg-white shadow-md w-full rounded-xl bg-clip-border">
         <div
           className="relative grid mx-4 mb-3 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-my-raspberry to-my-eggplant bg-clip-border shadow-my-raspberry-900/20">
@@ -140,62 +156,62 @@ const DashboardPage = () => {
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-3">Filtrer par période</h3>
               <div className="flex gap-2">
-                <button 
-                  onClick={() => handleDateFilterChange("today")} 
+                <button
+                  onClick={() => handleDateFilterChange("today")}
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedDateFilterBtn("today")}`}
                 >
                   Aujourdhui
                 </button>
-                <button 
-                  onClick={() => handleDateFilterChange("week")} 
+                <button
+                  onClick={() => handleDateFilterChange("week")}
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedDateFilterBtn("week")}`}
                 >
                   Cette semaine
                 </button>
-                <button 
-                  onClick={() => handleDateFilterChange("month")} 
+                <button
+                  onClick={() => handleDateFilterChange("month")}
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedDateFilterBtn("month")}`}
                 >
                   Ce mois
                 </button>
-                <button 
-                  onClick={() => handleDateFilterChange("year")} 
+                <button
+                  onClick={() => handleDateFilterChange("year")}
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedDateFilterBtn("year")}`}
                 >
                   Cette année
                 </button>
               </div>
             </div>
-            
+
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-3">Filtrer par statut</h3>
               <div className="flex gap-2">
-                <button 
-                  onClick={() => handlePaymentFilterChange("all")} 
+                <button
+                  onClick={() => handlePaymentFilterChange("all")}
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn("all")}`}
                 >
                   Toutes
                 </button>
-                <button 
-                  onClick={() => handlePaymentFilterChange("draft")} 
+                <button
+                  onClick={() => handlePaymentFilterChange("draft")}
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn("draft")}`}
                 >
                   Brouillons
                 </button>
-                <button 
-                  onClick={() => handlePaymentFilterChange("pending")} 
+                <button
+                  onClick={() => handlePaymentFilterChange("pending")}
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn("pending")}`}
                 >
                   En attente
                 </button>
-                <button 
-                  onClick={() => handlePaymentFilterChange("paid")} 
+                <button
+                  onClick={() => handlePaymentFilterChange("paid")}
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn("paid")}`}
                 >
                   Payées
                 </button>
-                <button 
-                  onClick={() => handlePaymentFilterChange("cancelled")} 
+                <button
+                  onClick={() => handlePaymentFilterChange("cancelled")}
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn("cancelled")}`}
                 >
                   Annulées
@@ -235,24 +251,27 @@ const DashboardPage = () => {
 
 
       {/* Invoices list */}
-      <div className="relative overflow-x-auto shadow-md rounded-lg mt-4 bg-white ">
-        <table className="w-full text-sm text-left text-black sticky">
-          <thead className="text-xs text-white uppercase bg-gray-700 ">
+      <div className="relative overflow-x-auto shadow-md rounded-lg mt-4 bg-white">
+        <table className="w-full text-sm text-left text-black">
+          <thead className="text-xs uppercase bg-gray-700">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3 text-white">
                 Nom de la facture
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3 text-white">
                 ID
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3 text-white">
                 Montant
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3 text-white">
                 Date de création
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3 text-white">
                 Status
+              </th>
+              <th scope="col" className="px-4 py-3 w-28 text-white text-center">
+                Actions
               </th>
             </tr>
           </thead>
@@ -260,22 +279,19 @@ const DashboardPage = () => {
             {
               dashboardData.invoices.map((invoice: Partial<Invoice>, index: number) => (
                 <tr onClick={() => handleOpenInvoice(invoice._id!)} key={index} className="border-b cursor-pointer hover:bg-gray-200">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-black whitespace-nowrap"
-                  >
+                  <td className="px-4 py-4">
                     {invoice.name}
-                  </th>
-                  <td className="px-6 py-4">
+                  </td>
+                  <td className="px-4 py-4">
                     {invoice.invoiceNumber}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">
                     {invoice.amount} GNF
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">
                     {invoice.date}
                   </td>
-                  <td className="px-6 py-4 flex">
+                  <td className="px-4 py-4 flex">
                     {
                       invoice.status === "DRAFT" && (
                         <Badge type="gray" text="Brouillon" />
@@ -296,6 +312,24 @@ const DashboardPage = () => {
                         <Badge type="red" text="Annulée" />
                       )
                     }
+                  </td>
+                  <td className="text-xs py-4 w-28">
+                    <div className="flex justify-center gap-3">
+                      <button
+                        onClick={(e) => handleEditInvoice(e, invoice._id!)}
+                        className="text-blue-600 hover:text-blue-800 p-1.5 rounded-full hover:bg-blue-100"
+                        title="Modifier"
+                      >
+                        <FaEdit size={18} />
+                      </button>
+                      <button
+                        onClick={(e) => handleDeleteInvoice(e, invoice._id!)}
+                        className="text-red-600 hover:text-red-800 p-1.5 rounded-full hover:bg-red-100"
+                        title="Supprimer"
+                      >
+                        <FaTrash size={18} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
