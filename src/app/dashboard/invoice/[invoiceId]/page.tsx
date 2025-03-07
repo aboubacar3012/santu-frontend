@@ -108,7 +108,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
             )
           }
         </div>
-        <div className="flex gap-4 h-dvh">
+        <div className="flex gap-4">
           <div className="w-5/6 print:w-full flex flex-col gap-2 bg-white p-4 rounded-xl">
             <div className="w-full flex justify-between">
               <div className="flex gap-2">
@@ -213,7 +213,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
                 </div>
               </div>
             </div>
-            <div className="relative overflow-x-auto shadow-md h-96 rounded-lg mt-2 bg-white ">
+            <div className="relative overflow-x-auto shadow-md h-full max-h-[31rem] rounded-lg mt-2 bg-white ">
               <table className="w-full text-sm text-left text-black sticky">
                 <thead className="text-xs text-white bg-gray-700 ">
                   <tr>

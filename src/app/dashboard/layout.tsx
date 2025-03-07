@@ -97,7 +97,7 @@ export default function DashboardLayout({
   return (
     <div className="flex flex-row w-full h-screen gap-10">
       {/* Left Section */}
-      <div className="relative flex flex-col w-64 h-screen bg-white text-black">
+      <div className="relative flex flex-col w-64 h-screen bg-white text-black no-print">
         <Link href="/dashboard" className="flex flex-col items-center justify-center h-20 w-full cursor-pointer">
           <h3 className="text-2xl font-sans font-bold">Santu Pro</h3>
         </Link>
