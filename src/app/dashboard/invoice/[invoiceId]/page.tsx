@@ -293,8 +293,10 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
               </button>
             </div>
             <div className="bg-white rounded-xl w-54 p-2 flex flex-col">
-              <h5 className="font-light text-sm">Facture pas encore envoyée?</h5>
-              <button type="button" className=" text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-3 py-2.5">
+              {/* <h5 className="font-light text-sm">Facture pas encore envoyée?</h5> */}
+              <button onClick={() => {
+                alert("Fonctionnalité en cours de développement, elle sera bientôt disponible");
+              }} type="button" className=" text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-3 py-2.5">
                 Envoyer la facture par mail
               </button>
             </div>
