@@ -80,7 +80,7 @@ const InvoiceInfoForm = ({
                 onClick={() => setInvoiceDate(new Date().toISOString().split('T')[0])}
                 className="text-xs bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-md"
               >
-                Aujourd'hui
+                Aujourdhui
               </button>
             </div>
             <input
@@ -146,7 +146,7 @@ const InvoiceInfoForm = ({
             </option>
             <option value="UPONRECEIPT">
               {/* updonreceipt veut dire  "Jusqu'à réception" */}
-              Jusqu'à réception
+              Jusquà réception
             </option>
           </select>
         </div>

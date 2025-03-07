@@ -13,6 +13,10 @@ import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
+// Cette fonction indique à Next.js que cette page doit être générée côté client
+// et non dans le cadre de l'export statique
+export const dynamic = "force-dynamic";
+
 const SingleClient = ({ params }: { params: { clientId: string } }) => {
   const router = useRouter();
   const auth = useSelector((state: RootState) => state.auth);
@@ -27,7 +31,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
   const invoices = invoicesData?.invoices || [];
 
   // Calcul du montant total de toutes les factures
-  const totalAmount = invoices.reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
+  const totalAmount = invoices.reduce((sum:number, invoice:any) => sum + (invoice.amount || 0), 0);
 
   const handlePushLeft = () => {
     router.back();
@@ -119,7 +123,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
                   </thead>
                   <tbody>
                     {invoices.length > 0 ? (
-                      invoices.map((invoice, index) => (
+                      invoices.map((invoice:any, index:any) => (
                         <tr onClick={() => navigateToInvoice(invoice._id)} key={invoice._id} className="border-b cursor-pointer hover:bg-gray-200">
                           <th
                             scope="row"

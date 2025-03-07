@@ -7,6 +7,9 @@ import { Account } from "@/src/types";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { getAccountById } from "@/src/services/account";
+// Cette fonction indique à Next.js que cette page doit être générée côté client
+// et non dans le cadre de l'export statique
+export const dynamic = "force-dynamic";
 
 const ProfilePage = ({ params }: { params: { accountId: string } }) => {
   const [accountData, setAccountData] = useState<Account | null>(null);
@@ -51,7 +54,7 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
     console.log("useEffect")
     if (accountData) {
       console.log("useEffect accountData")
-      setLogoUrl(accountData.logoUrl || "");
+      setLogoUrl(accountData.logo || "");
       setFirstName(accountData.firstName || "");
       setLastName(accountData.lastName || "");
       setCompany(accountData.company || "");
@@ -104,7 +107,7 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
       <div className="flex gap-2 py-2">
         <div className="w-1/2 h-min py-2 gap-4  flex flex-col text-black bg-white  rounded-lg ">
           <div className="flex items-center">
-            {accountData && accountData.logoUrl && (
+            {accountData && accountData.logo && (
               <div className="w-full flex flex-col gap-1 p-6">
                 <div className="relative h-11 w-full min-w-[200px]">
                   <label htmlFor="title" className="block mb-2 text-sm font-medium text-black">

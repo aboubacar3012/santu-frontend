@@ -40,6 +40,10 @@ const printStyles = `
   }
 `;
 
+// Cette fonction indique à Next.js que cette page doit être générée côté client
+// et non dans le cadre de l'export statique
+export const dynamic = "force-dynamic";
+
 const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
