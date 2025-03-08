@@ -6,10 +6,8 @@ import { toast } from 'react-toastify';
 import InvoiceFormStep from '../InvoiceFormStep';
 import InvoiceInfoForm from './InvoiceInfoForm';
 import { generateInvoiceId } from '@/src/libs/generateInvoiceId';
-import AddArticleForm from './AddArticleForm';
 import SuccessAddInvoice from './SuccessAddInvoice';
 import { createInvoice } from '@/src/services/invoice';
-import { refreshAccount } from '@/src/libs/refreshAccount';
 import { loginReducer } from '@/src/redux/features/authSlice';
 import { StatusEnum } from '@/src/types';
 
@@ -83,7 +81,7 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
       amount,
     };
 
-    if (step === 3) {
+    if (step === 2) {
       createInvoice(invoiceToAdd, auth.token!).then(async response => {
         if (response.success) {
           dispatch(
@@ -102,15 +100,15 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
       });
     }
 
-    if (step > 0 && step < 3) setStep(step + 1);
+    if (step > 0 && step < 2) setStep(step + 1);
   };
 
   if (!isOpen) return null;
   return (
     <>
-      <div className="fixed inset-0 z-[999] grid place-items-center bg-black bg-opacity-60  backdrop-blur-sm transition-opacity duration-300">
-        <div className="relative m-4 w-2/6 h-[90%] overflow-auto md:rounded-lg bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl">
-          <div className="w-full flex justify-between items-center px-6 py-4">
+      <div className="fixed inset-0 z-[999] grid place-items-center  bg-black bg-opacity-60  backdrop-blur-sm transition-opacity duration-300">
+        <div className="relative m-4 w-2/6 h-[90%] overflow-auto rounded-2xl  bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl">
+          <div className="w-full flex justify-center items-center px-6 py-4">
             <h1 className="text-2xl font-semibold">Création de facture</h1>
           </div>
           <InvoiceFormStep step={step} />
@@ -146,22 +144,7 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
             />
           )}
 
-          {step === 2 && (
-            <AddArticleForm
-              articles={articles}
-              setArticles={setArticles}
-              articleName={articleName}
-              setProductName={setProductName}
-              articleQuantity={articleQuantity}
-              setProductQuantity={setProductQuantity}
-              articlePrice={articlePrice}
-              setProductPrice={setProductPrice}
-              articleDescription={articleDescription}
-              setProductDescription={setProductDescription}
-            />
-          )}
-
-          {step === 3 && <SuccessAddInvoice onClick={onSubmit} />}
+          {step === 2 && <SuccessAddInvoice onClick={onSubmit} />}
 
           <div className="flex flex-wrap items-center justify-end p-4 shrink-0 text-blue-gray-500">
             <button
@@ -171,9 +154,9 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
               }}
               className="cursor-pointer px-6 py-3 mr-1 font-sans text-xs font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             >
-              {step === 1 ? 'Annuler' : 'Précédant'}
+              {step === 1 ? 'Annuler' : ''}
             </button>
-            {step < 3 && (
+            {step < 2 && (
               <button
                 type="button"
                 onClick={() => onSubmit()}
