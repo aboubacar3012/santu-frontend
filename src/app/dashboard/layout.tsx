@@ -1,25 +1,25 @@
-"use client"
-import Link from "next/link";
-import { MdDashboard, MdOutlinePhoneInTalk } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "@/src/redux/features/authSlice";
-import { useRouter } from "next/navigation";
-import { RootState } from "@/src/redux/store";
+'use client';
+import Link from 'next/link';
+import { MdDashboard, MdOutlinePhoneInTalk } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '@/src/redux/features/authSlice';
+import { useRouter } from 'next/navigation';
+import { RootState } from '@/src/redux/store';
 import { usePathname } from 'next/navigation';
-import { FaUserCog, FaUsers } from "react-icons/fa";
+import { FaUserCog, FaUsers } from 'react-icons/fa';
+import { Settings } from 'lucide-react';
 
 export default function DashboardLayout({
-  children
+  children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-
   const auth = useSelector((state: RootState) => state.auth);
   const accountId = auth.loggedAccountInfos?._id;
 
   const dispatch = useDispatch();
-  const router = useRouter()
-  const pathname = usePathname()
+  const router = useRouter();
+  const pathname = usePathname();
 
   const menuItems: any = [
     // {
@@ -44,18 +44,18 @@ export default function DashboardLayout({
     //   isActive: pathname === "/dashboard/admin/accounts"
     // },
     {
-      roles: ["partner"],
-      name: "Tableau de bord",
+      roles: ['partner'],
+      name: 'Tableau de bord',
       icon: <MdDashboard className="w-6 h-6" />,
-      href: "/dashboard",
-      isActive: pathname === "/dashboard"
+      href: '/dashboard',
+      isActive: pathname === '/dashboard',
     },
     {
-      roles: ["partner"],
-      name: "Clients",
+      roles: ['partner'],
+      name: 'Clients',
       icon: <FaUsers className="w-6 h-6" />,
       href: `/dashboard/clients`,
-      isActive: pathname.includes("/dashboard/clients")
+      isActive: pathname.includes('/dashboard/clients'),
     },
     // {
     //   roles: ["partner"],
@@ -65,40 +65,21 @@ export default function DashboardLayout({
     //   isActive:false
 
     // },
-    // {
-    //   roles: ["partner"],
-    //   name: "Aide et FAQ",
-    //   icon: <FaQuestionCircle className="w-6 h-6" />,
-    //   href: "/",
-    //   isActive:false
-    // },
-    // {
-    //   roles: ["partner"],
-    //   name: "Factures et Contrats",
-    //   icon: <TbFileEuro className="w-6 h-6" />,
-    //   href: `/dashboard/profile/${partnerId}`,
-    //   isActive: pathname.includes("/dashboard/profile")
-    // },
-    // {
-    //   roles: ["partner"],
-    //   name: "Actualités santu",
-    //   icon: <LiaNewspaper className="w-6 h-6" />,
-    //   href: "/",
-    //   isActive:false
-    // },
-
   ];
 
   const handleLogout = () => {
-    dispatch(logout())
-    return router.push("/")
-  }
+    dispatch(logout());
+    return router.push('/');
+  };
 
   return (
     <div className="flex flex-row w-full h-screen gap-10">
       {/* Left Section */}
       <div className="relative flex flex-col w-64 h-screen bg-white text-black no-print">
-        <Link href="/dashboard" className="flex flex-col items-center justify-center h-20 w-full cursor-pointer">
+        <Link
+          href="/dashboard"
+          className="flex flex-col items-center justify-center h-20 w-full cursor-pointer"
+        >
           <h3 className="text-2xl font-sans font-bold">Santu Pro</h3>
         </Link>
         {/* divider */}
@@ -107,22 +88,46 @@ export default function DashboardLayout({
           {menuItems.map((item: any) => {
             // if (item.roles.includes("partner")) {
             return (
-              <Link key={item.name} href={item.href} className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-my-eggplant hover:text-white ${item.isActive && 'bg-my-raspberry text-white'}`}>
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-my-eggplant hover:text-white 
+                  ${item.isActive && 'bg-my-raspberry text-white'}
+                  `}
+              >
                 {item.icon}
                 <span className="text-xl">{item.name}</span>
               </Link>
             );
             // }
-          }
-          )}
+          })}
           <hr className="w-full border-gray-50" />
-          <Link href={`/dashboard/account/${accountId}`} className={`flex items-center justify-start w-full gap-2 p-2 hover:bg-my-eggplant hover:text-white `}>
+          <Link
+            href={`/dashboard/account/${accountId}`}
+            className={` ${
+              pathname.includes('/dashboard/account/') &&
+              'bg-my-raspberry text-white'
+            } flex items-center justify-start w-full gap-2 p-2 hover:bg-my-eggplant hover:text-white `}
+          >
             <FaUserCog className="w-6 h-6" />
             <span className="text-xl">Mon compte</span>
           </Link>
+          <Link
+            href={`/dashboard/admin/${accountId}`}
+            className={` ${
+              pathname.includes('/dashboard/admin/') &&
+              'bg-my-raspberry text-white'
+            } flex items-center justify-start w-full gap-2 p-2 hover:bg-my-eggplant hover:text-white `}
+          >
+            <Settings className="w-6 h-6" />
+            <span className="text-xl">Administration</span>
+          </Link>
 
           {/* Logout button bottom */}
-          <div onClick={handleLogout} className="absolute bottom-8 flex flex-col items-center justify-center w-full">
+          <div
+            onClick={handleLogout}
+            className="absolute bottom-8 flex flex-col items-center justify-center w-full"
+          >
             <button className="w-48 p-2 text-xl font-sans font-normal text-white bg-red-500 rounded-md">
               Déconnexion
             </button>
@@ -134,5 +139,5 @@ export default function DashboardLayout({
         {children}
       </div>
     </div>
-  )
+  );
 }
