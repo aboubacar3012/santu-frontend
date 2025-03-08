@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { GiMoneyStack } from 'react-icons/gi';
 import { motion } from 'framer-motion';
 
 type StatCardProps = {
@@ -12,39 +11,70 @@ type StatCardProps = {
 const StatCard = ({ title, value, unit, icon }: StatCardProps) => {
   return (
     <motion.div
-      className="flex flex-col justify-between p-4 pb-4 bg-white rounded-md shadow-md h-40"
-      initial={{ scale: 1 }}
+      className="cursor-pointer flex flex-col justify-between p-4 pb-4 bg-white rounded-md shadow-md h-40 relative overflow-hidden"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
       whileHover={{
-        scale: 1.05,
-        boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)',
+        y: -5,
+        boxShadow: '0px 15px 25px rgba(0, 0, 0, 0.1)',
         transition: { duration: 0.3, ease: 'easeOut' },
       }}
     >
       <motion.div
+        className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-my-raspberry to-my-eggplant"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      />
+
+      <motion.div
         className="flex justify-between"
-        initial={{ opacity: 1 }}
-        whileHover={{ opacity: 0.8 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
       >
-        <motion.p className="text-lg font-semibold">{title}</motion.p>
+        <motion.p
+          className="text-lg font-semibold"
+          whileHover={{ x: 3 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+        >
+          {title}
+        </motion.p>
+
         <motion.div
-          whileHover={{ rotate: 10, scale: 1.1 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+          initial={{ rotate: 0 }}
+          whileHover={{
+            rotate: 15,
+            scale: 1.2,
+            transition: { type: 'spring', stiffness: 400, damping: 10 },
+          }}
+          className="text-my-eggplant"
         >
           {icon}
         </motion.div>
       </motion.div>
 
-      <motion.div className="">
+      <motion.div>
         <motion.p
           className="text-2xl font-normal whitespace-nowrap pb-2"
-          initial={{ y: 0 }}
-          whileHover={{ y: -2 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          whileHover={{
+            scale: 1.05,
+            color: '#8A0040',
+            transition: { duration: 0.2 },
+          }}
         >
           {value}
         </motion.p>
+
         <motion.p
-          className="text-md"
-          initial={{ opacity: 0.7 }}
+          className="text-md text-gray-600"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.8 }}
+          transition={{ delay: 0.3 }}
           whileHover={{ opacity: 1 }}
         >
           {unit}
