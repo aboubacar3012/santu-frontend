@@ -46,6 +46,15 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
     setInvoiceId(invoiceId);
   }, []);
 
+  useEffect(() => {
+    // vider errorMessage après 5 secondes
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 5000);
+    }
+  }, [errorMessage]);
+
   const onSubmit = () => {
     if (
       !invoiceId ||
@@ -107,7 +116,11 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
   return (
     <>
       <div className="fixed inset-0 z-[999] grid place-items-center  bg-black bg-opacity-60  backdrop-blur-sm transition-opacity duration-300">
-        <div className="relative m-4 w-2/6 h-[90%] overflow-auto rounded-2xl  bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl">
+        <div
+          className={`relative m-4 w-2/6 ${
+            step === 1 ? 'h-[90%]' : 'min-h-max'
+          } overflow-auto rounded-2xl  bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl`}
+        >
           <div className="w-full flex justify-center items-center px-6 py-4">
             <h1 className="text-2xl font-semibold">Création de facture</h1>
           </div>
@@ -154,7 +167,7 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
               }}
               className="cursor-pointer px-6 py-3 mr-1 font-sans text-xs font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             >
-              {step === 1 ? 'Annuler' : ''}
+              {step === 1 ? 'Annuler' : 'Retour'}
             </button>
             {step < 2 && (
               <button
