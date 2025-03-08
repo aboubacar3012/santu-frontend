@@ -49,9 +49,12 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
   useEffect(() => {
     // vider errorMessage après 5 secondes
     if (errorMessage) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setErrorMessage('');
       }, 5000);
+
+      // Nettoyer le timer si le composant est démonté ou si errorMessage change
+      return () => clearTimeout(timer);
     }
   }, [errorMessage]);
 
