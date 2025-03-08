@@ -109,7 +109,7 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
   return (
     <>
       <div className="fixed inset-0 z-[999] grid place-items-center bg-black bg-opacity-60  backdrop-blur-sm transition-opacity duration-300">
-        <div className="relative m-4 w-2/6 min-h-max overflow-auto  ] md:rounded-lg bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl">
+        <div className="relative m-4 w-2/6 h-[90%] overflow-auto md:rounded-lg bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl">
           <div className="w-full flex justify-between items-center px-6 py-4">
             <h1 className="text-2xl font-semibold">Création de facture</h1>
           </div>
@@ -133,6 +133,16 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
               invoiceId={invoiceId}
               errorMessage={errorMessage}
               setErrorMessage={setErrorMessage}
+              articles={articles}
+              setArticles={setArticles}
+              articleName={articleName}
+              setProductName={setProductName}
+              articleQuantity={articleQuantity}
+              setProductQuantity={setProductQuantity}
+              articlePrice={articlePrice}
+              setProductPrice={setProductPrice}
+              articleDescription={articleDescription}
+              setProductDescription={setProductDescription}
             />
           )}
 

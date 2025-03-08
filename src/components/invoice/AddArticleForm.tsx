@@ -136,12 +136,6 @@ const AddArticleForm = ({
         </div>
       </div>
       <div className="flex gap-2 px-4 py-2">
-        {/* <div className="relative w-full min-w-[200px]">
-          <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-black">
-            Quantité
-          </label>
-          <input value={articleQuantity} onChange={(e) => setProductQuantity(e.target.value)} type="number" id="quantity" className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg  block w-full p-2.5" placeholder="Entrez le nom du produit ou service" required />
-        </div> */}
         <div className="relative w-full min-w-[200px]">
           <label
             htmlFor="price"
