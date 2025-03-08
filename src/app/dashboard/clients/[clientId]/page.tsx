@@ -4,12 +4,9 @@ import { useGetClientById } from "@/src/hooks/useClients";
 import { useGetInvoicesByClientId } from "@/src/hooks/useInvoices";
 import { formatCurrency } from "@/src/libs/formatCurrency";
 import { RootState } from "@/src/redux/store";
-import { getClientById } from "@/src/services/client";
-import { Client, Invoice } from "@/src/types";
-import { formatDate } from "date-fns";
+import { Client } from "@/src/types";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
@@ -20,8 +17,6 @@ export const dynamic = "force-dynamic";
 const SingleClient = ({ params }: { params: { clientId: string } }) => {
   const router = useRouter();
   const auth = useSelector((state: RootState) => state.auth);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   const { data, isLoading } = useGetClientById(params.clientId, auth.token!);
   const client = data?.client as Client;
@@ -97,7 +92,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
             </div>
           </div>
 
-          <div className=" shadow-md  mt-2 bg-white h-[38rem] overflow-auto">
+          <div className="shadow-md mt-2 bg-white h-[38rem] overflow-auto">
               {isLoadingInvoices ? (
                 <div className="flex justify-center items-center h-32">Chargement des factures...</div>
               ) : (

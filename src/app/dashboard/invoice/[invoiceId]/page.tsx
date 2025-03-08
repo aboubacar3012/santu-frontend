@@ -1,5 +1,6 @@
 "use client";
 import Badge from "@/src/components/Badge";
+import Stamp from "@/src/components/Stamp";
 import { RootState } from "@/src/redux/store";
 import { getInvoiceById } from "@/src/services/invoice";
 import { Invoice } from "@/src/types";
@@ -14,9 +15,11 @@ const printStyles = `
     body * {
       visibility: visible;
     }
+
     .no-print, .no-print * {
       display: none !important;
     }
+
     .print-section {
       position: absolute;
       left: 0;
@@ -25,14 +28,17 @@ const printStyles = `
       padding: 0 50px;
       background-color: #F7F7F7;
     }
+
     /* Masquer le header et footer lors de l'impression */
     @page {
       margin: 0;
       size: auto;
     }
+
     header, footer, nav {
       display: none !important;
     }
+
     body {
       margin: 1.6cm;
       background-color: #F7F7F7;
@@ -96,7 +102,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
       </div>
       <section ref={sectionRef} className="print-section">
         <div className="w-5/6 print:w-full pr-4 flex justify-between items-center">
-          <div className="flex flex-col py-4 px-1">
+          <div className="flex flex-col py-2 px-1">
             <h2 className="text-lg font-semibold">Facture n° {invoiceData.invoiceNumber}</h2>
             <p className="font-light text-xs text-black">
               Payé le 27 Juin 2023
@@ -241,18 +247,18 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
                       <tr onClick={() => { }} key={index} className="border-b cursor-pointer hover:bg-gray-200">
                         <th
                           scope="row"
-                          className="text-xs px-6 py-4 font-medium text-black whitespace-nowrap"
+                          className="text-xs px-6 py-2 font-medium text-black whitespace-nowrap"
                         >
                           {index + 1}
                         </th>
-                        <td className="text-xs px-6 py-4">
+                        <td className="text-xs px-6 py-2">
                           {article.name}
                           <p className="text-xs text-gray-400">{article.description}</p>
                         </td>
-                        <td className="text-xs px-6 py-4">
+                        <td className="text-xs px-6 py-2">
                           {article.quantity}
                         </td>
-                        <td className="text-xs px-6 py-4">
+                        <td className="text-xs px-6 py-2">
                           {article.price * article.quantity} GNF
                         </td>
                       </tr>
@@ -261,8 +267,10 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
                 </tbody>
               </table>
             </div>
-
-            <div className="w-full flex justify-end mt-4">
+            <div className="w-full flex justify-end mt-4 relative">
+              <div className="absolute left-1/3 top-6 transform -translate-x-1/2">
+                <Stamp type="unpaid" /> {/* Updated the type for the Stamp component */}
+              </div>
               <div className="w-56 flex flex-col gap-2 mt-4">
                 <div className="w-full flex justify-between">
                   <h3 className="text-sm font-semibold">Total HT</h3>
@@ -288,21 +296,24 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
           </div>
           <div className="w-1/6 flex flex-col gap-4 no-print">
             <div className="bg-white rounded-xl w-54 p-2 flex flex-col">
-              <button type="button" onClick={handlePrintSection} className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-lg text-sm px-3 py-2.5">
+              <button type="button" onClick={handlePrintSection} className="text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-lg text-sm py-2">
                 Imprimer la facture
               </button>
             </div>
             <div className="bg-white rounded-xl w-54 p-2 flex flex-col">
               {/* <h5 className="font-light text-sm">Facture pas encore envoyée?</h5> */}
-              <button onClick={() => {
-                alert("Fonctionnalité en cours de développement, elle sera bientôt disponible");
-              }} type="button" className=" text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-3 py-2.5">
+              <button
+                onClick={() => {
+                  alert("Fonctionnalité en cours de développement, elle sera bientôt disponible");
+                }}
+                type="button" className=" text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm  py-2">
                 Envoyer la facture par mail
               </button>
             </div>
           </div>
         </div>
       </section>
+
     </div>
   );
 }

@@ -130,7 +130,7 @@ export default function DashboardLayout({
         </div>
       </div>
       {/* Right Section */}
-      <div className="w-4/6 h-[98] my-4 overflow-y-auto flex flex-col">
+      <div className="w-8/12 h-[98] my-4 overflow-y-auto flex flex-col">
         {children}
       </div>
     </div>
