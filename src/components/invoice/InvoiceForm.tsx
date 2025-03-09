@@ -10,6 +10,7 @@ import SuccessAddInvoice from './SuccessAddInvoice';
 import { createInvoice } from '@/src/services/invoice';
 import { loginReducer } from '@/src/redux/features/authSlice';
 import { StatusEnum } from '@/src/types';
+import Modal from '../ui/Modal';
 
 type InvoiceFormProps = {
   isEdit: boolean;
@@ -115,76 +116,71 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
     if (step > 0 && step < 2) setStep(step + 1);
   };
 
-  if (!isOpen) return null;
   return (
-    <>
-      <div className="fixed inset-0 z-[999] grid place-items-center  bg-black bg-opacity-60  backdrop-blur-sm transition-opacity duration-300">
-        <div
-          className={`relative m-4 w-2/6 ${
-            step === 1 ? 'h-[90%]' : 'min-h-max'
-          } overflow-auto rounded-2xl  bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl`}
-        >
-          <div className="w-full flex justify-center items-center px-6 py-4">
-            <h1 className="text-2xl font-semibold">Création de facture</h1>
-          </div>
-          <InvoiceFormStep step={step} />
-          {step === 1 && (
-            <InvoiceInfoForm
-              invoiceName={invoiceName}
-              setInvoiceName={setInvoiceName}
-              invoiceDate={invoiceDate}
-              setInvoiceDate={setInvoiceDate}
-              invoiceTva={invoiceTva}
-              setInvoiceTva={setInvoiceTva}
-              invoicePaymentMode={invoicePaymentMode}
-              setInvoicePaymentMode={setInvoicePaymentMode}
-              invoicePaymentCondition={invoicePaymentCondition}
-              setInvoicePaymentCondition={setInvoicePaymentCondition}
-              invoiceRemark={invoiceRemark}
-              setInvoiceRemark={setInvoiceRemark}
-              selectedClient={selectedClient}
-              setSelectedClient={setSelectedClient}
-              invoiceId={invoiceId}
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
-              articles={articles}
-              setArticles={setArticles}
-              articleName={articleName}
-              setProductName={setProductName}
-              articleQuantity={articleQuantity}
-              setProductQuantity={setProductQuantity}
-              articlePrice={articlePrice}
-              setProductPrice={setProductPrice}
-              articleDescription={articleDescription}
-              setProductDescription={setProductDescription}
-            />
-          )}
-
-          {step === 2 && <SuccessAddInvoice onClick={onSubmit} />}
-
-          <div className="flex flex-wrap items-center justify-end p-4 shrink-0 text-blue-gray-500">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Création de facture"
+      size="medium"
+      footer={
+        <div className="flex justify-end w-full">
+          <button
+            onClick={() => {
+              if (step === 1) return onClose();
+              else setStep(step - 1);
+            }}
+            className="cursor-pointer px-6 py-3 mr-1 font-sans text-xs font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          >
+            {step === 1 ? 'Annuler' : 'Retour'}
+          </button>
+          {step < 2 && (
             <button
-              onClick={() => {
-                if (step === 1) return onClose();
-                else setStep(step - 1);
-              }}
-              className="cursor-pointer px-6 py-3 mr-1 font-sans text-xs font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              type="button"
+              onClick={() => onSubmit()}
+              className="cursor-pointer middle none center rounded-lg bg-gradient-to-tr from-green-600 to-green-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             >
-              {step === 1 ? 'Annuler' : 'Retour'}
+              SUIVANT
             </button>
-            {step < 2 && (
-              <button
-                type="button"
-                onClick={() => onSubmit()}
-                className="cursor-pointer middle none center rounded-lg bg-gradient-to-tr from-green-600 to-green-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-              >
-                SUIVANT
-              </button>
-            )}
-          </div>
+          )}
         </div>
+      }
+    >
+      <div className={step === 1 ? 'h-[70vh] overflow-y-auto' : 'min-h-max'}>
+        {step === 1 && (
+          <InvoiceInfoForm
+            invoiceName={invoiceName}
+            setInvoiceName={setInvoiceName}
+            invoiceDate={invoiceDate}
+            setInvoiceDate={setInvoiceDate}
+            invoiceTva={invoiceTva}
+            setInvoiceTva={setInvoiceTva}
+            invoicePaymentMode={invoicePaymentMode}
+            setInvoicePaymentMode={setInvoicePaymentMode}
+            invoicePaymentCondition={invoicePaymentCondition}
+            setInvoicePaymentCondition={setInvoicePaymentCondition}
+            invoiceRemark={invoiceRemark}
+            setInvoiceRemark={setInvoiceRemark}
+            selectedClient={selectedClient}
+            setSelectedClient={setSelectedClient}
+            invoiceId={invoiceId}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+            articles={articles}
+            setArticles={setArticles}
+            articleName={articleName}
+            setProductName={setProductName}
+            articleQuantity={articleQuantity}
+            setProductQuantity={setProductQuantity}
+            articlePrice={articlePrice}
+            setProductPrice={setProductPrice}
+            articleDescription={articleDescription}
+            setProductDescription={setProductDescription}
+          />
+        )}
+
+        {step === 2 && <SuccessAddInvoice onClick={onSubmit} />}
       </div>
-    </>
+    </Modal>
   );
 };
 
