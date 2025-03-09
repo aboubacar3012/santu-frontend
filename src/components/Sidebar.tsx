@@ -7,7 +7,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { FaUserCog, FaUsers } from 'react-icons/fa';
 import { Settings } from 'lucide-react';
 import { RootState } from '@/src/redux/store';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useCallback, memo } from 'react';
 
 // Memoize menu item to prevent unnecessary re-renders
@@ -27,17 +27,26 @@ const MenuItem = memo(
       <Link href={href}>
         <motion.div
           className={`flex items-center justify-start w-full rounded-lg my-1 gap-3 p-3 relative overflow-hidden ${
-            isActive
-              ? 'bg-gradient-to-r from-my-raspberry to-my-eggplant text-white'
-              : 'hover:bg-gray-100/80'
+            isActive ? 'text-white' : 'hover:bg-gray-100/80 text-gray-700'
           }`}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
           whileHover={{
-            scale: 1.02,
+            scale: isActive ? 1.01 : 1.02,
             transition: { duration: 0.2 },
           }}
         >
+          {isActive && (
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-my-raspberry to-my-eggplant rounded-lg -z-0"
+              layoutId="activeMenuItem"
+              initial={{ borderRadius: 8 }}
+              animate={{ borderRadius: 8 }}
+              transition={{
+                type: 'spring',
+                stiffness: 600,
+                damping: 35,
+              }}
+            />
+          )}
           <div className="relative z-10 flex items-center gap-3">
             <motion.div
               initial={false}
@@ -87,12 +96,38 @@ const Sidebar = () => {
     return router.push('/');
   }, [dispatch, router]);
 
+  const containerVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.3,
+        when: 'beforeChildren',
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 24,
+      },
+    },
+  };
+
   return (
     <motion.div
       className="relative flex flex-col w-64 h-screen bg-gray-50/80 backdrop-blur-md text-black rounded-r-xl shadow-lg no-print"
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3 }}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
     >
       <div className="flex flex-col items-center justify-center h-20 w-full">
         <Link href="/dashboard">
@@ -109,24 +144,17 @@ const Sidebar = () => {
       <div className="h-0.5 w-full bg-gray-200/50"></div>
 
       <div className="flex flex-col items-start justify-center w-full gap-1 px-3 py-4 overflow-y-auto">
-        <AnimatePresence>
-          <motion.div
-            className="w-full space-y-1"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ staggerChildren: 0.07 }}
-          >
-            {menuItems.map(item => (
-              <MenuItem
-                key={item.name}
-                name={item.name}
-                icon={item.icon}
-                href={item.href}
-                isActive={item.isActive}
-              />
-            ))}
-          </motion.div>
-        </AnimatePresence>
+        <motion.div className="w-full space-y-1" variants={itemVariants}>
+          {menuItems.map(item => (
+            <MenuItem
+              key={item.name}
+              name={item.name}
+              icon={item.icon}
+              href={item.href}
+              isActive={item.isActive}
+            />
+          ))}
+        </motion.div>
 
         <motion.hr
           className="w-full border-gray-200 my-2"
@@ -135,7 +163,7 @@ const Sidebar = () => {
           transition={{ duration: 0.5 }}
         />
 
-        <div className="w-full space-y-1">
+        <motion.div className="w-full space-y-1" variants={itemVariants}>
           <MenuItem
             name="Mon compte"
             icon={<FaUserCog className="w-6 h-6" />}
@@ -149,7 +177,7 @@ const Sidebar = () => {
             href={`/dashboard/admin/${accountId}`}
             isActive={pathname.includes('/dashboard/admin/')}
           />
-        </div>
+        </motion.div>
       </div>
 
       <motion.div
