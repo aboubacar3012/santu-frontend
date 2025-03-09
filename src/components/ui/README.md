@@ -1,4 +1,4 @@
-# Composants UI pour SantuPro
+# Composants UI pour SantouPro
 
 ## Modal
 

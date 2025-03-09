@@ -96,7 +96,7 @@ const Button = ({
       disabled={isDisabled}
       className={`
         select-none font-sans font-medium text-center transition-colors
-        flex items-center justify-center gap-2 uppercase
+        flex items-center justify-center gap-2
         ${variantClasses[variant]} 
         ${sizeClasses[size]}
         ${fullWidth ? 'w-full' : ''}
