@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import FilterSection from '@/src/components/FilterSection';
 import { motion } from 'framer-motion';
 import DashboardHead from '@/src/components/DashboardHead';
+import Button from '@/src/components/shared/Button';
 
 const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -130,28 +131,12 @@ const DashboardPage = () => {
         />
       </div>
       <div className="flex justify-end items-center">
-        {/* 
-        <div className="flex gap-1">
-          <button onClick={() => setSelectPaymentFilterBtn("all")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedPaymentFilterBtn("all")}`}>
-            Tous
-          </button>
-          <button onClick={() => setSelectPaymentFilterBtn("unpaid")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedPaymentFilterBtn("unpaid")}`}>
-            Brouillons
-          </button>
-          <button onClick={() => setSelectPaymentFilterBtn("paid")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedPaymentFilterBtn("paid")}`}>
-            Payées
-          </button>
-          <button onClick={() => setSelectPaymentFilterBtn("cancelled")} className={`font-bold text-center transition-all text-xs py-4 px-3 rounded-lg ${getSelectedPaymentFilterBtn("cancelled")}`}>
-            Annulées
-          </button>
-        </div> */}
-        <button
+        <Button
           onClick={openInvoiceForm}
-          className=" mt-4 select-none font-sans font-bold text-center uppercase transition-all text-xs py-3 px-2 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none flex items-center gap-1"
+          icon={<IoMdAdd className="w-5 h-5" />}
         >
-          <IoMdAdd className="w-6 h-6" />
           Créer une facture
-        </button>
+        </Button>
       </div>
 
       {/* Invoices list */}
