@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const FilterSection = () => {
   const [selectedPaymentFilterBtn, setSelectPaymentFilterBtn] = useState<
@@ -121,15 +121,29 @@ const FilterSection = () => {
             >
               Filtrer par période
             </motion.h3>
-            <div className="flex gap-2">
-              <AnimatePresence mode="wait">
-                {['today', 'week', 'month', 'year'].map(period => (
+            <div className="flex gap-2 relative">
+              {['today', 'week', 'month', 'year'].map(period => (
+                <motion.div key={period} className="relative">
+                  {selectedDateFilterBtn === period && (
+                    <motion.div
+                      className="absolute inset-0 rounded-md bg-gradient-to-tr from-my-raspberry to-my-eggplant"
+                      layoutId="dateIndicator"
+                      initial={{ borderRadius: 6 }}
+                      animate={{ borderRadius: 6 }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 600,
+                        damping: 35,
+                      }}
+                    />
+                  )}
                   <motion.button
-                    key={period}
                     onClick={() => handleDateFilterChange(period as any)}
-                    className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedDateFilterBtn(
-                      period as any
-                    )}`}
+                    className={`px-4 py-2 text-sm font-medium rounded-md shadow-sm relative z-10 ${
+                      selectedDateFilterBtn === period
+                        ? 'text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-100'
+                    }`}
                     whileHover={{
                       scale: 1.05,
                       transition: {
@@ -139,30 +153,14 @@ const FilterSection = () => {
                       },
                     }}
                     whileTap={{ scale: 0.95 }}
-                    initial={{ opacity: 0.8 }}
-                    animate={{
-                      opacity: 1,
-                      scale: selectedDateFilterBtn === period ? 1.03 : 1,
-                    }}
-                    layout
                   >
                     {period === 'today' && 'Aujourdhui'}
                     {period === 'week' && 'Cette semaine'}
                     {period === 'month' && 'Ce mois'}
                     {period === 'year' && 'Cette année'}
-
-                    {selectedDateFilterBtn === period && (
-                      <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full"
-                        layoutId="dateUnderline"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    )}
                   </motion.button>
-                ))}
-              </AnimatePresence>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
 
@@ -174,51 +172,47 @@ const FilterSection = () => {
             >
               Filtrer par statut
             </motion.h3>
-            <div className="flex gap-2 flex-wrap">
-              <AnimatePresence mode="wait">
-                {['all', 'draft', 'pending', 'paid', 'cancelled'].map(
-                  status => (
-                    <motion.button
-                      key={status}
-                      onClick={() => handlePaymentFilterChange(status as any)}
-                      className={`px-4 py-2 text-sm font-medium rounded-md transition-all shadow-sm ${getSelectedPaymentFilterBtn(
-                        status as any
-                      )}`}
-                      whileHover={{
-                        scale: 1.05,
-                        transition: {
-                          type: 'spring',
-                          stiffness: 400,
-                          damping: 10,
-                        },
+            <div className="flex gap-2 flex-wrap relative">
+              {['all', 'draft', 'pending', 'paid', 'cancelled'].map(status => (
+                <motion.div key={status} className="relative">
+                  {selectedPaymentFilterBtn === status && (
+                    <motion.div
+                      className="absolute inset-0 rounded-md bg-gradient-to-tr from-blue-500 to-indigo-600"
+                      layoutId="paymentIndicator"
+                      initial={{ borderRadius: 6 }}
+                      animate={{ borderRadius: 6 }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 600,
+                        damping: 35,
                       }}
-                      whileTap={{ scale: 0.95 }}
-                      initial={{ opacity: 0.8 }}
-                      animate={{
-                        opacity: 1,
-                        scale: selectedPaymentFilterBtn === status ? 1.03 : 1,
-                      }}
-                      layout
-                    >
-                      {status === 'all' && 'Toutes'}
-                      {status === 'draft' && 'Brouillons'}
-                      {status === 'pending' && 'En attente'}
-                      {status === 'paid' && 'Payées'}
-                      {status === 'cancelled' && 'Annulées'}
-
-                      {selectedPaymentFilterBtn === status && (
-                        <motion.div
-                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full"
-                          layoutId="paymentUnderline"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.3 }}
-                        />
-                      )}
-                    </motion.button>
-                  )
-                )}
-              </AnimatePresence>
+                    />
+                  )}
+                  <motion.button
+                    onClick={() => handlePaymentFilterChange(status as any)}
+                    className={`px-4 py-2 text-sm font-medium rounded-md shadow-sm relative z-10 ${
+                      selectedPaymentFilterBtn === status
+                        ? 'text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-100'
+                    }`}
+                    whileHover={{
+                      scale: 1.05,
+                      transition: {
+                        type: 'spring',
+                        stiffness: 400,
+                        damping: 10,
+                      },
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {status === 'all' && 'Toutes'}
+                    {status === 'draft' && 'Brouillons'}
+                    {status === 'pending' && 'En attente'}
+                    {status === 'paid' && 'Payées'}
+                    {status === 'cancelled' && 'Annulées'}
+                  </motion.button>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>

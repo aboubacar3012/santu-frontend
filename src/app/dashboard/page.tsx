@@ -19,6 +19,7 @@ import FilterSection from '@/src/components/FilterSection';
 import { motion } from 'framer-motion';
 import DashboardHead from '@/src/components/DashboardHead';
 import Button from '@/src/components/shared/Button';
+import Table, { Column } from '@/src/components/shared/Table';
 
 const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -67,8 +68,8 @@ const DashboardPage = () => {
     deleteParams(['addInvoice', 'invoiceId']);
   };
 
-  const handleOpenInvoice = (invoiceId: string) => {
-    router.push(`/dashboard/invoice/${invoiceId}`);
+  const handleOpenInvoice = (invoice: Partial<Invoice>) => {
+    router.push(`/dashboard/invoice/${invoice._id}`);
   };
 
   const handleEditInvoice = (e: React.MouseEvent, invoiceId: string) => {
@@ -83,6 +84,50 @@ const DashboardPage = () => {
       toast.success('Fonctionnalité de suppression à implémenter');
     }
   };
+
+  // Définition des colonnes pour la table des factures
+  const invoiceColumns: Column<Partial<Invoice>>[] = [
+    { header: 'Nom de la facture', accessor: 'name' },
+    { header: 'ID', accessor: 'invoiceNumber' },
+    { header: 'Montant', accessor: invoice => `${invoice.amount} GNF` },
+    { header: 'Date de création', accessor: 'date' },
+    {
+      header: 'Status',
+      accessor: invoice => {
+        if (invoice.status === 'DRAFT')
+          return <Badge type="gray" text="Brouillon" />;
+        if (invoice.status === 'SENT')
+          return <Badge type="blue" text="Envoyée" />;
+        if (invoice.status === 'PAID')
+          return <Badge type="green" text="Déjà payée" />;
+        if (invoice.status === 'CANCELLED')
+          return <Badge type="red" text="Annulée" />;
+        return null;
+      },
+    },
+    {
+      header: 'Actions',
+      className: 'w-28 text-center',
+      accessor: invoice => (
+        <div className="flex justify-center gap-3">
+          <button
+            onClick={e => handleEditInvoice(e, invoice._id!)}
+            className="text-blue-600 hover:text-blue-800 p-1.5 rounded-full hover:bg-blue-100"
+            title="Modifier"
+          >
+            <FaEdit size={18} />
+          </button>
+          <button
+            onClick={e => handleDeleteInvoice(e, invoice._id!)}
+            className="text-red-600 hover:text-red-800 p-1.5 rounded-full hover:bg-red-100"
+            title="Supprimer"
+          >
+            <FaTrash size={18} />
+          </button>
+        </div>
+      ),
+    },
+  ];
 
   if (loading) {
     return <div>Loading...</div>;
@@ -139,81 +184,12 @@ const DashboardPage = () => {
         </Button>
       </div>
 
-      {/* Invoices list */}
-      <div className="relative overflow-x-auto shadow-md rounded-lg mt-4 bg-white">
-        <table className="w-full text-sm text-left text-black">
-          <thead className="text-xs uppercase bg-gray-700">
-            <tr>
-              <th scope="col" className="px-4 py-3 text-white">
-                Nom de la facture
-              </th>
-              <th scope="col" className="px-4 py-3 text-white">
-                ID
-              </th>
-              <th scope="col" className="px-4 py-3 text-white">
-                Montant
-              </th>
-              <th scope="col" className="px-4 py-3 text-white">
-                Date de création
-              </th>
-              <th scope="col" className="px-4 py-3 text-white">
-                Status
-              </th>
-              <th scope="col" className="px-4 py-3 w-28 text-white text-center">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {dashboardData.invoices.map(
-              (invoice: Partial<Invoice>, index: number) => (
-                <tr
-                  onClick={() => handleOpenInvoice(invoice._id!)}
-                  key={index}
-                  className="border-b cursor-pointer hover:bg-gray-200"
-                >
-                  <td className="px-4 py-4">{invoice.name}</td>
-                  <td className="px-4 py-4">{invoice.invoiceNumber}</td>
-                  <td className="px-4 py-4">{invoice.amount} GNF</td>
-                  <td className="px-4 py-4">{invoice.date}</td>
-                  <td className="px-4 py-4 flex">
-                    {invoice.status === 'DRAFT' && (
-                      <Badge type="gray" text="Brouillon" />
-                    )}
-                    {invoice.status === 'SENT' && (
-                      <Badge type="blue" text="Envoyée" />
-                    )}
-                    {invoice.status === 'PAID' && (
-                      <Badge type="green" text="Déjà payée" />
-                    )}
-                    {invoice.status === 'CANCELLED' && (
-                      <Badge type="red" text="Annulée" />
-                    )}
-                  </td>
-                  <td className="text-xs py-4 w-28">
-                    <div className="flex justify-center gap-3">
-                      <button
-                        onClick={e => handleEditInvoice(e, invoice._id!)}
-                        className="text-blue-600 hover:text-blue-800 p-1.5 rounded-full hover:bg-blue-100"
-                        title="Modifier"
-                      >
-                        <FaEdit size={18} />
-                      </button>
-                      <button
-                        onClick={e => handleDeleteInvoice(e, invoice._id!)}
-                        className="text-red-600 hover:text-red-800 p-1.5 rounded-full hover:bg-red-100"
-                        title="Supprimer"
-                      >
-                        <FaTrash size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
-      </div>
+      {/* Utilisation du composant Table réutilisable */}
+      <Table
+        columns={invoiceColumns}
+        data={dashboardData.invoices}
+        onRowClick={handleOpenInvoice}
+      />
     </div>
   );
 };
