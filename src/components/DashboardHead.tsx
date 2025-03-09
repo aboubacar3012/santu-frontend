@@ -37,7 +37,7 @@ const DashboardHead = () => {
             transition: { duration: 0.2 },
           }}
         >
-          Santu Pro - Tableau de bord
+          Santou Pro - Tableau de bord
         </motion.h3>
       </motion.div>
     </motion.div>

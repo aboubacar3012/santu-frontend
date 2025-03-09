@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --background-santu: #f7f7f7;
-  --violet-santu: #171330;
-  --yellow-santu: #f6be00;
-  --gray-santu: #eeeeee;
-  --black-santu: #030303;
+  --background-santou: #f7f7f7;
+  --violet-santou: #171330;
+  --yellow-santou: #f6be00;
+  --gray-santou: #eeeeee;
+  --black-santou: #030303;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,8 +19,8 @@
 }
 
 body {
-  color: var(--black-santu);
-  background: var(--background-santu);
+  color: var(--black-santou);
+  background: var(--background-santou);
   max-width: 1824px;
   margin: 0;
 }

@@ -28,7 +28,7 @@ const UIOverviewPage = () => {
                 </p>
                 <div className="bg-gray-50 border border-gray-200 rounded-md p-4">
                   <code className="text-sm">
-                    import {'{'} Button {'}'} from &apos;santu-ui&apos;;
+                    import {'{'} Button {'}'} from &apos;santou-ui&apos;;
                     <br />
                     <br />
                     function App() {'{'}

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export type Column<T> = {
   header: string;
-  accessor: keyof T | ((item: T) => React.ReactNode);
+  accessor: keyof T | ((item: T, index?: number) => React.ReactNode);
   className?: string;
 };
 
@@ -14,6 +14,7 @@ type TableProps<T> = {
   className?: string;
   headerClassName?: string;
   rowClassName?: (item: T, index: number) => string;
+  emptyMessage?: string;
 };
 
 const Table = <T extends Record<string, any>>({
@@ -23,6 +24,7 @@ const Table = <T extends Record<string, any>>({
   className = 'w-full text-sm text-left text-black',
   headerClassName = 'text-xs uppercase bg-gradient-to-r from-my-raspberry to-my-eggplant',
   rowClassName = (item, index) => 'border-b cursor-pointer hover:bg-gray-200',
+  emptyMessage = 'Aucune donnée disponible',
 }: TableProps<T>) => {
   // État pour suivre la ligne survolée
   const [hoveredRowIndex, setHoveredRowIndex] = useState<number | null>(null);
@@ -78,65 +80,61 @@ const Table = <T extends Record<string, any>>({
           </motion.thead>
           <AnimatePresence>
             <motion.tbody layout>
-              {data.map((item, index) => (
-                <motion.tr
-                  key={index}
-                  onClick={() => onRowClick && onRowClick(item)}
-                  className={`${rowClassName(item, index)} relative`}
-                  variants={rowVariants}
-                  initial="hidden"
-                  animate="visible"
-                  onMouseEnter={() => setHoveredRowIndex(index)}
-                  onMouseLeave={() => setHoveredRowIndex(null)}
-                  transition={{
-                    duration: 0.2,
-                    delay: index * 0.03,
-                  }}
-                  layout
-                  whileHover={{
-                    // backgroundColor: 'rgba(229, 231, 235, 0.7)',
-                    scaleY: 1.05, // Étirement vertical uniquement
-                    scaleX: 1, // Pas d'étirement horizontal
-                    transition: { duration: 0.2 },
-                  }}
-                >
-                  {columns.map((column, colIndex) => (
-                    <motion.td
-                      key={colIndex}
-                      className={`px-4 ${column.className || ''}`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: colIndex * 0.02, duration: 0.2 }}
-                      style={{
-                        paddingTop:
-                          hoveredRowIndex === index ? '1.1rem' : '1rem',
-                        paddingBottom:
-                          hoveredRowIndex === index ? '1.1rem' : '1rem',
-                        transition: 'padding 0.2s ease',
-                      }}
-                    >
-                      {typeof column.accessor === 'function'
-                        ? column.accessor(item)
-                        : item[column.accessor]}
-                    </motion.td>
-                  ))}
-                </motion.tr>
-              ))}
+              {data.length > 0 ? (
+                data.map((item, index) => (
+                  <motion.tr
+                    key={index}
+                    onClick={() => onRowClick && onRowClick(item)}
+                    className={`${rowClassName(item, index)} relative`}
+                    variants={rowVariants}
+                    initial="hidden"
+                    animate="visible"
+                    onMouseEnter={() => setHoveredRowIndex(index)}
+                    onMouseLeave={() => setHoveredRowIndex(null)}
+                    transition={{
+                      duration: 0.2,
+                      delay: index * 0.03,
+                    }}
+                    layout
+                    whileHover={{
+                      scaleY: 1.05,
+                      scaleX: 1,
+                      transition: { duration: 0.2 },
+                    }}
+                  >
+                    {columns.map((column, colIndex) => (
+                      <motion.td
+                        key={colIndex}
+                        className={`px-4 ${column.className || ''}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: colIndex * 0.02, duration: 0.2 }}
+                        style={{
+                          paddingTop:
+                            hoveredRowIndex === index ? '1.1rem' : '1rem',
+                          paddingBottom:
+                            hoveredRowIndex === index ? '1.1rem' : '1rem',
+                          transition: 'padding 0.2s ease',
+                        }}
+                      >
+                        {typeof column.accessor === 'function'
+                          ? column.accessor(item, index)
+                          : item[column.accessor]}
+                      </motion.td>
+                    ))}
+                  </motion.tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={columns.length} className="text-center py-6">
+                    {emptyMessage}
+                  </td>
+                </tr>
+              )}
             </motion.tbody>
           </AnimatePresence>
         </table>
       </motion.div>
-
-      {data.length === 0 && (
-        <motion.div
-          className="flex justify-center items-center p-8 text-gray-500"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          Aucune donnée disponible
-        </motion.div>
-      )}
     </motion.div>
   );
 };
