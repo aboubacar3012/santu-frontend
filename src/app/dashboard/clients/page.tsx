@@ -17,6 +17,7 @@ import { Client } from '@/src/types';
 import { toast } from 'react-toastify';
 import Button from '@/src/components/shared/Button';
 import Table, { Column } from '@/src/components/shared/Table';
+import PrevHeader from '@/src/components/shared/PrevHeader';
 
 const ClientsPage = () => {
   const router = useRouter();
@@ -166,13 +167,7 @@ const ClientsPage = () => {
   return (
     <div>
       <ClientForm isOpen={showClientForm} onClose={closeClientForm} />
-      <div
-        onClick={handlePushLeft}
-        className="flex gap-2 bg-white w-full p-2 rounded-xl cursor-pointer"
-      >
-        <FaAngleLeft className="w-8 h-8" />
-        <h3 className="text-xl font-light">Retour</h3>
-      </div>
+      {/* <PrevHeader /> */}
       <div className="pr-4 flex justify-between items-center">
         <div className="flex flex-col py-4 px-1">
           <h2 className="text-lg font-semibold">
