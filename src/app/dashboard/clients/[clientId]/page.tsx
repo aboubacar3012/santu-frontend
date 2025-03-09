@@ -37,7 +37,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
   const invoiceColumns: Column<any>[] = [
     {
       header: 'Nom de la facture',
-      accessor: (invoice, index) => invoice.name || `Facture #${index + 1}`,
+      accessor: (invoice, index) => invoice.name || `Facture #${1}`,
       className: 'font-medium',
     },
     {
