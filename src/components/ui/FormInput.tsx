@@ -11,7 +11,7 @@ interface FormInputProps {
   placeholder?: string;
   icon?: ReactNode;
   required?: boolean;
-  error?: string;
+  error?: string | null;
   className?: string;
   rows?: number;
   min?: number;
