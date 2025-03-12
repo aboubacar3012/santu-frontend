@@ -6,6 +6,7 @@ import { Account } from '@/src/types';
 import { getAccountById } from '@/src/services/account';
 import AccountInfoForm from '@/src/components/account/AccountInfoForm';
 import AccountPasswordForm from '@/src/components/account/AccountPasswordForm';
+import AccountSettingsForm from '@/src/components/account/AccountSettingsForm';
 import { motion } from 'framer-motion';
 import { CalendarDays, RefreshCw } from 'lucide-react';
 
@@ -27,16 +28,12 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
           setAccountData(data.account);
           setLoading(false);
         } else if (!data.success) {
-          setError(
-            "Une erreur s'est produite lors de la récupération de l'utilisateur"
-          );
+          setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
           setLoading(false);
         }
       })
       .catch(error => {
-        setError(
-          "Une erreur s'est produite lors de la récupération de l'utilisateur"
-        );
+        setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
         setLoading(false);
       });
   };
@@ -101,8 +98,7 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
         >
           <CalendarDays className="h-5 w-5 text-my-raspberry" />
           <p className="text-nowrap font-normal">
-            Inscrit depuis le{' '}
-            <span className="font-semibold">13 septembre 2024</span>
+            Inscrit depuis le <span className="font-semibold">13 septembre 2024</span>
           </p>
         </motion.div>
 
@@ -112,18 +108,18 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
         >
           <RefreshCw className="h-5 w-5 text-my-raspberry" />
           <p className="text-nowrap font-normal">
-            Dernière mise à jour le{' '}
-            <span className="font-semibold">13 septembre 2024</span>
+            Dernière mise à jour le <span className="font-semibold">13 septembre 2024</span>
           </p>
         </motion.div>
       </div>
 
-      <motion.div
-        variants={itemVariants}
-        className="flex flex-col md:flex-row gap-6"
-      >
+      <motion.div variants={itemVariants} className="flex flex-col md:flex-row gap-6">
         <AccountInfoForm accountData={accountData} />
         <AccountPasswordForm accountData={accountData} />
+      </motion.div>
+
+      <motion.div variants={itemVariants} className="flex flex-col md:flex-row gap-6">
+        <AccountSettingsForm accountData={accountData} />
       </motion.div>
     </motion.div>
   );

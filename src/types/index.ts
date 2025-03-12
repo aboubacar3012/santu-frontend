@@ -79,4 +79,5 @@ export type Account = {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  currency?: string;
 };

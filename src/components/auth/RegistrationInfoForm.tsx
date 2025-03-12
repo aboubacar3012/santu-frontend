@@ -9,9 +9,7 @@ type RegistrationInfoFormProps = {
   setRegistrationStep: Dispatch<SetStateAction<number>>;
 };
 
-const RegistrationInfoForm = ({
-  setRegistrationStep,
-}: RegistrationInfoFormProps) => {
+const RegistrationInfoForm = ({ setRegistrationStep }: RegistrationInfoFormProps) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [company, setCompany] = useState('');
@@ -31,53 +29,46 @@ const RegistrationInfoForm = ({
   }, []);
 
   const handleUpdateAccount = () => {
-    return updateAccount(
-      userId,
-      { firstName, lastName, company, phone, address },
-      auth.token!
-    ).then(data => {
-      if (data.success) {
-        dispatch(
-          loginReducer({
-            isAuthenticated: true,
-            loggedAccountInfos: data.account,
-          })
-        );
-        dispatch(updateToken(data.token));
-        setRegistrationStep(3);
-        toast.success('Votre compte a été mis à jour avec succès');
-      } else {
-        toast.error(data.message);
-      }
-    });
+    // return updateAccount(
+    //   userId,
+    //   { firstName, lastName, company, phone, address },
+    //   auth.token!
+    // ).then(data => {
+    //   if (data.success) {
+    //     dispatch(
+    //       loginReducer({
+    //         isAuthenticated: true,
+    //         loggedAccountInfos: data.account,
+    //       })
+    //     );
+    //     dispatch(updateToken(data.token));
+    //     setRegistrationStep(3);
+    //     toast.success('Votre compte a été mis à jour avec succès');
+    //   } else {
+    //     toast.error(data.message);
+    //   }
+    // });
   };
 
   return (
     <div className="w-1/2 h-min py-2 gap-2 flex flex-col text-black bg-white  rounded-lg ">
       <div className="flex flex-col gap-1 px-6 mb-6">
-        <h1 className="text-2xl font-semibold text-black p-0">
-          Bienvenue sur Santou Pro
-        </h1>
+        <h1 className="text-2xl font-semibold text-black p-0">Bienvenue sur Santou Pro</h1>
         <p className="text-black text-sm  p-0">
           Votre logiciel de facturation pour vous faciliter la vie
         </p>
         <div className="h-0.5 w-full bg-gray-100 mb-2"></div>
         <div>
-          <h2 className="text-lg font-semibold">
-            Nous sommes ravis de vous compter parmi nous !
-          </h2>
+          <h2 className="text-lg font-semibold">Nous sommes ravis de vous compter parmi nous !</h2>
           <p className="text-black">
-            Pour profiter pleinement de toutes les fonctionnalités de notre
-            plateforme, veuillez finaliser votre inscription.
+            Pour profiter pleinement de toutes les fonctionnalités de notre plateforme, veuillez
+            finaliser votre inscription.
           </p>
         </div>
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label
-            htmlFor="firstName"
-            className="block mb-2 text-sm font-medium text-black"
-          >
+          <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-black">
             Prénom
           </label>
           <input
@@ -93,10 +84,7 @@ const RegistrationInfoForm = ({
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label
-            htmlFor="lastName"
-            className="block mb-2 text-sm font-medium text-black"
-          >
+          <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-black">
             Nom
           </label>
           <input
@@ -112,10 +100,7 @@ const RegistrationInfoForm = ({
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label
-            htmlFor="company"
-            className="block mb-2 text-sm font-medium text-black"
-          >
+          <label htmlFor="company" className="block mb-2 text-sm font-medium text-black">
             Nom de l&apos;entreprise
           </label>
           <input
@@ -131,10 +116,7 @@ const RegistrationInfoForm = ({
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label
-            htmlFor="email"
-            className="block mb-2 text-sm font-medium text-black"
-          >
+          <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">
             Adresse mail
           </label>
           <input
@@ -149,10 +131,7 @@ const RegistrationInfoForm = ({
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label
-            htmlFor="phone"
-            className="block mb-2 text-sm font-medium text-black"
-          >
+          <label htmlFor="phone" className="block mb-2 text-sm font-medium text-black">
             Téléphone
           </label>
           <input
@@ -168,10 +147,7 @@ const RegistrationInfoForm = ({
       </div>
       <div className="flex flex-col gap-1 px-6">
         <div className=" w-full min-w-[200px]">
-          <label
-            htmlFor="address"
-            className="block mb-2 text-sm font-medium text-black"
-          >
+          <label htmlFor="address" className="block mb-2 text-sm font-medium text-black">
             Adresse
           </label>
           <input
