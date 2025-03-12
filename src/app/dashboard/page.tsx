@@ -90,14 +90,10 @@ const DashboardPage = () => {
     {
       header: 'Status',
       accessor: invoice => {
-        if (invoice.status === StatusEnum.DRAFT)
-          return <Badge type={StatusEnum.DRAFT} text="Brouillon" />;
-        if (invoice.status === StatusEnum.SENT)
-          return <Badge type={StatusEnum.SENT} text="Envoyée" />;
-        if (invoice.status === StatusEnum.PAID)
-          return <Badge type={StatusEnum.PAID} text="Déjà payée" />;
-        if (invoice.status === StatusEnum.CANCELLED)
-          return <Badge type={StatusEnum.CANCELLED} text="Annulée" />;
+        if (invoice.status === StatusEnum.DRAFT) return <Badge type="yellow" text="Brouillon" />;
+        if (invoice.status === StatusEnum.PENDING) return <Badge type="blue" text="Envoyée" />;
+        if (invoice.status === StatusEnum.PAID) return <Badge type="green" text="Déjà payée" />;
+        if (invoice.status === StatusEnum.CANCELLED) return <Badge type="red" text="Annulée" />;
         return null;
       },
     },

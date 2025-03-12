@@ -6,10 +6,9 @@ export enum RoleEnum {
 
 export enum StatusEnum {
   DRAFT = 'DRAFT',
-  SENT = 'SENT',
+  PENDING = 'PENDING',
   PAID = 'PAID',
   CANCELLED = 'CANCELLED',
-  UNPAID = 'UNPAID',
 }
 
 export enum TypeEnum {

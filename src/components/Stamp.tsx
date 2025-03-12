@@ -1,12 +1,13 @@
 import { CheckCircle, XCircle, FileEdit } from 'lucide-react';
+import { StatusEnum } from '@/src/types';
 
-type StampType = 'PAID' | 'DRAFT' | 'UNPAID';
+type StampType = keyof typeof StatusEnum;
 
 interface StampProps {
   type?: StampType;
 }
 
-const Stamp = ({ type = 'PAID' }: StampProps) => {
+const Stamp = ({ type = StatusEnum.PAID }: StampProps) => {
   // Configuration pour chaque type de tampon
   const stampConfig = {
     PAID: {
@@ -23,12 +24,19 @@ const Stamp = ({ type = 'PAID' }: StampProps) => {
       icon: <FileEdit size={32} className="text-amber-600" />,
       text: 'BROUILLON',
     },
-    UNPAID: {
+    CANCELLED: {
       borderColor: 'border-red-500',
       textColor: 'text-red-600',
       shadowColor: 'rgba(239, 68, 68, 0.3)',
       icon: <XCircle size={32} className="text-red-600" />,
-      text: 'NON PAYÉ',
+      text: 'ANNULÉ',
+    },
+    PENDING: {
+      borderColor: 'border-blue-500',
+      textColor: 'text-blue-600',
+      shadowColor: 'rgba(59, 130, 246, 0.3)',
+      icon: <FileEdit size={32} className="text-blue-600" />,
+      text: 'EN ATTENTE',
     },
   };
 

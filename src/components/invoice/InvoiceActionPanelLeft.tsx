@@ -155,7 +155,7 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
             )}
             {invoice.status !== StatusEnum.DRAFT && invoice.status !== StatusEnum.PAID && (
               <div className="absolute transform -rotate-12 top-12 left-16">
-                <Stamp type={StatusEnum.UNPAID} />
+                <Stamp type={StatusEnum.PENDING} />
               </div>
             )}
 

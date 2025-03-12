@@ -73,8 +73,7 @@ const TablesPage = () => {
     {
       header: 'Status',
       accessor: user => {
-        if (user.status === 'Active')
-          return <Badge type="green" text="Actif" />;
+        if (user.status === 'Active') return <Badge type="green" text="Actif" />;
         return <Badge type="gray" text="Inactif" />;
       },
     },
@@ -89,10 +88,8 @@ const TablesPage = () => {
     {
       header: 'Stock',
       accessor: product => {
-        if (product.stock > 10)
-          return <Badge type="green" text={product.stock.toString()} />;
-        if (product.stock > 0)
-          return <Badge type="yellow" text={product.stock.toString()} />;
+        if (product.stock > 10) return <Badge type="green" text={product.stock.toString()} />;
+        if (product.stock > 0) return <Badge type="yellow" text={product.stock.toString()} />;
         return <Badge type="red" text="En rupture" />;
       },
     },
@@ -112,9 +109,7 @@ const TablesPage = () => {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-6">Exemples de tables</h1>
 
-      <h2 className="text-xl font-semibold mt-8 mb-4">
-        Table des utilisateurs
-      </h2>
+      <h2 className="text-xl font-semibold mt-8 mb-4">Table des utilisateurs</h2>
       <Table columns={userColumns} data={users} onRowClick={handleUserClick} />
 
       <h2 className="text-xl font-semibold mt-8 mb-4">Table des produits</h2>

@@ -4,7 +4,7 @@ import { useGetClientById } from '@/src/hooks/useClients';
 import { useGetInvoicesByClientId } from '@/src/hooks/useInvoices';
 import { formatCurrency } from '@/src/libs/formatCurrency';
 import { RootState } from '@/src/redux/store';
-import { Client, Invoice } from '@/src/types';
+import { Client, Invoice, StatusEnum } from '@/src/types';
 import Table, { Column } from '@/src/components/shared/Table';
 
 import { useRouter } from 'next/navigation';
@@ -24,8 +24,10 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
   const client = data?.client as Client;
 
   // Utilisation du hook pour récupérer les factures du client
-  const { data: invoicesData, isLoading: isLoadingInvoices } =
-    useGetInvoicesByClientId(params.clientId, auth.token!);
+  const { data: invoicesData, isLoading: isLoadingInvoices } = useGetInvoicesByClientId(
+    params.clientId,
+    auth.token!
+  );
   const invoices = invoicesData?.invoices || [];
 
   // Calcul du montant total de toutes les factures
@@ -52,28 +54,25 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
     {
       header: 'Date de création',
       accessor: invoice =>
-        invoice.createdAt
-          ? new Date(invoice.createdAt).toLocaleDateString()
-          : '-',
+        invoice.createdAt ? new Date(invoice.createdAt).toLocaleDateString() : '-',
     },
     {
       header: 'Status',
       accessor: invoice => (
         <Badge
-          type={
-            invoice.status === 'paid'
-              ? 'green'
-              : invoice.status === 'pending'
-              ? 'yellow'
-              : 'red'
-          }
-          text={
-            invoice.status === 'paid'
-              ? 'Payée'
-              : invoice.status === 'pending'
-              ? 'En attente'
-              : 'En retard'
-          }
+          type={invoice.status}
+          text={(() => {
+            switch (invoice.status) {
+              case StatusEnum.DRAFT:
+                return 'Brouillon';
+              case StatusEnum.PAID:
+                return 'Payée';
+              case StatusEnum.PENDING:
+                return 'En attente';
+              default:
+                return invoice.status;
+            }
+          })()}
         />
       ),
     },
@@ -116,13 +115,11 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
             </div>
             <div className="flex flex-col justify-between items-end gap-6">
               <div className="flex gap-4">
-                <Badge type="gray" text={`${invoices.length} Factures`} />
+                <Badge type="yellow" text={`${invoices.length} Factures`} />
               </div>
               <div className="text-right">
                 <p className="font-light text-xs">Montant total</p>
-                <p className="font-bold text-lg">
-                  {formatCurrency(totalAmount)}
-                </p>
+                <p className="font-bold text-lg">{formatCurrency(totalAmount)}</p>
               </div>
             </div>
           </div>
