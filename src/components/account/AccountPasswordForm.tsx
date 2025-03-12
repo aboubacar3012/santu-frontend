@@ -35,9 +35,7 @@ const AccountPasswordForm = ({ accountData }: AccountPasswordFormProps) => {
     }
 
     if (newPassword && newPassword.length < 8) {
-      toast.error(
-        'Le nouveau mot de passe doit contenir au moins 8 caractères'
-      );
+      toast.error('Le nouveau mot de passe doit contenir au moins 8 caractères');
       return;
     }
 
@@ -54,7 +52,7 @@ const AccountPasswordForm = ({ accountData }: AccountPasswordFormProps) => {
   };
 
   return (
-    <div className="w-1/2 h-min py-4 gap-4 flex flex-col text-black bg-white rounded-lg shadow-sm">
+    <div className=" h-min py-4 gap-4 flex flex-col text-black bg-white rounded-lg shadow-sm">
       <h3 className="px-6 text-lg font-semibold bg-gradient-to-r from-my-raspberry to-my-eggplant bg-clip-text text-transparent">
         Sécurité
       </h3>

@@ -113,14 +113,16 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
         </motion.div>
       </div>
 
-      <motion.div variants={itemVariants} className="flex flex-col md:flex-row gap-6">
-        <AccountInfoForm accountData={accountData} />
-        <AccountPasswordForm accountData={accountData} />
-      </motion.div>
+      <div className="flex w-full gap-2">
+        <motion.div variants={itemVariants} className="w-full gap-2 flex flex-col">
+          <AccountInfoForm accountData={accountData} />
+          <AccountPasswordForm accountData={accountData} />
+        </motion.div>
 
-      <motion.div variants={itemVariants} className="flex flex-col md:flex-row gap-6">
-        <AccountSettingsForm accountData={accountData} />
-      </motion.div>
+        <motion.div variants={itemVariants} className="w-full flex flex-col ">
+          <AccountSettingsForm accountData={accountData} />
+        </motion.div>
+      </div>
     </motion.div>
   );
 };

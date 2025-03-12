@@ -40,7 +40,7 @@ const AccountInfoForm = ({ accountData }: AccountInfoFormProps) => {
   };
 
   return (
-    <div className="w-1/2 h-min py-4 gap-4 flex flex-col text-black bg-white rounded-lg shadow-sm">
+    <div className=" h-min py-4 gap-4 flex flex-col text-black bg-white rounded-lg shadow-sm">
       <h3 className="px-6 text-lg font-semibold bg-gradient-to-r from-my-raspberry to-my-eggplant bg-clip-text text-transparent">
         Informations personnelles
       </h3>
@@ -49,10 +49,7 @@ const AccountInfoForm = ({ accountData }: AccountInfoFormProps) => {
         {accountData && accountData.logo && (
           <div className="w-full flex flex-col gap-1 p-6">
             <div className="relative h-11 w-full min-w-[200px]">
-              <label
-                htmlFor="title"
-                className="block mb-2 text-sm font-medium text-black"
-              >
+              <label htmlFor="title" className="block mb-2 text-sm font-medium text-black">
                 Logo URL
               </label>
               <input
@@ -62,9 +59,7 @@ const AccountInfoForm = ({ accountData }: AccountInfoFormProps) => {
                   const file = e.target.files?.[0];
                   // si la taille du fichier est supérieure à 1MB
                   if (file && file.size > 1024 * 1024) {
-                    return toast.error(
-                      'La taille du fichier ne doit pas dépasser 1MB'
-                    );
+                    return toast.error('La taille du fichier ne doit pas dépasser 1MB');
                   }
                   if (file) {
                     const reader = new FileReader();
