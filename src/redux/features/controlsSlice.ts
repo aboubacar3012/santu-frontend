@@ -1,6 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 type Controls = {
   spinner: boolean;
@@ -23,7 +22,7 @@ const initialState: Controls = {
 };
 
 export const controlsSlice = createSlice({
-  name: "controlsSlice",
+  name: 'controlsSlice',
   initialState,
   reducers: {
     updateControl: (state, action: PayloadAction<Partial<Controls>>) => {

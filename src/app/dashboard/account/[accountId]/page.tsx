@@ -6,6 +6,9 @@ import { Account } from '@/src/types';
 import { getAccountById } from '@/src/services/account';
 import AccountInfoForm from '@/src/components/account/AccountInfoForm';
 import AccountPasswordForm from '@/src/components/account/AccountPasswordForm';
+import { motion } from 'framer-motion';
+import { CalendarDays, RefreshCw } from 'lucide-react';
+
 // Cette fonction indique à Next.js que cette page doit être générée côté client
 // et non dans le cadre de l'export statique
 export const dynamic = 'force-dynamic';
@@ -43,37 +46,86 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-full">
+        <RefreshCw className="w-8 h-8 text-gray-500 animate-spin" />
+      </div>
+    );
   }
 
-  return (
-    <div>
-      <h1 className="text-2xl font-semibold text-black">Mon compte</h1>
-      <p className="text-black text-lg">
-        Ici, vous pouvez gérer vos informations personnelles
-      </p>
-      <div className="h-0.5 my-8 w-full bg-gray-200"></div>
-      {/* Account profile */}
-      <div className="w-min px-4 my-2 py-2 gap-2 flex flex-col justify-end text-black bg-white  rounded-lg ">
-        <p className="text-nowrap text-lg font-normal text-black">
-          Inscrit depuis le{' '}
-          <span className="font-semibold">13 septembre 2024</span>
-        </p>
-      </div>
-      <div className="w-min px-4 my-2 py-2 gap-2 flex flex-col justify-end text-black bg-white  rounded-lg ">
-        <p className="text-nowrap text-lg font-normal text-black">
-          Dernière mise à jour le{' '}
-          <span className="font-semibold">13 septembre 2024</span>
-        </p>
-      </div>
-      <div className="flex gap-2 py-2">
-        {/* Left side */}
-        <AccountInfoForm accountData={accountData} />
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
-        {/* Right side */}
-        <AccountPasswordForm accountData={accountData} />
+  const itemVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 100,
+        damping: 10,
+      },
+    },
+  };
+
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="space-y-6"
+    >
+      <motion.div variants={itemVariants}>
+        <h1 className="text-2xl font-semibold text-black">Mon compte</h1>
+        <p className="text-gray-600 text-lg">
+          Ici, vous pouvez gérer vos informations personnelles
+        </p>
+      </motion.div>
+
+      <motion.div variants={itemVariants}>
+        <div className="h-0.5 my-6 w-full bg-gray-200"></div>
+      </motion.div>
+
+      <div className="flex flex-wrap gap-4 mb-6">
+        <motion.div
+          variants={itemVariants}
+          className="flex items-center gap-2 px-4 py-3 text-black bg-white rounded-lg shadow-sm"
+        >
+          <CalendarDays className="h-5 w-5 text-my-raspberry" />
+          <p className="text-nowrap font-normal">
+            Inscrit depuis le{' '}
+            <span className="font-semibold">13 septembre 2024</span>
+          </p>
+        </motion.div>
+
+        <motion.div
+          variants={itemVariants}
+          className="flex items-center gap-2 px-4 py-3 text-black bg-white rounded-lg shadow-sm"
+        >
+          <RefreshCw className="h-5 w-5 text-my-raspberry" />
+          <p className="text-nowrap font-normal">
+            Dernière mise à jour le{' '}
+            <span className="font-semibold">13 septembre 2024</span>
+          </p>
+        </motion.div>
       </div>
-    </div>
+
+      <motion.div
+        variants={itemVariants}
+        className="flex flex-col md:flex-row gap-6"
+      >
+        <AccountInfoForm accountData={accountData} />
+        <AccountPasswordForm accountData={accountData} />
+      </motion.div>
+    </motion.div>
   );
 };
 

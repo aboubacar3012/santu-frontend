@@ -10,6 +10,7 @@ import Table, { Column } from '@/src/components/shared/Table';
 import { useRouter } from 'next/navigation';
 import { FaAngleLeft } from 'react-icons/fa6';
 import { useSelector } from 'react-redux';
+import PrevHeader from '@/src/components/shared/PrevHeader';
 
 // Cette fonction indique à Next.js que cette page doit être générée côté client
 // et non dans le cadre de l'export statique
@@ -91,14 +92,8 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
 
   return (
     <div>
-      <div
-        onClick={handlePushLeft}
-        className="flex gap-2 bg-white w-full p-2 mb-2 rounded-xl cursor-pointer"
-      >
-        <FaAngleLeft className="w-8 h-8" />
-        <h3 className="text-xl font-light">Santou Pro</h3>
-      </div>
-      <div className="w-full flex gap-4">
+      <PrevHeader />
+      <div className="w-full flex gap-4 mt-4">
         <div className="w-full flex flex-col gap-2 bg-white p-4 rounded-xl">
           <div className="w-full flex justify-between">
             <div className="flex gap-2">

@@ -10,14 +10,12 @@ const PrevHeader = () => {
   return (
     <motion.div
       onClick={handlePushLeft}
-      className="flex gap-2 bg-white p-2 rounded-xl cursor-pointer shadow-md"
-      style={{ width: '8rem' }}
+      className="flex w-2/12 gap-2 bg-white p-2 rounded-xl cursor-pointer shadow-md"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       whileHover={{
-        width: '11rem',
-        scale: 1.03,
+        scale: 1.0022,
         backgroundColor: '#FDFDFD',
         boxShadow: '0px 7px 20px rgba(0, 0, 0, 0.15)',
         transition: {
@@ -51,7 +49,6 @@ const PrevHeader = () => {
         initial={{ y: 10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.3 }}
-        whileHover={{ fontWeight: '500' }}
       >
         Retour
       </motion.h3>

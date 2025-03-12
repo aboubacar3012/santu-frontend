@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { Account } from '@/src/types';
 import FormInput from '@/src/components/ui/FormInput';
+import Button from '@/src/components/shared/Button';
+import { Save } from 'lucide-react';
 
 interface AccountInfoFormProps {
   accountData: Account | null;
@@ -14,6 +16,7 @@ const AccountInfoForm = ({ accountData }: AccountInfoFormProps) => {
   const [company, setCompany] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (accountData) {
@@ -27,12 +30,21 @@ const AccountInfoForm = ({ accountData }: AccountInfoFormProps) => {
   }, [accountData]);
 
   const handleSave = () => {
-    // Implémentation de la sauvegarde à faire
-    console.log('Sauvegarde des informations du compte');
+    setSaving(true);
+    // Simulation d'une opération de sauvegarde asynchrone
+    setTimeout(() => {
+      console.log('Sauvegarde des informations du compte');
+      toast.success('Informations mises à jour avec succès');
+      setSaving(false);
+    }, 1000);
   };
 
   return (
-    <div className="w-1/2 h-min py-2 gap-4 flex flex-col text-black bg-white rounded-lg">
+    <div className="w-1/2 h-min py-4 gap-4 flex flex-col text-black bg-white rounded-lg shadow-sm">
+      <h3 className="px-6 text-lg font-semibold bg-gradient-to-r from-my-raspberry to-my-eggplant bg-clip-text text-transparent">
+        Informations personnelles
+      </h3>
+
       <div className="flex items-center">
         {accountData && accountData.logo && (
           <div className="w-full flex flex-col gap-1 p-6">
@@ -126,12 +138,17 @@ const AccountInfoForm = ({ accountData }: AccountInfoFormProps) => {
         />
       </div>
 
-      <button
-        onClick={handleSave}
-        className="mx-6 w-min px-6 font-semibold bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-      >
-        Enregistrer
-      </button>
+      <div className="flex px-6 pt-2">
+        <Button
+          onClick={handleSave}
+          variant="primary"
+          size="md"
+          icon={<Save className="w-4 h-4" />}
+          loading={saving}
+        >
+          Enregistrer
+        </Button>
+      </div>
     </div>
   );
 };

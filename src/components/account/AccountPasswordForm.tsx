@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Account } from '@/src/types';
 import FormInput from '@/src/components/ui/FormInput';
+import Button from '@/src/components/shared/Button';
+import { Key, Save } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 interface AccountPasswordFormProps {
   accountData: Account | null;
@@ -11,6 +14,7 @@ const AccountPasswordForm = ({ accountData }: AccountPasswordFormProps) => {
   const [actualPassword, setActualPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (accountData) {
@@ -19,12 +23,42 @@ const AccountPasswordForm = ({ accountData }: AccountPasswordFormProps) => {
   }, [accountData]);
 
   const handleSave = () => {
-    // Implémentation de la mise à jour du mot de passe
-    console.log('Mise à jour du mot de passe');
+    // Validation des champs
+    if (!actualPassword) {
+      toast.error('Veuillez saisir votre mot de passe actuel');
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      toast.error('Les nouveaux mots de passe ne correspondent pas');
+      return;
+    }
+
+    if (newPassword && newPassword.length < 8) {
+      toast.error(
+        'Le nouveau mot de passe doit contenir au moins 8 caractères'
+      );
+      return;
+    }
+
+    setSaving(true);
+    // Simulation d'une opération de sauvegarde asynchrone
+    setTimeout(() => {
+      console.log('Mise à jour du mot de passe');
+      toast.success('Mot de passe mis à jour avec succès');
+      setActualPassword('');
+      setNewPassword('');
+      setConfirmNewPassword('');
+      setSaving(false);
+    }, 1000);
   };
 
   return (
-    <div className="w-1/2 h-min py-2 gap-2 flex flex-col text-black bg-white rounded-lg">
+    <div className="w-1/2 h-min py-4 gap-4 flex flex-col text-black bg-white rounded-lg shadow-sm">
+      <h3 className="px-6 text-lg font-semibold bg-gradient-to-r from-my-raspberry to-my-eggplant bg-clip-text text-transparent">
+        Sécurité
+      </h3>
+
       <div className="flex flex-col gap-1 px-6">
         <FormInput
           label="E-mail"
@@ -64,12 +98,18 @@ const AccountPasswordForm = ({ accountData }: AccountPasswordFormProps) => {
           required={true}
         />
       </div>
-      <button
-        onClick={handleSave}
-        className="mx-6 w-min px-6 font-semibold bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-      >
-        Enregistrer
-      </button>
+
+      <div className="flex px-6 pt-2">
+        <Button
+          onClick={handleSave}
+          variant="primary"
+          size="md"
+          icon={<Key className="w-4 h-4" />}
+          loading={saving}
+        >
+          Modifier le mot de passe
+        </Button>
+      </div>
     </div>
   );
 };
