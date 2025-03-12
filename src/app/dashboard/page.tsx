@@ -155,7 +155,7 @@ const DashboardPage = () => {
           icon={<GiMoneyStack className="w-8 h-8 text-green-500" />}
         />
         <StatCard
-          title="Chiffres d'affaire"
+          title="Ce mois-ci"
           value={`${formatCurrency(dashboardData.total)}`}
           unit="Toute les factures"
           icon={<GiMoneyStack className="w-8 h-8 text-blue-500" />}
@@ -175,7 +175,7 @@ const DashboardPage = () => {
           }
         />
       </div>
-      <div className="flex justify-end items-center">
+      <div className="flex justify-end items-center mt-3">
         <Button
           onClick={openInvoiceForm}
           icon={<IoMdAdd className="w-5 h-5" />}

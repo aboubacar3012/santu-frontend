@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Eye, EyeOff } from 'lucide-react';
 
 type StatCardProps = {
   title: string;
@@ -9,6 +10,12 @@ type StatCardProps = {
 };
 
 const StatCard = ({ title, value, unit, icon }: StatCardProps) => {
+  const [isValueVisible, setIsValueVisible] = useState(true);
+
+  const toggleValueVisibility = () => {
+    setIsValueVisible(!isValueVisible);
+  };
+
   return (
     <motion.div
       className="cursor-pointer flex flex-col justify-between p-4 pb-4 bg-white rounded-md shadow-md h-40 relative overflow-hidden"
@@ -57,7 +64,9 @@ const StatCard = ({ title, value, unit, icon }: StatCardProps) => {
 
       <motion.div>
         <motion.p
-          className="text-2xl font-normal whitespace-nowrap pb-2"
+          className={`text-2xl font-normal whitespace-nowrap pb-2 transition-all duration-300 ${
+            !isValueVisible ? 'blur-sm select-none' : ''
+          }`}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -71,7 +80,9 @@ const StatCard = ({ title, value, unit, icon }: StatCardProps) => {
         </motion.p>
 
         <motion.p
-          className="text-md text-gray-600"
+          className={`text-md text-gray-600 transition-all duration-300 ${
+            !isValueVisible ? 'blur-sm select-none' : ''
+          }`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.8 }}
           transition={{ delay: 0.3 }}
@@ -80,6 +91,26 @@ const StatCard = ({ title, value, unit, icon }: StatCardProps) => {
           {unit}
         </motion.p>
       </motion.div>
+
+      {/* Bouton eye repositionné en bas à droite */}
+      <motion.button
+        onClick={e => {
+          e.stopPropagation();
+          toggleValueVisibility();
+        }}
+        className="absolute bottom-2 right-2 text-gray-500 hover:text-my-eggplant focus:outline-none bg-white bg-opacity-70 rounded-full p-1"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.7 }}
+        // whileHover={{ opacity: 1, scale: 1.1 }}
+      >
+        {isValueVisible ? (
+          <Eye className="w-4 h-4" />
+        ) : (
+          <EyeOff className="w-4 h-4" />
+        )}
+      </motion.button>
     </motion.div>
   );
 };
