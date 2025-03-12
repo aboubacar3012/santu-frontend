@@ -1,13 +1,16 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { StatusEnum } from '@/src/types';
+import { useUrlParams } from '@/src/hooks/useUrlParams';
 
 type SuccessAddInvoiceProps = {
-  onClick: () => void;
+  onClick: (status: StatusEnum) => void;
 };
 
 const SuccessAddInvoice = ({ onClick }: SuccessAddInvoiceProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  const { deleteParams } = useUrlParams();
 
   useEffect(() => {
     setIsVisible(true);
@@ -58,7 +61,7 @@ const SuccessAddInvoice = ({ onClick }: SuccessAddInvoiceProps) => {
         </motion.p>
 
         <div className="space-y-3 w-full mt-2">
-          <motion.button
+          {/* <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
             initial={{ opacity: 0, y: 20 }}
@@ -89,7 +92,7 @@ const SuccessAddInvoice = ({ onClick }: SuccessAddInvoiceProps) => {
               />
             </svg>
             Aperçu de la facture
-          </motion.button>
+          </motion.button> */}
 
           <motion.button
             whileHover={{ scale: 1.03 }}
@@ -98,7 +101,7 @@ const SuccessAddInvoice = ({ onClick }: SuccessAddInvoiceProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
             type="button"
-            // onClick={onClick}
+            onClick={() => onClick(StatusEnum.PAID)}
             className="w-full px-6 font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-lg hover:shadow-md transition-all duration-300 flex items-center justify-center"
           >
             <svg
@@ -125,7 +128,7 @@ const SuccessAddInvoice = ({ onClick }: SuccessAddInvoiceProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
             type="button"
-            // onClick={onClick}
+            onClick={() => onClick(StatusEnum.DRAFT)}
             className="w-full px-6 font-semibold bg-gradient-to-r from-amber-400 to-amber-500 text-white py-3 rounded-lg hover:shadow-md transition-all duration-300 flex items-center justify-center"
           >
             <svg
@@ -152,7 +155,9 @@ const SuccessAddInvoice = ({ onClick }: SuccessAddInvoiceProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
             type="button"
-            // onClick={onClick}
+            onClick={() => {
+              deleteParams(['addInvoice', 'invoiceId']);
+            }}
             className="w-full px-6 font-semibold bg-gradient-to-r from-red-400 to-red-400 text-white py-3 rounded-lg hover:shadow-md transition-all duration-300 flex items-center justify-center"
           >
             <svg

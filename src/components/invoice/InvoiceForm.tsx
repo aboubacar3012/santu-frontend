@@ -19,7 +19,6 @@ type InvoiceFormProps = {
 };
 const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
   const [step, setStep] = useState<number>(1); // 1: Informations générales, 2: Produits/Services, 3: Confirmation
-  const [campaignName, setCampaignName] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [invoiceName, setInvoiceName] = useState<string>('');
   const [invoiceDate, setInvoiceDate] = useState<string>('');
@@ -59,7 +58,7 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
     }
   }, [errorMessage]);
 
-  const onSubmit = () => {
+  const onSubmit = (status: StatusEnum = StatusEnum.PAID) => {
     if (
       !invoiceId ||
       !selectedClient ||
@@ -87,33 +86,28 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
       date: invoiceDate,
       paymentMode: invoicePaymentMode,
       paymentCondition: invoicePaymentCondition,
-      status:
-        invoicePaymentCondition === 'NOW' ? StatusEnum.PAID : StatusEnum.DRAFT,
+      status: status,
       tva: invoiceTva,
       articles,
       amount,
     };
 
-    if (step === 2) {
-      createInvoice(invoiceToAdd, auth.token!).then(async response => {
-        if (response.success) {
-          dispatch(
-            loginReducer({
-              isAuthenticated: true,
-              loggedAccountInfos: response.account,
-            })
-          );
-          toast.success('Facture créé avec succès');
-          onClose();
-        } else if (!response.success) {
-          setErrorMessage(response.message);
-        } else {
-          setErrorMessage('Erreur lors de la création de la facture');
-        }
-      });
-    }
-
-    if (step > 0 && step < 2) setStep(step + 1);
+    createInvoice(invoiceToAdd, auth.token!).then(async response => {
+      if (response.success) {
+        dispatch(
+          loginReducer({
+            isAuthenticated: true,
+            loggedAccountInfos: response.account,
+          })
+        );
+        toast.success('Facture créé avec succès');
+        onClose();
+      } else if (!response.success) {
+        setErrorMessage(response.message);
+      } else {
+        setErrorMessage('Erreur lors de la création de la facture');
+      }
+    });
   };
 
   return (
@@ -136,7 +130,7 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
           {step < 2 && (
             <button
               type="button"
-              onClick={() => onSubmit()}
+              onClick={() => setStep(step + 1)}
               className="cursor-pointer middle none center rounded-lg bg-gradient-to-tr from-green-600 to-green-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             >
               SUIVANT
