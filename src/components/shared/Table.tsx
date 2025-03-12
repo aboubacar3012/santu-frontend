@@ -110,10 +110,8 @@ const Table = <T extends Record<string, any>>({
                         animate={{ opacity: 1 }}
                         transition={{ delay: colIndex * 0.02, duration: 0.2 }}
                         style={{
-                          paddingTop:
-                            hoveredRowIndex === index ? '1.1rem' : '1rem',
-                          paddingBottom:
-                            hoveredRowIndex === index ? '1.1rem' : '1rem',
+                          paddingTop: hoveredRowIndex === index ? '1.1rem' : '1rem',
+                          paddingBottom: hoveredRowIndex === index ? '1.1rem' : '1rem',
                           transition: 'padding 0.2s ease',
                         }}
                       >

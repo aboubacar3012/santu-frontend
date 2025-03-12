@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import { Client, Invoice } from '@/src/types';
+import { Client, Invoice, StatusEnum } from '@/src/types';
 import Stamp from '@/src/components/Stamp';
 import { getStatusColor } from '@/src/libs/getStatusColor';
 import { getStatusText } from '@/src/libs/getStatusText';
@@ -143,19 +143,19 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
 
           {/* Totaux et Stamp */}
           <div className="mt-10 relative">
-            {invoice.status === 'PAID' && (
+            {invoice.status === StatusEnum.PAID && (
               <div className="absolute transform -rotate-12 top-12 left-16">
-                <Stamp type="PAID" />
+                <Stamp type={StatusEnum.PAID} />
               </div>
             )}
-            {invoice.status === 'DRAFT' && (
+            {invoice.status === StatusEnum.DRAFT && (
               <div className="absolute transform -rotate-12 top-12 left-16">
-                <Stamp type="DRAFT" />
+                <Stamp type={StatusEnum.DRAFT} />
               </div>
             )}
-            {invoice.status !== 'DRAFT' && invoice.status !== 'PAID' && (
+            {invoice.status !== StatusEnum.DRAFT && invoice.status !== StatusEnum.PAID && (
               <div className="absolute transform -rotate-12 top-12 left-16">
-                <Stamp type="UNPAID" />
+                <Stamp type={StatusEnum.UNPAID} />
               </div>
             )}
 

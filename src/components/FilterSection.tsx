@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useUrlParams } from '../hooks/useUrlParams';
+
+type SelectedPaymentFilterBtn = 'all' | 'draft' | 'paid' | 'cancelled' | 'pending';
+type SelectedDateFilterBtn = 'today' | 'week' | 'month' | 'year';
 
 const FilterSection = () => {
+  const { hasParams, setParams, deleteParams, getParams } = useUrlParams();
   const [selectedPaymentFilterBtn, setSelectPaymentFilterBtn] = useState<
     'all' | 'draft' | 'paid' | 'cancelled' | 'pending'
   >('all');
@@ -9,56 +14,20 @@ const FilterSection = () => {
     'today' | 'week' | 'month' | 'year'
   >('today');
 
+  useEffect(() => {
+    setParams({ status: 'all', period: 'today' });
+  }, []);
+
   const handleDateFilterChange = (period: 'today' | 'week' | 'month' | 'year') => {
+    setParams({ period });
     setSelectedDateFilterBtn(period);
-    // // Recharger les données avec le nouveau filtre
-    // setLoading(true);
-    // getDashboard(
-    //   auth.loggedAccountInfos?._id!,
-    //   auth.token!,
-    //   period,
-    //   selectedPaymentFilterBtn
-    // )
-    //   .then(data => {
-    //     if (data.success) {
-    //       setDashboardData(data.dashboardData);
-    //       setLoading(false);
-    //     } else {
-    //       setError("Une erreur s'est produite lors du filtrage des données");
-    //       setLoading(false);
-    //     }
-    //   })
-    //   .catch(error => {
-    //     setError("Une erreur s'est produite lors du filtrage des données");
-    //     setLoading(false);
-    //   });
   };
 
   const handlePaymentFilterChange = (
     status: 'all' | 'draft' | 'paid' | 'cancelled' | 'pending'
   ) => {
+    setParams({ status });
     setSelectPaymentFilterBtn(status);
-    // // Recharger les données avec le nouveau filtre
-    // setLoading(true);
-    // getDashboard(
-    //   auth.loggedAccountInfos?._id!,
-    //   auth.token!,
-    //   selectedDateFilterBtn,
-    //   status
-    // )
-    //   .then(data => {
-    //     if (data.success) {
-    //       setDashboardData(data.dashboardData);
-    //       setLoading(false);
-    //     } else {
-    //       setError("Une erreur s'est produite lors du filtrage des données");
-    //       setLoading(false);
-    //     }
-    //   })
-    //   .catch(error => {
-    //     setError("Une erreur s'est produite lors du filtrage des données");
-    //     setLoading(false);
-    //   });
   };
 
   console.log('FilterSection rendered', selectedPaymentFilterBtn, selectedDateFilterBtn);

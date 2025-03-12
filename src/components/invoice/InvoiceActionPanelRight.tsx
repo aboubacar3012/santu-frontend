@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@/src/components/shared/Button';
-import { Invoice } from '@/src/types';
+import { Invoice, StatusEnum } from '@/src/types';
 import { useState } from 'react';
 import { FaPrint, FaEnvelope, FaDownload, FaShare } from 'react-icons/fa6';
 import { MdPayment, MdContentCopy } from 'react-icons/md';
@@ -12,10 +12,7 @@ interface InvoiceActionPanelProps {
   handlePrint: () => void;
 }
 
-const InvoiceActionPanelRight = ({
-  invoice,
-  handlePrint,
-}: InvoiceActionPanelProps) => {
+const InvoiceActionPanelRight = ({ invoice, handlePrint }: InvoiceActionPanelProps) => {
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
 
   const handleCopyInvoiceLink = () => {
@@ -52,12 +49,13 @@ const InvoiceActionPanelRight = ({
             Envoyer par email
           </Button>
 
-          {invoice.status === 'DRAFT' && (
+          {invoice.status === StatusEnum.DRAFT && (
             <Button
               variant="secondary"
               className="flex items-center justify-start gap-2 hover:bg-green-100 text-green-700 transition-colors"
               icon={<MdPayment />}
               iconPosition="left"
+              onClick={() => alert('Vous avez marqué cette facture comme payée!')}
             >
               Marquer comme payée
             </Button>
@@ -98,14 +96,14 @@ const InvoiceActionPanelRight = ({
           <div className="flex items-center gap-2 mb-3">
             <div
               className={`w-3 h-3 rounded-full ${
-                invoice.status === 'PAID' ? 'bg-green-500' : 'bg-yellow-500'
+                invoice.status === StatusEnum.PAID ? 'bg-green-500' : 'bg-yellow-500'
               }`}
             ></div>
             <span className="text-sm font-medium">
-              {invoice.status === 'PAID' && 'Payée'}
-              {invoice.status === 'DRAFT' && 'Brouillon'}
-              {invoice.status !== 'PAID' &&
-                invoice.status !== 'DRAFT' &&
+              {invoice.status === StatusEnum.PAID && 'Payée'}
+              {invoice.status === StatusEnum.DRAFT && 'Brouillon'}
+              {invoice.status !== StatusEnum.PAID &&
+                invoice.status !== StatusEnum.DRAFT &&
                 'Non payée'}
             </span>
           </div>

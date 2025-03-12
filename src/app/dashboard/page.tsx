@@ -8,7 +8,7 @@ import InvoiceForm from '../../components/invoice/InvoiceForm';
 import { getDashboard } from '@/src/services/invoice';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/src/redux/store';
-import { Invoice } from '@/src/types';
+import { Invoice, StatusEnum } from '@/src/types';
 import { LiaFileInvoiceDollarSolid } from 'react-icons/lia';
 import { GiMoneyStack } from 'react-icons/gi';
 import { FaEdit, FaTrash, FaUserFriends } from 'react-icons/fa';
@@ -31,7 +31,7 @@ const DashboardPage = () => {
   const auth = useSelector((state: RootState) => state.auth);
 
   // Utilisation du hook personnalisé
-  const showInvoiceForm = hasParams('addInvoice');
+  const showInvoiceForm = hasParams('invoiceForm');
   const isEditMode = hasParams('invoiceId');
 
   const fetchData = async () => {
@@ -41,16 +41,12 @@ const DashboardPage = () => {
           setDashboardData(data.dashboardData);
           setLoading(false);
         } else if (!data.success) {
-          setError(
-            "Une erreur s'est produite lors de la récupération de l'utilisateur"
-          );
+          setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
           setLoading(false);
         }
       })
       .catch(error => {
-        setError(
-          "Une erreur s'est produite lors de la récupération de l'utilisateur"
-        );
+        setError("Une erreur s'est produite lors de la récupération de l'utilisateur");
         setLoading(false);
       });
   };
@@ -61,11 +57,11 @@ const DashboardPage = () => {
 
   // Utilisation du hook personnalisé pour les fonctions d'ouverture/fermeture
   const openInvoiceForm = () => {
-    setParams('addInvoice', 'true');
+    setParams('invoiceForm', 'true');
   };
 
   const closeInvoiceForm = () => {
-    deleteParams(['addInvoice', 'invoiceId']);
+    deleteParams(['invoiceForm', 'invoiceId']);
   };
 
   const handleOpenInvoice = (invoice: Partial<Invoice>) => {
@@ -74,7 +70,7 @@ const DashboardPage = () => {
 
   const handleEditInvoice = (e: React.MouseEvent, invoiceId: string) => {
     e.stopPropagation(); // Empêche la navigation vers la page de la facture
-    setParams({ addInvoice: 'true', invoiceId: invoiceId });
+    setParams({ invoiceForm: 'true', invoiceId: invoiceId });
   };
 
   const handleDeleteInvoice = (e: React.MouseEvent, invoiceId: string) => {
@@ -94,29 +90,29 @@ const DashboardPage = () => {
     {
       header: 'Status',
       accessor: invoice => {
-        if (invoice.status === 'DRAFT')
-          return <Badge type="gray" text="Brouillon" />;
-        if (invoice.status === 'SENT')
-          return <Badge type="blue" text="Envoyée" />;
-        if (invoice.status === 'PAID')
-          return <Badge type="green" text="Déjà payée" />;
-        if (invoice.status === 'CANCELLED')
-          return <Badge type="red" text="Annulée" />;
+        if (invoice.status === StatusEnum.DRAFT)
+          return <Badge type={StatusEnum.DRAFT} text="Brouillon" />;
+        if (invoice.status === StatusEnum.SENT)
+          return <Badge type={StatusEnum.SENT} text="Envoyée" />;
+        if (invoice.status === StatusEnum.PAID)
+          return <Badge type={StatusEnum.PAID} text="Déjà payée" />;
+        if (invoice.status === StatusEnum.CANCELLED)
+          return <Badge type={StatusEnum.CANCELLED} text="Annulée" />;
         return null;
       },
     },
     {
-      header: 'Actions',
+      header: 'Action',
       className: 'w-28 text-center',
       accessor: invoice => (
         <div className="flex justify-center gap-3">
-          <button
+          {/* <button
             onClick={e => handleEditInvoice(e, invoice._id!)}
             className="text-blue-600 hover:text-blue-800 p-1.5 rounded-full hover:bg-blue-100"
             title="Modifier"
           >
             <FaEdit size={18} />
-          </button>
+          </button> */}
           <button
             onClick={e => handleDeleteInvoice(e, invoice._id!)}
             className="text-red-600 hover:text-red-800 p-1.5 rounded-full hover:bg-red-100"
@@ -139,11 +135,7 @@ const DashboardPage = () => {
 
   return (
     <div>
-      <InvoiceForm
-        isOpen={showInvoiceForm}
-        isEdit={false}
-        onClose={closeInvoiceForm}
-      />
+      <InvoiceForm isOpen={showInvoiceForm} isEdit={false} onClose={closeInvoiceForm} />
       <DashboardHead />
       {/* Filtre */}
       <FilterSection />
@@ -171,16 +163,11 @@ const DashboardPage = () => {
           title="Nombre de factures"
           value={dashboardData.invoicesCount}
           unit="factures"
-          icon={
-            <LiaFileInvoiceDollarSolid className="w-8 h-8 text-yellow-500" />
-          }
+          icon={<LiaFileInvoiceDollarSolid className="w-8 h-8 text-yellow-500" />}
         />
       </div>
       <div className="flex justify-end items-center mt-3">
-        <Button
-          onClick={openInvoiceForm}
-          icon={<IoMdAdd className="w-5 h-5" />}
-        >
+        <Button onClick={openInvoiceForm} icon={<IoMdAdd className="w-5 h-5" />}>
           Créer une facture
         </Button>
       </div>

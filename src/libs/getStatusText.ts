@@ -1,13 +1,17 @@
+import { StatusEnum } from '@/src/types';
+
 export const getStatusText = (status: string) => {
   switch (status) {
-    case 'DRAFT':
+    case StatusEnum.DRAFT:
       return 'Brouillon';
-    case 'SENT':
+    case StatusEnum.SENT:
       return 'Envoyée';
-    case 'PAID':
+    case StatusEnum.PAID:
       return 'Payée';
-    case 'CANCELLED':
+    case StatusEnum.CANCELLED:
       return 'Annulée';
+    case StatusEnum.UNPAID:
+      return 'Non payée';
     default:
       return status;
   }

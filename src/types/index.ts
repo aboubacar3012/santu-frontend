@@ -9,6 +9,7 @@ export enum StatusEnum {
   SENT = 'SENT',
   PAID = 'PAID',
   CANCELLED = 'CANCELLED',
+  UNPAID = 'UNPAID',
 }
 
 export enum TypeEnum {
