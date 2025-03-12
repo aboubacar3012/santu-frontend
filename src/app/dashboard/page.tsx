@@ -159,6 +159,7 @@ const DashboardPage = () => {
           value={`${formatCurrency(dashboardData.total)}`}
           unit="Toute les factures"
           icon={<GiMoneyStack className="w-8 h-8 text-blue-500" />}
+          isVisible={false}
         />
         <StatCard
           title="Nombre de clients"

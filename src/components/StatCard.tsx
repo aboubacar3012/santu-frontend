@@ -7,10 +7,17 @@ type StatCardProps = {
   value: number | string;
   unit: string;
   icon: ReactNode;
+  isVisible?: boolean;
 };
 
-const StatCard = ({ title, value, unit, icon }: StatCardProps) => {
-  const [isValueVisible, setIsValueVisible] = useState(true);
+const StatCard = ({
+  title,
+  value,
+  unit,
+  icon,
+  isVisible = true,
+}: StatCardProps) => {
+  const [isValueVisible, setIsValueVisible] = useState(isVisible);
 
   const toggleValueVisibility = () => {
     setIsValueVisible(!isValueVisible);
