@@ -1,5 +1,6 @@
 import { TypeEnum } from '@/src/types';
 import FormInput from '@/src/components/ui/FormInput';
+
 interface ClientIdentityFormProps {
   clientType: TypeEnum;
   clientName: string;

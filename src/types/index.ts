@@ -1,19 +1,19 @@
 // Role enum
 export enum RoleEnum {
-  ADMIN = "ADMIN",
-  PARTNER = "PARTNER",
-};
+  ADMIN = 'ADMIN',
+  PARTNER = 'PARTNER',
+}
 
 export enum StatusEnum {
-  DRAFT = "DRAFT",
-  SENT = "SENT",
-  PAID = "PAID",
-  CANCELLED = "CANCELLED",
-};
+  DRAFT = 'DRAFT',
+  SENT = 'SENT',
+  PAID = 'PAID',
+  CANCELLED = 'CANCELLED',
+}
 
 export enum TypeEnum {
-  PARTICULAR = "PARTICULAR",
-  PROFESSIONAL = "PROFESSIONAL",
+  PARTICULAR = 'PARTICULAR',
+  PROFESSIONAL = 'PROFESSIONAL',
 }
 
 export type Article = {
@@ -24,7 +24,7 @@ export type Article = {
   price: number;
   createdAt?: string;
   updatedAt?: string;
-}
+};
 
 export type Invoice = {
   _id?: string;
@@ -39,14 +39,14 @@ export type Invoice = {
   tva: number;
   remark: string;
   client: Client;
-  articles: Article[]
+  articles: Article[];
   createdAt?: string;
   updatedAt?: string;
 };
 
 export type Client = {
   _id: string;
-  type: "PARTICULAR" | "PROFESSIONAL";
+  type: 'PARTICULAR' | 'PROFESSIONAL';
   firstName?: string;
   lastName?: string;
   company?: string;

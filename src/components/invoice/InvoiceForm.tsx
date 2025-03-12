@@ -18,7 +18,7 @@ type InvoiceFormProps = {
   onClose: () => void;
 };
 const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
-  const [step, setStep] = useState<number>(1); // 1: Informations générales, 2: Produits/Services, 3: Confirmation
+  const [step, setStep] = useState<number>(1); // 1: Informations générales, 2: Confirmation
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [invoiceName, setInvoiceName] = useState<string>('');
   const [invoiceDate, setInvoiceDate] = useState<string>('');
@@ -70,6 +70,8 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
       setErrorMessage('Veuillez remplir tous les champs');
       return;
     }
+
+    if (step === 1) return setStep(2);
 
     let amount = 0;
     if (articles.length > 0) {
@@ -130,7 +132,7 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
           {step < 2 && (
             <button
               type="button"
-              onClick={() => setStep(step + 1)}
+              onClick={() => onSubmit()}
               className="cursor-pointer middle none center rounded-lg bg-gradient-to-tr from-green-600 to-green-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             >
               SUIVANT
