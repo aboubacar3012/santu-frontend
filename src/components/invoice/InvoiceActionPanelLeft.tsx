@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import { Invoice } from '@/src/types';
+import { Client, Invoice } from '@/src/types';
 import Stamp from '@/src/components/Stamp';
 import { getStatusColor } from '@/src/libs/getStatusColor';
 import { getStatusText } from '@/src/libs/getStatusText';
@@ -12,18 +12,13 @@ interface InvoiceActionPanelLeftProps {
   handlePrintSection: () => void;
 }
 
-const InvoiceActionPanelLeft = ({
-  invoice,
-  handlePrintSection,
-}: InvoiceActionPanelLeftProps) => {
+const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPanelLeftProps) => {
   const auth = useSelector((state: RootState) => state.auth);
   const loggedAccount = auth.loggedAccountInfos;
+  const client = invoice.client as Client;
 
   return (
-    <section
-      ref={undefined}
-      className="print-section md:w-3/4 w-full order-2 md:order-1"
-    >
+    <section ref={undefined} className="print-section md:w-3/4 w-full order-2 md:order-1">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -60,17 +55,11 @@ const InvoiceActionPanelLeft = ({
               </h3>
               <div className="flex items-start gap-4">
                 {loggedAccount && loggedAccount.logo && (
-                  <img
-                    src={loggedAccount.logo}
-                    alt="Logo"
-                    className="w-16 h-16 object-contain"
-                  />
+                  <img src={loggedAccount.logo} alt="Logo" className="w-16 h-16 object-contain" />
                 )}
                 <div>
                   <h4 className="font-bold text-lg text-gray-900">
-                    {loggedAccount &&
-                    loggedAccount.company &&
-                    loggedAccount.company?.length > 0
+                    {loggedAccount && loggedAccount.company && loggedAccount.company?.length > 0
                       ? loggedAccount.company
                       : `${loggedAccount?.firstName} ${loggedAccount?.lastName}`}
                   </h4>
@@ -88,15 +77,13 @@ const InvoiceActionPanelLeft = ({
               </h3>
               <div>
                 <h4 className="font-bold text-lg text-gray-900">
-                  {invoice.client &&
-                  invoice.client.company &&
-                  invoice.client.company?.length > 0
-                    ? invoice.client.company
-                    : `${invoice.client.firstName} ${invoice.client.lastName}`}
+                  {client && client.company && client.company?.length > 0
+                    ? client.company
+                    : `${client.firstName} ${client.lastName}`}
                 </h4>
-                <p className="text-gray-700 mt-1">{invoice.client.address}</p>
-                <p className="text-gray-700">{invoice.client.phone}</p>
-                <p className="text-gray-700">{invoice.client.email}</p>
+                <p className="text-gray-700 mt-1">{client.address}</p>
+                <p className="text-gray-700">{client.phone}</p>
+                <p className="text-gray-700">{client.email}</p>
               </div>
             </div>
           </div>
@@ -140,17 +127,13 @@ const InvoiceActionPanelLeft = ({
                     <td className="text-left">
                       <div className="font-medium">{article.name}</div>
                       {article.description && (
-                        <div className="text-gray-500 text-xs mt-1">
-                          {article.description}
-                        </div>
+                        <div className="text-gray-500 text-xs mt-1">{article.description}</div>
                       )}
                     </td>
                     <td className="text-center">{article.quantity}</td>
-                    <td className="text-right">
-                      {article.price.toLocaleString()} GNF
-                    </td>
+                    <td className="text-right">{article?.price?.toLocaleString()} GNF</td>
                     <td className="text-right font-medium">
-                      {(article.price * article.quantity).toLocaleString()} GNF
+                      {((article?.price || 0) * (article?.quantity || 0)).toLocaleString()} GNF
                     </td>
                   </tr>
                 ))}
@@ -181,9 +164,7 @@ const InvoiceActionPanelLeft = ({
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex justify-between py-2">
                     <span className="text-gray-600">Sous-total</span>
-                    <span className="font-medium">
-                      {invoice.amount.toLocaleString()} GNF
-                    </span>
+                    <span className="font-medium">{invoice.amount.toLocaleString()} GNF</span>
                   </div>
                   <div className="flex justify-between py-2">
                     <span className="text-gray-600">TVA (0%)</span>
@@ -204,8 +185,8 @@ const InvoiceActionPanelLeft = ({
           <div className="border-t pt-6 mt-6">
             <h4 className="font-medium mb-2">Notes</h4>
             <p className="text-gray-600 text-sm">
-              Merci pour votre confiance. Pour toute question concernant cette
-              facture, veuillez nous contacter.
+              Merci pour votre confiance. Pour toute question concernant cette facture, veuillez
+              nous contacter.
             </p>
           </div>
         </div>

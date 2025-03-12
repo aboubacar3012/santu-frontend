@@ -35,8 +35,7 @@ export const useInvoiceForm = ({
   const [invoiceDate, setInvoiceDate] = useState<string>('');
   const [invoiceTva, setInvoiceTva] = useState<number>(0);
   const [invoicePaymentMode, setInvoicePaymentMode] = useState<string>('CASH');
-  const [invoicePaymentCondition, setInvoicePaymentCondition] =
-    useState<string>('NOW');
+  const [invoicePaymentCondition, setInvoicePaymentCondition] = useState<string>('NOW');
   const [invoiceRemark, setInvoiceRemark] = useState<string>('');
   const [selectedClient, setSelectedClient] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -209,19 +208,18 @@ export const useInvoiceForm = ({
     }
 
     const invoiceToAdd = {
-      accountId: accountId,
+      account: accountId,
       invoiceNumber: invoiceNumber,
-      clientId: selectedClient,
+      client: selectedClient,
       name: invoiceName,
       date: invoiceDate,
       paymentMode: invoicePaymentMode,
       paymentCondition: invoicePaymentCondition,
-      status:
-        invoicePaymentCondition === 'NOW' ? StatusEnum.PAID : StatusEnum.DRAFT,
+      status: invoicePaymentCondition === 'NOW' ? StatusEnum.PAID : StatusEnum.DRAFT,
       tva: invoiceTva,
       articles,
       amount,
-      remarks: invoiceRemark,
+      remark: invoiceRemark,
     };
 
     try {
@@ -236,9 +234,7 @@ export const useInvoiceForm = ({
         toast.success('Facture créée avec succès');
         onClose();
       } else {
-        setErrorMessage(
-          response.message || 'Erreur lors de la création de la facture'
-        );
+        setErrorMessage(response.message || 'Erreur lors de la création de la facture');
       }
     } catch (error) {
       setErrorMessage('Erreur de connexion au serveur');

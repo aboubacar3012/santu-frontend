@@ -29,6 +29,7 @@ export type Article = {
 export type Invoice = {
   _id?: string;
   invoiceNumber: string;
+  account: string;
   name: string;
   link: string;
   date: string;
@@ -38,8 +39,8 @@ export type Invoice = {
   status: StatusEnum;
   tva: number;
   remark: string;
-  client: Client;
-  articles: Article[];
+  client: string | Client;
+  articles: Partial<Article>[];
   createdAt?: string;
   updatedAt?: string;
 };

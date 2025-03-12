@@ -36,16 +36,12 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
           setInvoiceData(data.invoice);
           setLoading(false);
         } else if (!data.success) {
-          setError(
-            "Une erreur s'est produite lors de la récupération de la facture"
-          );
+          setError("Une erreur s'est produite lors de la récupération de la facture");
           setLoading(false);
         }
       })
       .catch(error => {
-        setError(
-          "Une erreur s'est produite lors de la récupération de la facture"
-        );
+        setError("Une erreur s'est produite lors de la récupération de la facture");
         setLoading(false);
       });
   };
@@ -60,13 +56,13 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
     window.print();
   };
 
-  const calculateTotal = () => {
-    if (!invoiceData?.articles) return 0;
-    return invoiceData.articles.reduce(
-      (sum, article) => sum + article.price * article.quantity,
-      0
-    );
-  };
+  // const calculateTotal = () => {
+  //   if (!invoiceData?.articles) return 0;
+  //   return invoiceData.articles.reduce(
+  //     (sum, article) => sum + article.price * article.quantity,
+  //     0
+  //   );
+  // };
 
   if (loading)
     return (
@@ -75,11 +71,9 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
       </div>
     );
 
-  if (error)
-    return <div className="text-center p-10 text-red-500">{error}</div>;
+  if (error) return <div className="text-center p-10 text-red-500">{error}</div>;
 
-  if (!invoiceData)
-    return <div className="text-center p-10">Aucune facture trouvée</div>;
+  if (!invoiceData) return <div className="text-center p-10">Aucune facture trouvée</div>;
 
   return (
     <div className="invoice-container bg-gray-50 min-h-screen">
@@ -96,16 +90,10 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
           className="flex flex-col md:flex-row gap-6"
         >
           {/* Main invoice section - Now using the InvoiceActionPanelLeft component */}
-          <InvoiceActionPanelLeft
-            invoice={invoiceData}
-            handlePrintSection={handlePrintSection}
-          />
+          <InvoiceActionPanelLeft invoice={invoiceData} handlePrintSection={handlePrintSection} />
 
           {/* Actions panel - Using the separated component */}
-          <InvoiceActionPanelRight
-            invoice={invoiceData}
-            handlePrint={handlePrintSection}
-          />
+          <InvoiceActionPanelRight invoice={invoiceData} handlePrint={handlePrintSection} />
         </motion.div>
       </div>
     </div>

@@ -9,27 +9,7 @@ const FilterSection = () => {
     'today' | 'week' | 'month' | 'year'
   >('today');
 
-  const getSelectedPaymentFilterBtn = (
-    btn: 'all' | 'draft' | 'paid' | 'cancelled' | 'pending'
-  ) => {
-    if (selectedPaymentFilterBtn === btn) {
-      return 'bg-gradient-to-tr from-blue-500 to-indigo-600 text-white';
-    }
-    return 'bg-white text-gray-700 hover:bg-gray-100';
-  };
-
-  const getSelectedDateFilterBtn = (
-    btn: 'today' | 'week' | 'month' | 'year'
-  ) => {
-    if (selectedDateFilterBtn === btn) {
-      return 'bg-gradient-to-tr from-my-raspberry to-my-eggplant text-white';
-    }
-    return 'bg-white text-gray-700 hover:bg-gray-100';
-  };
-
-  const handleDateFilterChange = (
-    period: 'today' | 'week' | 'month' | 'year'
-  ) => {
+  const handleDateFilterChange = (period: 'today' | 'week' | 'month' | 'year') => {
     setSelectedDateFilterBtn(period);
     // // Recharger les données avec le nouveau filtre
     // setLoading(true);
@@ -80,6 +60,8 @@ const FilterSection = () => {
     //     setLoading(false);
     //   });
   };
+
+  console.log('FilterSection rendered', selectedPaymentFilterBtn, selectedDateFilterBtn);
 
   // Animation variants
   const containerVariants = {
