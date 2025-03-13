@@ -76,7 +76,7 @@ const DashboardPage = () => {
 
   const handleCancelInvoice = (e: React.MouseEvent, invoiceId: string) => {
     e.stopPropagation(); // Empêche la navigation vers la page de la facture
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette facture ?')) {
+    if (confirm('Êtes-vous sûr de vouloir abandonner cette facture?')) {
       const invoice = {
         _id: invoiceId,
         status: StatusEnum.CANCELLED,

@@ -17,10 +17,11 @@ const InvoiceActionPanelRight = ({ invoice, handlePrint }: InvoiceActionPanelPro
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
 
   const handleCopyInvoiceLink = () => {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url);
-    setShowCopiedMessage(true);
-    setTimeout(() => setShowCopiedMessage(false), 3000);
+    // const url = window.location.href;
+    // navigator.clipboard.writeText(url);
+    // setShowCopiedMessage(true);
+    // setTimeout(() => setShowCopiedMessage(false), 3000);
+    alert('Fonctionnalité en cours de développement');
   };
 
   return (
@@ -145,7 +146,7 @@ const InvoiceActionPanelRight = ({ invoice, handlePrint }: InvoiceActionPanelPro
           </div>
         </div>
 
-        <div className="p-4 bg-gray-50">
+        {/* <div className="p-4 bg-gray-50">
           <h4 className="font-medium text-sm mb-2">Scanner pour payer</h4>
           <div className="bg-white p-3 rounded flex justify-center">
             <QRCode
@@ -154,7 +155,7 @@ const InvoiceActionPanelRight = ({ invoice, handlePrint }: InvoiceActionPanelPro
               viewBox={`0 0 256 256`}
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
