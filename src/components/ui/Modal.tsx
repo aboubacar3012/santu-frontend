@@ -58,11 +58,7 @@ const Modal: React.FC<ModalProps> = ({
 
   // Gérer la fermeture en cliquant en dehors du modal
   const handleOutsideClick = (e: React.MouseEvent) => {
-    if (
-      closeOnClickOutside &&
-      modalRef.current &&
-      !modalRef.current.contains(e.target as Node)
-    ) {
+    if (closeOnClickOutside && modalRef.current && !modalRef.current.contains(e.target as Node)) {
       onClose();
     }
   };

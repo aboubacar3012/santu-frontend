@@ -20,6 +20,7 @@ import DashboardHead from '@/src/components/DashboardHead';
 import Button from '@/src/components/shared/Button';
 import Table, { Column } from '@/src/components/shared/Table';
 import { useUpdateInvoice } from '@/src/hooks/invoice/useUpdateInvoice';
+import WelcomeModalInfo from '@/src/components/WelcomeModalInfo';
 
 const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -189,6 +190,7 @@ const DashboardPage = () => {
         data={dashboardData.invoices}
         onRowClick={handleOpenInvoice}
       />
+      <WelcomeModalInfo />
     </div>
   );
 };
