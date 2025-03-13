@@ -8,6 +8,7 @@ import { FaUserCog, FaUsers } from 'react-icons/fa';
 import { LogOut, Settings, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { RootState } from '@/src/redux/store';
 import { useCallback, memo, useState } from 'react';
+import Button from './shared/Button';
 
 // Memoize menu item to prevent unnecessary re-renders
 const MenuItem = memo(
@@ -156,20 +157,32 @@ const Sidebar = () => {
 
       <div className="absolute bottom-8 flex flex-col items-center justify-center w-full">
         {collapsed ? (
-          <button
-            className="w-12 p-3 text-lg font-sans font-normal text-white bg-gradient-to-r from-red-500 to-red-600 rounded-xl shadow-md flex justify-center items-center"
+          <Button
             onClick={handleLogout}
-            title="Déconnexion"
+            variant="danger"
+            className="flex items-center justify-start gap-2 hover:bg-gray-100 transition-colors"
+            icon={<LogOut className="w-5 h-5" />}
+            iconPosition="left"
           >
-            <LogOut className="w-5 h-5" />
-          </button>
+            {''}
+          </Button>
         ) : (
-          <button
-            className="w-48 p-2 text-lg font-sans font-normal text-white bg-gradient-to-r from-red-500 to-red-600 rounded-xl shadow-md flex justify-center items-center"
+          // <button
+          //   className="w-48 flex gap-2 p-2 text-lg font-sans font-normal text-white bg-gradient-to-r from-red-500 to-red-600 rounded-xl shadow-md flex justify-center items-center"
+          //   onClick={handleLogout}
+          // >
+          //   <LogOut className="w-5 h-5" />
+          //   Déconnexion
+          // </button>
+          <Button
             onClick={handleLogout}
+            variant="danger"
+            className="flex items-center justify-start gap-2 hover:bg-gray-100 transition-colors"
+            icon={<LogOut className="w-5 h-5" />}
+            iconPosition="left"
           >
             Déconnexion
-          </button>
+          </Button>
         )}
       </div>
     </div>
