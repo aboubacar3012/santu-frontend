@@ -7,7 +7,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import { FaUserCog, FaUsers } from 'react-icons/fa';
 import { LogOut, Settings, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { RootState } from '@/src/redux/store';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useCallback, memo, useState } from 'react';
 
 // Memoize menu item to prevent unnecessary re-renders
