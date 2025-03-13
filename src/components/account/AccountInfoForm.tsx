@@ -40,7 +40,7 @@ const AccountInfoForm = ({ accountData }: AccountInfoFormProps) => {
   };
 
   return (
-    <div className=" h-min py-4 gap-4 flex flex-col text-black bg-white rounded-lg shadow-sm">
+    <div className="w-full h-min py-4 gap-4 flex flex-col text-black bg-white rounded-lg shadow-sm">
       <h3 className="px-6 text-lg font-semibold bg-gradient-to-r from-my-raspberry to-my-eggplant bg-clip-text text-transparent">
         Informations personnelles
       </h3>

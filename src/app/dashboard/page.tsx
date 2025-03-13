@@ -111,10 +111,11 @@ const DashboardPage = () => {
           </button> */}
           <button
             onClick={e => handleDeleteInvoice(e, invoice._id!)}
-            className="text-red-600 hover:text-red-800 p-1.5 rounded-full hover:bg-red-100"
-            title="Supprimer"
+            className="text-red-600 hover:text-red-800 p-2 rounded-full bg-red-100 hover:bg-red-200"
+            // title="Supprimer"s
           >
-            <FaTrash size={18} />
+            {/* <FaTrash size={18} /> */}
+            Abandonner
           </button>
         </div>
       ),
