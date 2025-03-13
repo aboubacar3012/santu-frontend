@@ -8,15 +8,7 @@ import { Article } from '@/src/types';
 import { toast } from 'react-toastify';
 import ArticleAddForm from './ArticleAddForm';
 import FormInput from '../ui/FormInput';
-import {
-  FileText,
-  Calendar,
-  Percent,
-  CreditCard,
-  Clock,
-  MessageSquare,
-  Hash,
-} from 'lucide-react';
+import { FileText, Calendar, Percent, CreditCard, Clock, MessageSquare, Hash } from 'lucide-react';
 import GeneralInvoiceInfo from './GeneralInvoiceInfo';
 import InvoiceBillingParameters from './InvoiceBillingParameters';
 
@@ -79,8 +71,6 @@ const InvoiceInfoForm = ({
   articleDescription,
   setProductDescription,
 }: InvoiceInfoFormProps) => {
-  const auth = useSelector((state: RootState) => state.auth);
-
   return (
     <section className="space-y-6">
       {/* Informations générales de la facture */}
@@ -108,9 +98,7 @@ const InvoiceInfoForm = ({
 
       {/* Articles  à facturer*/}
       <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-        <h3 className="text-sm font-medium text-gray-700 mb-3">
-          Articles à facturer
-        </h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Articles à facturer</h3>
 
         <ArticleAddForm
           articles={articles}

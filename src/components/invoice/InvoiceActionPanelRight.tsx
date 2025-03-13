@@ -4,6 +4,7 @@ import Button from '@/src/components/shared/Button';
 import { Invoice, StatusEnum } from '@/src/types';
 import { useState } from 'react';
 import { FaPrint, FaEnvelope, FaDownload, FaShare } from 'react-icons/fa6';
+import { IoMdClose } from 'react-icons/io';
 import { MdPayment, MdContentCopy } from 'react-icons/md';
 import QRCode from 'react-qr-code';
 
@@ -58,6 +59,17 @@ const InvoiceActionPanelRight = ({ invoice, handlePrint }: InvoiceActionPanelPro
               onClick={() => alert('Vous avez marqué cette facture comme payée!')}
             >
               Marquer comme payée
+            </Button>
+          )}
+          {invoice.status === StatusEnum.DRAFT && (
+            <Button
+              variant="secondary"
+              className="flex items-center justify-start gap-2 hover:bg-red-100 text-red-700 transition-colors"
+              icon={<IoMdClose />}
+              iconPosition="left"
+              onClick={() => alert('Vous avez abandonné cette facture!')}
+            >
+              Abandonner
             </Button>
           )}
 

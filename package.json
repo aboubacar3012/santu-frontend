@@ -31,7 +31,7 @@
     "react-toastify": "^10.0.5",
     "redux-persist": "^6.0.0",
     "three": "^0.174.0",
-    "uuid": "^9.0.1"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "4",

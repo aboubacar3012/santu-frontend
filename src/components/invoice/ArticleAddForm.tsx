@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import FormInput from '@/src/components/ui/FormInput';
 import { useState } from 'react';
 import ArticleTable from './ArticleTable';
+import Button from '../shared/Button';
 
 type ArticleAddFormProps = {
   articles: Partial<Article>[];
@@ -87,22 +88,15 @@ const ArticleAddForm = ({
     <section className="space-y-4">
       {/* Liste des produits/services */}
       <div className="rounded-lg shadow-sm border">
-        <h3 className="text-sm font-medium p-4 border-b">
-          Produits/Services ajoutés
-        </h3>
+        <h3 className="text-sm font-medium p-4 border-b">Produits/Services ajoutés</h3>
         <div className="p-4 h-32 overflow-auto">
-          <ArticleTable
-            articles={articles}
-            onDeleteArticle={handleDeleteArticle}
-          />
+          <ArticleTable articles={articles} onDeleteArticle={handleDeleteArticle} />
         </div>
       </div>
 
       {/* Formulaire d'ajout */}
       <div className="rounded-lg p-4 shadow-sm border">
-        <h3 className="text-sm font-medium mb-3">
-          Ajouter un produit ou service
-        </h3>
+        <h3 className="text-sm font-medium mb-3">Ajouter un produit ou service</h3>
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="md:col-span-2">
@@ -173,22 +167,22 @@ const ArticleAddForm = ({
           />
 
           <div className="flex justify-end pt-1">
-            <button
-              type="button"
+            <Button
               onClick={addArticle}
-              className="px-6 py-2 font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors flex items-center gap-2"
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                </svg>
+              }
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-              </svg>
               Ajouter
-            </button>
+            </Button>
           </div>
         </div>
       </div>
