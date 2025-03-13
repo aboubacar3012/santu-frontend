@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { getInvoicesByClientId } from "@/src/services/invoice";
+import { useQuery } from '@tanstack/react-query';
+import { getInvoicesByClientId } from '@/src/services/invoice';
 
 const useGetInvoicesByClientId = (clientId: string | null, token?: string) => {
   return useQuery({

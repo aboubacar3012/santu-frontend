@@ -11,15 +11,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ScreenSizeChecker from '@/src/hooks/ScreenSizeChecker';
 
-export default function ProvidersLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { isDesktop } = useDeviceScreen();
+export const queryClient = new QueryClient();
 
-  // Create a client
-  const queryClient = new QueryClient();
+export default function ProvidersLayout({ children }: { children: React.ReactNode }) {
+  const { isDesktop } = useDeviceScreen();
 
   return (
     <div>

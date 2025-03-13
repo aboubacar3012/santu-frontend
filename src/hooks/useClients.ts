@@ -1,6 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getClientsByAccountId, createClient, getClientById, updateClient, deleteClientById } from "../services/client";
-import { Client } from "../types";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  getClientsByAccountId,
+  createClient,
+  getClientById,
+  updateClient,
+  deleteClientById,
+} from '../services/client';
+import { Client } from '../types';
 
 const useGetClientsAccountById = (accountId: string, token?: string) => {
   return useQuery({
@@ -17,7 +23,7 @@ const useCreateClient = (token?: string) => {
     mutationFn: (newClient: Partial<Client>) => createClient(newClient, token),
     onSuccess: (data, variables) => {
       if (variables.account) {
-        console.log("Invalidate query");
+        console.log('Invalidate query');
         queryClient.invalidateQueries({ queryKey: ['clients', variables.account] });
       }
       return data;
@@ -37,7 +43,7 @@ const useUpdateClient = (token?: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { clientId: string, clientData: Partial<Client> }) => {
+    mutationFn: async (data: { clientId: string; clientData: Partial<Client> }) => {
       return updateClient(data.clientId, data.clientData, token);
     },
     onSuccess: (data, variables) => {
@@ -50,7 +56,7 @@ const useUpdateClient = (token?: string) => {
       }
 
       return data;
-    }
+    },
   });
 };
 
@@ -61,14 +67,20 @@ const useDeleteClientById = (token?: string) => {
     mutationFn: async (clientId: string) => {
       return deleteClientById(clientId, token);
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       // Nous devons également invalider la liste des clients, mais nous n'avons pas directement l'accountId
       // Une solution est d'invalider toutes les requêtes de clients
       queryClient.invalidateQueries({ queryKey: ['clients'] });
 
       return data;
-    }
+    },
   });
 };
 
-export { useGetClientsAccountById, useCreateClient, useGetClientById, useUpdateClient, useDeleteClientById };
+export {
+  useGetClientsAccountById,
+  useCreateClient,
+  useGetClientById,
+  useUpdateClient,
+  useDeleteClientById,
+};

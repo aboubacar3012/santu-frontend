@@ -1,10 +1,7 @@
 'use client';
 import Badge from '@/src/components/Badge';
 import ClientForm from '@/src/components/client/ClientForm';
-import {
-  useGetClientsAccountById,
-  useDeleteClientById,
-} from '@/src/hooks/useClients';
+import { useGetClientsAccountById, useDeleteClientById } from '@/src/hooks/useClients';
 import { useUrlParams } from '@/src/hooks/useUrlParams';
 import { RootState } from '@/src/redux/store';
 import { useRouter } from 'next/navigation';
@@ -128,8 +125,7 @@ const ClientsPage = () => {
 
   // Création des options pour react-select avec nom/entreprise, email et téléphone
   const clientOptions = clients.map((client: Client) => {
-    const clientName =
-      client.company || `${client.firstName} ${client.lastName}`;
+    const clientName = client.company || `${client.firstName} ${client.lastName}`;
     const emailInfo = client.email ? `| ${client.email}` : '';
     const phoneInfo = client.phone ? `| ${client.phone}` : '';
 
@@ -158,10 +154,7 @@ const ClientsPage = () => {
     if (!inputValue) return true;
     const input = inputValue.toLowerCase();
 
-    return (
-      option.data.searchTerms.includes(input) ||
-      option.data.searchTerms.indexOf(input) > -1
-    );
+    return option.data.searchTerms.includes(input) || option.data.searchTerms.indexOf(input) > -1;
   };
 
   return (
@@ -170,17 +163,10 @@ const ClientsPage = () => {
       {/* <PrevHeader /> */}
       <div className="pr-4 flex justify-between items-center">
         <div className="flex flex-col py-4 px-1">
-          <h2 className="text-lg font-semibold">
-            Listes des clients enregistrées
-          </h2>
-          <p className="font-light text-xs text-black">
-            {clients.length} clients
-          </p>
+          <h2 className="text-lg font-semibold">Listes des clients enregistrées</h2>
+          <p className="font-light text-xs text-black">{clients.length} clients</p>
         </div>
-        <Button
-          onClick={handleAddClient}
-          icon={<IoMdAdd className="w-5 h-5" />}
-        >
+        <Button onClick={handleAddClient} icon={<IoMdAdd className="w-5 h-5" />}>
           Ajouter un client
         </Button>
       </div>
