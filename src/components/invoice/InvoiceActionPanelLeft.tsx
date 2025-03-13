@@ -153,11 +153,18 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                 <Stamp type={StatusEnum.DRAFT} />
               </div>
             )}
-            {invoice.status !== StatusEnum.DRAFT && invoice.status !== StatusEnum.PAID && (
+            {invoice.status === StatusEnum.CANCELLED && (
               <div className="absolute transform -rotate-12 top-12 left-16">
-                <Stamp type={StatusEnum.PENDING} />
+                <Stamp type={StatusEnum.CANCELLED} />
               </div>
             )}
+            {invoice.status !== StatusEnum.DRAFT &&
+              invoice.status !== StatusEnum.PAID &&
+              invoice.status !== StatusEnum.CANCELLED && (
+                <div className="absolute transform -rotate-12 top-12 left-16">
+                  <Stamp type={StatusEnum.PENDING} />
+                </div>
+              )}
 
             <div className="flex justify-end">
               <div className="w-full md:w-72">

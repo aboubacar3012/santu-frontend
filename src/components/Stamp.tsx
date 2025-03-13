@@ -45,7 +45,7 @@ const Stamp = ({ type = StatusEnum.PAID }: StampProps) => {
   return (
     <div className="relative">
       <div
-        className={`flex w-52 justify-center items-center gap-4 border-4 ${config.borderColor} ${config.textColor} px-4 py-2 rounded-lg text-lg font-bold opacity-90`}
+        className={`flex w-64 justify-center items-center gap-4 border-4 ${config.borderColor} ${config.textColor} px-4 py-2 rounded-lg text-lg font-bold opacity-90`}
         style={{
           transform: 'rotate(-12deg)',
           boxShadow: `0 0 0 2px ${config.shadowColor}`,

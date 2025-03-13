@@ -107,16 +107,25 @@ const InvoiceActionPanelRight = ({ invoice, handlePrint }: InvoiceActionPanelPro
         <div className="p-4 border-t">
           <div className="flex items-center gap-2 mb-3">
             <div
-              className={`w-3 h-3 rounded-full ${
-                invoice.status === StatusEnum.PAID ? 'bg-green-500' : 'bg-yellow-500'
-              }`}
+              className={`w-3 h-3 rounded-full 
+                ${invoice.status === StatusEnum.PAID && 'bg-green-500'}
+                ${invoice.status === StatusEnum.DRAFT && 'bg-amber-500'}
+                ${invoice.status === StatusEnum.CANCELLED && 'bg-red-500'}
+                ${
+                  invoice.status !== StatusEnum.PAID &&
+                  invoice.status !== StatusEnum.DRAFT &&
+                  invoice.status !== StatusEnum.CANCELLED &&
+                  'bg-blue-500'
+                }`}
             ></div>
             <span className="text-sm font-medium">
               {invoice.status === StatusEnum.PAID && 'Payée'}
               {invoice.status === StatusEnum.DRAFT && 'Brouillon'}
+              {invoice.status === StatusEnum.CANCELLED && 'Annulée'}
               {invoice.status !== StatusEnum.PAID &&
                 invoice.status !== StatusEnum.DRAFT &&
-                'Non payée'}
+                invoice.status !== StatusEnum.CANCELLED &&
+                'En attente'}
             </span>
           </div>
 

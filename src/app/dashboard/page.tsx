@@ -11,15 +11,15 @@ import { RootState } from '@/src/redux/store';
 import { Invoice, StatusEnum } from '@/src/types';
 import { LiaFileInvoiceDollarSolid } from 'react-icons/lia';
 import { GiMoneyStack } from 'react-icons/gi';
-import { FaEdit, FaTrash, FaUserFriends } from 'react-icons/fa';
+import { FaUserFriends } from 'react-icons/fa';
 import { formatCurrency } from '@/src/libs/formatCurrency';
 import { useUrlParams } from '@/src/hooks/useUrlParams';
 import { toast } from 'react-toastify';
 import FilterSection from '@/src/components/FilterSection';
-import { motion } from 'framer-motion';
 import DashboardHead from '@/src/components/DashboardHead';
 import Button from '@/src/components/shared/Button';
 import Table, { Column } from '@/src/components/shared/Table';
+import { useUpdateInvoice } from '@/src/hooks/invoice/useUpdateInvoice';
 
 const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +29,7 @@ const DashboardPage = () => {
   const router = useRouter();
   const { hasParams, setParams, deleteParams } = useUrlParams();
   const auth = useSelector((state: RootState) => state.auth);
+  const updateInvoiceMutation = useUpdateInvoice('token');
 
   // Utilisation du hook personnalisé
   const showInvoiceForm = hasParams('invoiceForm');
@@ -73,11 +74,24 @@ const DashboardPage = () => {
     setParams({ invoiceForm: 'true', invoiceId: invoiceId });
   };
 
-  const handleDeleteInvoice = (e: React.MouseEvent, invoiceId: string) => {
+  const handleCancelInvoice = (e: React.MouseEvent, invoiceId: string) => {
     e.stopPropagation(); // Empêche la navigation vers la page de la facture
     if (confirm('Êtes-vous sûr de vouloir supprimer cette facture ?')) {
-      // Ajouter ici la logique pour supprimer la facture
-      toast.success('Fonctionnalité de suppression à implémenter');
+      const invoice = {
+        _id: invoiceId,
+        status: StatusEnum.CANCELLED,
+      };
+
+      updateInvoiceMutation.mutate(invoice, {
+        onSuccess: () => {
+          toast.success('La facture a été annulée avec succès');
+          fetchData(); // Recharger les données du dashboard
+        },
+        onError: error => {
+          toast.error("Une erreur est survenue lors de l'annulation de la facture");
+          console.error("Erreur lors de l'annulation de la facture:", error);
+        },
+      });
     }
   };
 
@@ -110,7 +124,7 @@ const DashboardPage = () => {
             <FaEdit size={18} />
           </button> */}
           <button
-            onClick={e => handleDeleteInvoice(e, invoice._id!)}
+            onClick={e => handleCancelInvoice(e, invoice._id!)}
             className="text-red-600 hover:text-red-800 p-2 rounded-full bg-red-100 hover:bg-red-200"
             // title="Supprimer"s
           >
