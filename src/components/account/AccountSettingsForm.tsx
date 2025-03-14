@@ -246,7 +246,7 @@ const AccountSettingsForm = ({ accountData }: AccountSettingsFormProps) => {
 
   return (
     <div className="w-full h-min py-4 gap-4 flex flex-col text-black bg-white rounded-lg shadow-sm">
-      <h3 className="px-6 text-lg font-semibold bg-gradient-to-r from-my-raspberry to-my-eggplant bg-clip-text text-transparent">
+      <h3 className="px-6 text-lg font-semibold bg-gradient-to-r from-finance-primary to-finance-secondary bg-clip-text text-transparent">
         Paramètres du compte
       </h3>
 

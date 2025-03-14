@@ -3,16 +3,14 @@ import { StatusEnum } from '@/src/types';
 export const getStatusColor = (status: string) => {
   switch (status) {
     case StatusEnum.DRAFT:
-      return 'bg-gray-100 text-gray-800';
+      return 'bg-finance-bg-medium text-finance-text-secondary';
     case StatusEnum.PENDING:
-      return 'bg-blue-100 text-blue-800';
+      return 'bg-finance-info/20 text-finance-info';
     case StatusEnum.PAID:
-      return 'bg-green-100 text-green-800';
+      return 'bg-finance-success/20 text-finance-success';
     case StatusEnum.CANCELLED:
-      return 'bg-red-100 text-red-800';
-    case StatusEnum.PENDING:
-      return 'bg-red-100 text-red-600';
+      return 'bg-finance-error/20 text-finance-error';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return 'bg-finance-bg-medium text-finance-text-primary';
   }
 };

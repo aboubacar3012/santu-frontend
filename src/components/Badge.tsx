@@ -1,14 +1,14 @@
 type BadgeProps = {
-  type: 'green' | 'red' | 'blue' | 'yellow' | 'gray';
+  type: 'success' | 'error' | 'info' | 'warning' | 'neutral';
   text: string;
 };
 const Badge = ({ type, text }: BadgeProps) => {
   const styleByType = {
-    green: 'bg-green-100 text-green-800',
-    red: 'bg-red-100 text-red-800',
-    blue: 'bg-blue-100 text-blue-800',
-    yellow: 'bg-yellow-100 text-yellow-800',
-    gray: 'bg-gray-100 text-black',
+    success: 'bg-finance-success bg-opacity-20 text-finance-success',
+    error: 'bg-finance-error bg-opacity-20 text-finance-error',
+    info: 'bg-finance-info bg-opacity-20 text-finance-info',
+    warning: 'bg-finance-warning bg-opacity-20 text-finance-warning',
+    neutral: 'bg-finance-border text-finance-text-secondary',
   };
 
   return (

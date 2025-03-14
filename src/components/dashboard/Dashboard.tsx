@@ -73,10 +73,10 @@ const Dashboard = () => {
     {
       header: 'Status',
       accessor: invoice => {
-        if (invoice.status === StatusEnum.DRAFT) return <Badge type="yellow" text="Brouillon" />;
-        if (invoice.status === StatusEnum.PENDING) return <Badge type="blue" text="Envoyée" />;
-        if (invoice.status === StatusEnum.PAID) return <Badge type="green" text="Déjà payée" />;
-        if (invoice.status === StatusEnum.CANCELLED) return <Badge type="red" text="Annulée" />;
+        if (invoice.status === StatusEnum.DRAFT) return <Badge type="warning" text="Brouillon" />;
+        if (invoice.status === StatusEnum.PENDING) return <Badge type="info" text="Envoyée" />;
+        if (invoice.status === StatusEnum.PAID) return <Badge type="success" text="Déjà payée" />;
+        if (invoice.status === StatusEnum.CANCELLED) return <Badge type="error" text="Annulée" />;
         return null;
       },
     },
@@ -94,7 +94,7 @@ const Dashboard = () => {
           </button> */}
           <button
             onClick={e => handleCancelInvoice(e, invoice._id!)}
-            className="text-red-600 hover:text-red-800 p-2 rounded-full bg-red-100 hover:bg-red-200"
+            className="text-primary hover:text-primary p-2 rounded-full bg-finance-error/60 hover:bg-finance-error/80"
             // title="Supprimer"s
           >
             {/* <FaTrash size={18} /> */}

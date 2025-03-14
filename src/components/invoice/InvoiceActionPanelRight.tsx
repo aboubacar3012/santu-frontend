@@ -27,7 +27,7 @@ const InvoiceActionPanelRight = ({ invoice, handlePrint }: InvoiceActionPanelPro
   return (
     <div className="md:w-1/4 w-full no-print order-1 md:order-2">
       <div className="bg-white rounded-xl overflow-hidden shadow-md sticky top-20">
-        <div className="bg-gradient-to-r from-my-raspberry to-my-eggplant p-4 text-white">
+        <div className="bg-gradient-to-r from-finance-primary to-finance-secondary p-4 text-white">
           <h3 className="font-medium">Actions</h3>
         </div>
         <div className="p-4 flex flex-col gap-3">
@@ -109,9 +109,9 @@ const InvoiceActionPanelRight = ({ invoice, handlePrint }: InvoiceActionPanelPro
           <div className="flex items-center gap-2 mb-3">
             <div
               className={`w-3 h-3 rounded-full 
-                ${invoice.status === StatusEnum.PAID && 'bg-green-500'}
-                ${invoice.status === StatusEnum.DRAFT && 'bg-amber-500'}
-                ${invoice.status === StatusEnum.CANCELLED && 'bg-red-500'}
+                ${invoice.status === StatusEnum.PAID && 'bg-finance-success'}
+                ${invoice.status === StatusEnum.DRAFT && 'bg-finance-warning'}
+                ${invoice.status === StatusEnum.CANCELLED && 'bg-finance-error'}
                 ${
                   invoice.status !== StatusEnum.PAID &&
                   invoice.status !== StatusEnum.DRAFT &&

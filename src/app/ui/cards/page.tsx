@@ -15,20 +15,14 @@ const Card = ({
   className?: string;
 }) => {
   return (
-    <div
-      className={`bg-white rounded-lg shadow-md overflow-hidden ${className}`}
-    >
+    <div className={`bg-white rounded-lg shadow-md overflow-hidden ${className}`}>
       {title && (
         <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-medium text-gray-900">{title}</h3>
         </div>
       )}
       <div className="px-6 py-4">{children}</div>
-      {footer && (
-        <div className="px-6 py-3 bg-gray-50 border-t border-gray-200">
-          {footer}
-        </div>
-      )}
+      {footer && <div className="px-6 py-3 bg-gray-50 border-t border-gray-200">{footer}</div>}
     </div>
   );
 };
@@ -46,28 +40,20 @@ const CardPage = () => {
 
         <div className="mt-8 space-y-10">
           <section>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              Carte Simple
-            </h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Carte Simple</h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <Card>
-                <p className="text-gray-700">
-                  Une carte basique sans titre ni pied de page.
-                </p>
+                <p className="text-gray-900">Une carte basique sans titre ni pied de page.</p>
               </Card>
 
               <Card title="Titre de la carte">
-                <p className="text-gray-700">
-                  Une carte avec un titre mais sans pied de page.
-                </p>
+                <p className="text-gray-900">Une carte avec un titre mais sans pied de page.</p>
               </Card>
             </div>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              Carte avec pied de page
-            </h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Carte avec pied de page</h2>
             <Card
               title="Paramètres du compte"
               footer={
@@ -81,10 +67,7 @@ const CardPage = () => {
             >
               <div className="space-y-4">
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-900">
                     Nom
                   </label>
                   <input
@@ -96,10 +79,7 @@ const CardPage = () => {
                   />
                 </div>
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-900">
                     Email
                   </label>
                   <input
@@ -115,9 +95,7 @@ const CardPage = () => {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              Carte avec image
-            </h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Carte avec image</h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 <img
@@ -126,9 +104,7 @@ const CardPage = () => {
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-6">
-                  <h3 className="font-semibold text-lg mb-2">
-                    Design d'intérieur
-                  </h3>
+                  <h3 className="font-semibold text-lg mb-2">Design d'intérieur</h3>
                   <p className="text-gray-600 mb-4">
                     Solutions modernes pour votre espace de travail.
                   </p>
@@ -138,12 +114,10 @@ const CardPage = () => {
 
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="p-6">
-                  <h3 className="font-semibold text-lg mb-2">
-                    Design d'intérieur
-                  </h3>
+                  <h3 className="font-semibold text-lg mb-2">Design d'intérieur</h3>
                   <p className="text-gray-600 mb-4">
-                    Solutions modernes pour votre espace de travail avec une
-                    approche minimaliste et fonctionnelle.
+                    Solutions modernes pour votre espace de travail avec une approche minimaliste et
+                    fonctionnelle.
                   </p>
                   <Button size="sm">En savoir plus</Button>
                 </div>

@@ -57,9 +57,7 @@ const UISidebar = () => {
         <Link
           href="/ui"
           className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
-            pathname === '/ui'
-              ? 'bg-indigo-50 text-indigo-600'
-              : 'text-gray-700 hover:bg-gray-100'
+            pathname === '/ui' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-900 hover:bg-gray-100'
           }`}
         >
           Vue d'ensemble
@@ -78,7 +76,7 @@ const UISidebar = () => {
                   className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
                     pathname === component.path
                       ? 'bg-indigo-50 text-indigo-600'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-gray-900 hover:bg-gray-100'
                   }`}
                 >
                   {component.name}

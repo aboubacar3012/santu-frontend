@@ -96,7 +96,7 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
           variants={itemVariants}
           className="flex items-center gap-2 px-4 py-3 text-black bg-white rounded-lg shadow-sm"
         >
-          <CalendarDays className="h-5 w-5 text-my-raspberry" />
+          <CalendarDays className="h-5 w-5 text-my-lavender" />
           <p className="text-nowrap font-normal">
             Inscrit depuis le <span className="font-semibold">13 septembre 2024</span>
           </p>
@@ -106,7 +106,7 @@ const ProfilePage = ({ params }: { params: { accountId: string } }) => {
           variants={itemVariants}
           className="flex items-center gap-2 px-4 py-3 text-black bg-white rounded-lg shadow-sm"
         >
-          <RefreshCw className="h-5 w-5 text-my-raspberry" />
+          <RefreshCw className="h-5 w-5 text-my-lavender" />
           <p className="text-nowrap font-normal">
             Dernière mise à jour le <span className="font-semibold">13 septembre 2024</span>
           </p>

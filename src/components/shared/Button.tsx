@@ -36,10 +36,11 @@ const Button = ({
   // Définitions des classes en fonction des variants
   const variantClasses = {
     primary:
-      'bg-gradient-to-r from-my-raspberry to-my-eggplant text-white shadow-[0_4px_9px_-4px_rgba(138,0,64,0.5)]',
-    secondary: 'bg-white text-gray-700 border border-gray-300 shadow-sm',
+      'bg-gradient-to-r from-finance-primary to-finance-secondary text-white shadow-[0_4px_9px_-4px_rgba(30,77,216,0.5)]',
+    secondary:
+      'bg-white text-finance-text-primary border border-finance-border hover:bg-finance-bg-medium shadow-sm',
     danger:
-      'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-[0_4px_9px_-4px_rgba(220,38,38,0.5)]',
+      'bg-finance-error hover:bg-red-600 text-white shadow-[0_4px_9px_-4px_rgba(229,62,62,0.5)]',
   };
 
   // Définitions des tailles

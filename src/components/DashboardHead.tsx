@@ -12,7 +12,7 @@ const DashboardHead = () => {
       }}
     >
       <motion.div
-        className="relative grid mx-4 mb-3 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-my-raspberry to-my-eggplant bg-clip-border shadow-my-raspberry-900/20"
+        className="relative grid mx-4 mb-3 overflow-hidden text-white shadow-lg h-16 place-items-center rounded-xl bg-gradient-to-tr from-finance-primary to-finance-secondary bg-clip-border shadow-my-lavender-900/20"
         initial={{ scale: 0.95, opacity: 0.8 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{

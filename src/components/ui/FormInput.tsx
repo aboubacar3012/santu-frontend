@@ -4,9 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface FormInputProps {
   label: string;
   value: string;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   type?: string;
   placeholder?: string;
   icon?: ReactNode;
@@ -72,20 +70,14 @@ const FormInput: React.FC<FormInputProps> = React.memo(
 
     // Base styles for both inputs and textareas
     const baseStyles = `${icon ? 'pl-10' : 'pl-3'} w-full rounded-md border 
-      ${
-        error
-          ? 'border-red-300'
-          : isFocused
-          ? 'border-green-500'
-          : 'border-gray-200'
-      } 
+      ${error ? 'border-red-300' : isFocused ? 'border-green-500' : 'border-gray-200'} 
       py-2.5 pe-10 shadow-sm sm:text-sm focus:border-green-500 focus:ring-1 focus:ring-green-500 
       transition-colors duration-200`;
 
     return (
       <div className={`space-y-2 ${className}`}>
         <motion.label
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-900"
           initial="unfocused"
           animate={isFocused ? 'focused' : 'unfocused'}
           variants={labelVariants}
@@ -119,9 +111,7 @@ const FormInput: React.FC<FormInputProps> = React.memo(
               placeholder={placeholder}
               rows={rows}
               style={{
-                boxShadow: isFocused
-                  ? '0 0 0 2px rgba(16, 185, 129, 0.2)'
-                  : 'none',
+                boxShadow: isFocused ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none',
                 transition: 'border-color 0.2s, box-shadow 0.2s',
               }}
             />
@@ -137,9 +127,7 @@ const FormInput: React.FC<FormInputProps> = React.memo(
               min={min}
               max={max}
               style={{
-                boxShadow: isFocused
-                  ? '0 0 0 2px rgba(16, 185, 129, 0.2)'
-                  : 'none',
+                boxShadow: isFocused ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none',
                 transition: 'border-color 0.2s, box-shadow 0.2s',
               }}
             />

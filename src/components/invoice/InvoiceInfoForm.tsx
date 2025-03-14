@@ -98,7 +98,7 @@ const InvoiceInfoForm = ({
 
       {/* Articles  à facturer*/}
       <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Articles à facturer</h3>
+        <h3 className="text-sm font-medium text-gray-900 mb-3">Articles à facturer</h3>
 
         <ArticleAddForm
           articles={articles}

@@ -115,7 +115,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
             </div>
             <div className="flex flex-col justify-between items-end gap-6">
               <div className="flex gap-4">
-                <Badge type="yellow" text={`${invoices.length} Factures`} />
+                <Badge type="warning" text={`${invoices.length} Factures`} />
               </div>
               <div className="text-right">
                 <p className="font-light text-xs">Montant total</p>
@@ -143,7 +143,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
                 columns={invoiceColumns}
                 data={invoices}
                 onRowClick={navigateToInvoice}
-                headerClassName="text-xs uppercase bg-gradient-to-r from-my-raspberry to-my-eggplant"
+                headerClassName="text-xs uppercase bg-gradient-to-r from-finance-primary to-finance-secondary"
                 emptyMessage="Aucune facture trouvée"
               />
             )}

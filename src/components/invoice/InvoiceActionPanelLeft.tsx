@@ -26,7 +26,7 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
         className="invoice-card bg-white rounded-xl overflow-hidden mb-8"
       >
         {/* Entête colorée */}
-        <div className="invoice-header bg-gradient-to-r from-my-raspberry to-my-eggplant p-8 text-white relative">
+        <div className="invoice-header bg-gradient-to-r from-finance-primary to-finance-secondary p-8 text-white relative">
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-3xl font-bold mb-2">Facture</h1>
@@ -35,13 +35,13 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                 <span className="font-semibold">{invoice.invoiceNumber}</span>
               </div>
             </div>
-            <div
+            {/* <div
               className={`${getStatusColor(
                 invoice.status
               )} status-badge px-4 py-2 rounded-full font-medium text-sm`}
             >
               {getStatusText(invoice.status)}
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -63,9 +63,9 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                       ? loggedAccount.company
                       : `${loggedAccount?.firstName} ${loggedAccount?.lastName}`}
                   </h4>
-                  <p className="text-gray-700 mt-1">{loggedAccount?.address}</p>
-                  <p className="text-gray-700">{loggedAccount?.phone}</p>
-                  <p className="text-gray-700">{loggedAccount?.email}</p>
+                  <p className="text-gray-900 mt-1">{loggedAccount?.address}</p>
+                  <p className="text-gray-900">{loggedAccount?.phone}</p>
+                  <p className="text-gray-900">{loggedAccount?.email}</p>
                 </div>
               </div>
             </div>
@@ -81,9 +81,9 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                     ? client.company
                     : `${client.firstName} ${client.lastName}`}
                 </h4>
-                <p className="text-gray-700 mt-1">{client.address}</p>
-                <p className="text-gray-700">{client.phone}</p>
-                <p className="text-gray-700">{client.email}</p>
+                <p className="text-gray-900 mt-1">{client.address}</p>
+                <p className="text-gray-900">{client.phone}</p>
+                <p className="text-gray-900">{client.email}</p>
               </div>
             </div>
           </div>

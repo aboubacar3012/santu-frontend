@@ -10,10 +10,7 @@ interface ClientsSelectProps {
   setSelectedClient: (clientId: string) => void;
 }
 
-const ClientsSelect = ({
-  selectedClient,
-  setSelectedClient,
-}: ClientsSelectProps) => {
+const ClientsSelect = ({ selectedClient, setSelectedClient }: ClientsSelectProps) => {
   const auth = useSelector((state: RootState) => state.auth);
   const {
     data = { clients: [] },
@@ -31,9 +28,7 @@ const ClientsSelect = ({
 
   // Trouver l'option sélectionnée
   const selectedOption =
-    clientOptions.find(
-      (option: { value: string }) => option.value === selectedClient
-    ) || null;
+    clientOptions.find((option: { value: string }) => option.value === selectedClient) || null;
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching clients: {error.message}</p>;
@@ -66,7 +61,7 @@ const ClientsSelect = ({
         <Link
           href="/dashboard/clients?addClient=true"
           passHref
-          className="w-2/5 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5"
+          className="w-2/5 text-white bg-finance-primary hover:bg-finance-primary/80 font-medium rounded-lg text-sm px-5 py-2.5"
         >
           + Créer un client
         </Link>

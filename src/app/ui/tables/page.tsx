@@ -73,8 +73,8 @@ const TablesPage = () => {
     {
       header: 'Status',
       accessor: user => {
-        if (user.status === 'Active') return <Badge type="green" text="Actif" />;
-        return <Badge type="gray" text="Inactif" />;
+        if (user.status === 'Active') return <Badge type="success" text="Actif" />;
+        return <Badge type="neutral" text="Inactif" />;
       },
     },
   ];
@@ -88,9 +88,9 @@ const TablesPage = () => {
     {
       header: 'Stock',
       accessor: product => {
-        if (product.stock > 10) return <Badge type="green" text={product.stock.toString()} />;
-        if (product.stock > 0) return <Badge type="yellow" text={product.stock.toString()} />;
-        return <Badge type="red" text="En rupture" />;
+        if (product.stock > 10) return <Badge type="success" text={product.stock.toString()} />;
+        if (product.stock > 0) return <Badge type="warning" text={product.stock.toString()} />;
+        return <Badge type="error" text="En rupture" />;
       },
     },
   ];

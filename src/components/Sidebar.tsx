@@ -31,12 +31,12 @@ const MenuItem = memo(
           className={`flex items-center ${
             collapsed ? 'justify-center' : 'justify-start'
           } w-full rounded-lg my-1 gap-3 p-3 relative overflow-hidden ${
-            isActive ? 'text-white' : 'hover:bg-gray-100/80 text-gray-700'
+            isActive ? 'text-white' : 'hover:bg-gray-100/80 text-gray-900'
           }`}
           title={collapsed ? name : ''}
         >
           {isActive && (
-            <div className="absolute inset-0 bg-gradient-to-r from-my-raspberry to-my-eggplant rounded-lg -z-0" />
+            <div className="absolute inset-0 bg-gradient-to-r from-finance-primary to-finance-secondary rounded-lg -z-0" />
           )}
           <div
             className={`relative z-10 flex items-center ${collapsed ? 'justify-center' : ''} ${
@@ -72,7 +72,7 @@ const Sidebar = () => {
       name: 'Tableau de bord',
       icon: <MdDashboard className="w-6 h-6" />,
       href: '/dashboard',
-      isActive: pathname === '/dashboard',
+      isActive: pathname === '/dashboard' || pathname.includes('/dashboard/invoice'),
     },
     {
       roles: ['partner'],
@@ -90,14 +90,14 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`relative flex flex-col h-screen bg-gray-50/80 backdrop-blur-md text-black rounded-r-xl shadow-lg no-print overflow-hidden ${
+      className={`relative flex flex-col h-screen bg-finance-bg-light backdrop-blur-md text-finance-text-primary rounded-r-xl shadow-lg no-print overflow-hidden ${
         collapsed ? 'w-20' : 'w-64'
       }`}
     >
       <div className="flex justify-between items-center h-20 w-full px-3">
         {!collapsed && (
           <Link href="/dashboard">
-            <h3 className="text-2xl font-sans font-bold bg-gradient-to-r from-my-raspberry to-my-eggplant bg-clip-text text-transparent">
+            <h3 className="text-2xl text-center font-sans font-bold bg-gradient-to-r from-finance-primary to-finance-tertiary bg-clip-text text-transparent">
               Santou Pro
             </h3>
           </Link>
@@ -106,7 +106,7 @@ const Sidebar = () => {
         <button
           className={`${
             collapsed ? 'mx-auto' : 'ml-auto'
-          } p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors`}
+          } p-2 rounded-full bg-finance-bg-medium hover:bg-finance-border transition-colors`}
           onClick={toggleSidebar}
           aria-label={collapsed ? 'Déplier le panneau' : 'Replier le panneau'}
         >
@@ -118,7 +118,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <div className="h-0.5 w-full bg-gray-200/50"></div>
+      <div className="h-0.5 w-full bg-finance-border"></div>
 
       <div className="flex flex-col items-start justify-center w-full gap-1 px-3 py-4 overflow-y-auto">
         <div className="w-full space-y-1">
@@ -134,7 +134,7 @@ const Sidebar = () => {
           ))}
         </div>
 
-        <hr className="w-full border-gray-200 my-2" />
+        <hr className="w-full border-finance-border my-2" />
 
         <div className="w-full space-y-1">
           <MenuItem
@@ -160,24 +160,17 @@ const Sidebar = () => {
           <Button
             onClick={handleLogout}
             variant="danger"
-            className="flex items-center justify-start gap-2 hover:bg-gray-100 transition-colors"
+            className="flex items-center justify-start gap-2 hover:bg-finance-bg-medium transition-colors"
             icon={<LogOut className="w-5 h-5" />}
             iconPosition="left"
           >
             {''}
           </Button>
         ) : (
-          // <button
-          //   className="w-48 flex gap-2 p-2 text-lg font-sans font-normal text-white bg-gradient-to-r from-red-500 to-red-600 rounded-xl shadow-md flex justify-center items-center"
-          //   onClick={handleLogout}
-          // >
-          //   <LogOut className="w-5 h-5" />
-          //   Déconnexion
-          // </button>
           <Button
             onClick={handleLogout}
             variant="danger"
-            className="flex items-center justify-start gap-2 hover:bg-gray-100 transition-colors"
+            className="flex items-center justify-start gap-2 hover:bg-finance-bg-medium transition-colors"
             icon={<LogOut className="w-5 h-5" />}
             iconPosition="left"
           >

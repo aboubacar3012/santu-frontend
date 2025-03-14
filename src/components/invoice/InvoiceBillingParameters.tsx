@@ -1,10 +1,4 @@
-import {
-  Calendar,
-  Percent,
-  CreditCard,
-  Clock,
-  MessageSquare,
-} from 'lucide-react';
+import { Calendar, Percent, CreditCard, Clock, MessageSquare } from 'lucide-react';
 import FormInput from '../ui/FormInput';
 
 type InvoiceBillingParametersProps = {
@@ -34,9 +28,7 @@ const InvoiceBillingParameters = ({
 }: InvoiceBillingParametersProps) => {
   return (
     <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-      <h3 className="text-sm font-medium text-gray-700 mb-3">
-        Paramètres de facturation
-      </h3>
+      <h3 className="text-sm font-medium text-gray-900 mb-3">Paramètres de facturation</h3>
 
       <div className="space-y-4">
         {/* Date et TVA */}
@@ -44,17 +36,12 @@ const InvoiceBillingParameters = ({
           {/* Date de la facture */}
           <div className="relative">
             <div className="flex justify-between items-center mb-2">
-              <label
-                htmlFor="invoiceDate"
-                className="text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="invoiceDate" className="text-sm font-medium text-gray-900">
                 Date de la facture
               </label>
               <button
                 type="button"
-                onClick={() =>
-                  setInvoiceDate(new Date().toISOString().split('T')[0])
-                }
+                onClick={() => setInvoiceDate(new Date().toISOString().split('T')[0])}
                 className="text-xs bg-gray-700 text-white py-1 px-2 rounded-md hover:opacity-90 transition-opacity"
               >
                 Aujourd'hui
@@ -92,10 +79,7 @@ const InvoiceBillingParameters = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Mode de règlement */}
           <div className="relative">
-            <label
-              htmlFor="paymentMode"
-              className="block mb-2 text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="paymentMode" className="block mb-2 text-sm font-medium text-gray-900">
               Mode de règlement
             </label>
             <div className="relative">
@@ -124,10 +108,7 @@ const InvoiceBillingParameters = ({
 
           {/* Conditions de règlement */}
           <div className="relative">
-            <label
-              htmlFor="status"
-              className="block mb-2 text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900">
               Conditions de règlement
             </label>
             <div className="relative">

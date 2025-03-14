@@ -191,7 +191,7 @@ const ClientsPage = () => {
         data={clients}
         onRowClick={handleClientClick}
         // Utilisation du même style de header que dans dashboard/page.tsx
-        headerClassName="text-xs uppercase bg-gradient-to-r from-my-raspberry to-my-eggplant"
+        headerClassName="text-xs uppercase bg-gradient-to-r from-finance-primary to-finance-secondary"
       />
     </div>
   );

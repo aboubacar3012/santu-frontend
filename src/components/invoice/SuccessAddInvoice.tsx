@@ -56,8 +56,7 @@ const SuccessAddInvoice = ({ onClick }: SuccessAddInvoiceProps) => {
           transition={{ delay: 0.6 }}
           className="text-gray-600 text-center"
         >
-          Pour finaliser la facture, veuillez sélectionner l&apos;une des
-          options ci-dessous.
+          Pour finaliser la facture, veuillez sélectionner l&apos;une des options ci-dessous.
         </motion.p>
 
         <div className="space-y-3 w-full mt-2">

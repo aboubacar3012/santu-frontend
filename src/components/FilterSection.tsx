@@ -66,7 +66,7 @@ const FilterSection = () => {
         <div className="flex justify-between items-start flex-wrap gap-4 relative">
           <motion.div variants={itemVariants}>
             <motion.h3
-              className="text-sm font-medium text-gray-700 mb-3"
+              className="text-sm font-medium text-gray-900 mb-3"
               whileHover={{ x: 3 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
@@ -77,7 +77,7 @@ const FilterSection = () => {
                 <motion.div key={period} className="relative">
                   {selectedDateFilterBtn === period && (
                     <motion.div
-                      className="absolute inset-0 rounded-md bg-gradient-to-tr from-my-raspberry to-my-eggplant"
+                      className="absolute inset-0 rounded-md bg-gradient-to-tr from-finance-primary to-finance-secondary"
                       layoutId="dateIndicator"
                       initial={{ borderRadius: 6 }}
                       animate={{ borderRadius: 6 }}
@@ -93,7 +93,7 @@ const FilterSection = () => {
                     className={`px-4 py-2 text-sm font-medium rounded-md shadow-sm relative z-10 ${
                       selectedDateFilterBtn === period
                         ? 'text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-100'
+                        : 'bg-white text-gray-900 hover:bg-gray-100'
                     }`}
                     whileHover={{
                       scale: 1.05,
@@ -117,7 +117,7 @@ const FilterSection = () => {
 
           <motion.div variants={itemVariants}>
             <motion.h3
-              className="text-sm font-medium text-gray-700 mb-3"
+              className="text-sm font-medium text-gray-900 mb-3"
               whileHover={{ x: 3 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
@@ -128,7 +128,7 @@ const FilterSection = () => {
                 <motion.div key={status} className="relative">
                   {selectedPaymentFilterBtn === status && (
                     <motion.div
-                      className="absolute inset-0 rounded-md bg-gradient-to-tr from-blue-500 to-indigo-600"
+                      className="absolute inset-0 rounded-md bg-gradient-to-tr from-finance-primary to-finance-secondary"
                       layoutId="paymentIndicator"
                       initial={{ borderRadius: 6 }}
                       animate={{ borderRadius: 6 }}
@@ -144,7 +144,7 @@ const FilterSection = () => {
                     className={`px-4 py-2 text-sm font-medium rounded-md shadow-sm relative z-10 ${
                       selectedPaymentFilterBtn === status
                         ? 'text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-100'
+                        : 'bg-white text-gray-900 hover:bg-gray-100'
                     }`}
                     whileHover={{
                       scale: 1.05,

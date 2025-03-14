@@ -122,7 +122,7 @@ const Modal: React.FC<ModalProps> = ({
         >
           <motion.div
             ref={modalRef}
-            className={`${getSizeClass()} overflow-auto rounded-lg bg-white font-sans text-base font-light leading-relaxed text-gray-700 antialiased shadow-2xl`}
+            className={`${getSizeClass()} overflow-auto rounded-lg bg-white font-sans text-base font-light leading-relaxed text-gray-900 antialiased shadow-2xl`}
             variants={modalVariants}
             initial="hidden"
             animate="visible"
@@ -149,7 +149,7 @@ const Modal: React.FC<ModalProps> = ({
                 {showClose && (
                   <motion.button
                     onClick={onClose}
-                    className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                    className="text-gray-500 hover:text-gray-900 focus:outline-none"
                     aria-label="Fermer"
                     whileHover={{
                       rotate: 90,

@@ -22,7 +22,7 @@ const Table = <T extends Record<string, any>>({
   data,
   onRowClick,
   className = 'w-full text-sm text-left text-black',
-  headerClassName = 'text-xs uppercase bg-gradient-to-r from-my-raspberry to-my-eggplant',
+  headerClassName = 'text-xs uppercase bg-gradient-to-r from-finance-primary to-finance-secondary',
   rowClassName = (item, index) => 'border-b cursor-pointer hover:bg-gray-200',
   emptyMessage = 'Aucune donnée disponible',
 }: TableProps<T>) => {

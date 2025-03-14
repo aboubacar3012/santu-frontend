@@ -26,7 +26,7 @@ const PrevHeader = () => {
       whileTap={{ scale: 0.98 }}
     >
       <motion.div
-        className="flex items-center justify-center bg-gradient-to-tr from-my-raspberry to-my-eggplant rounded-lg p-2 text-white"
+        className="flex items-center justify-center bg-gradient-to-tr from-finance-primary to-finance-secondary rounded-lg p-2 text-white"
         initial={{ scale: 0.95, opacity: 0.8 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{

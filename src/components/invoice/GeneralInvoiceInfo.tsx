@@ -20,17 +20,12 @@ const GeneralInvoiceInfo = ({
 }: GeneralInvoiceInfoProps) => {
   return (
     <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-      <h3 className="text-sm font-medium text-gray-700 mb-3">
-        Informations générales
-      </h3>
+      <h3 className="text-sm font-medium text-gray-900 mb-3">Informations générales</h3>
 
       <div className="space-y-4">
         {/* Numéro de facture */}
         <div className="relative w-full">
-          <label
-            htmlFor="title"
-            className="block mb-2 text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900">
             Numéro de la facture
           </label>
           <div className="relative">
@@ -44,10 +39,7 @@ const GeneralInvoiceInfo = ({
         </div>
 
         {/* Sélection du client */}
-        <ClientsSelect
-          selectedClient={selectedClient}
-          setSelectedClient={setSelectedClient}
-        />
+        <ClientsSelect selectedClient={selectedClient} setSelectedClient={setSelectedClient} />
 
         {/* Titre de la facture */}
         <FormInput

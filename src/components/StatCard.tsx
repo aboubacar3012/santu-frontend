@@ -10,13 +10,7 @@ type StatCardProps = {
   isVisible?: boolean;
 };
 
-const StatCard = ({
-  title,
-  value,
-  unit,
-  icon,
-  isVisible = true,
-}: StatCardProps) => {
+const StatCard = ({ title, value, unit, icon, isVisible = true }: StatCardProps) => {
   const [isValueVisible, setIsValueVisible] = useState(isVisible);
 
   const toggleValueVisibility = () => {
@@ -36,7 +30,7 @@ const StatCard = ({
       }}
     >
       <motion.div
-        className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-my-raspberry to-my-eggplant"
+        className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-finance-primary to-finance-secondary"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
@@ -63,7 +57,7 @@ const StatCard = ({
             scale: 1.2,
             transition: { type: 'spring', stiffness: 400, damping: 10 },
           }}
-          className="text-my-eggplant"
+          className="text-my-indigo"
         >
           {icon}
         </motion.div>
@@ -105,18 +99,14 @@ const StatCard = ({
           e.stopPropagation();
           toggleValueVisibility();
         }}
-        className="absolute bottom-2 right-2 text-gray-500 hover:text-my-eggplant focus:outline-none bg-white bg-opacity-70 rounded-full p-1"
+        className="absolute bottom-2 right-2 text-gray-500 hover:text-my-indigo focus:outline-none bg-white bg-opacity-70 rounded-full p-1"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.7 }}
         // whileHover={{ opacity: 1, scale: 1.1 }}
       >
-        {isValueVisible ? (
-          <Eye className="w-4 h-4" />
-        ) : (
-          <EyeOff className="w-4 h-4" />
-        )}
+        {isValueVisible ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
       </motion.button>
     </motion.div>
   );
