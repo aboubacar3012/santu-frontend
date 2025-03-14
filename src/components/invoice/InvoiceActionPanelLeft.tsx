@@ -123,16 +123,16 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
               <tbody>
                 {invoice?.articles.map((article, index) => (
                   <tr key={index}>
-                    <td className="text-left">{index + 1}</td>
-                    <td className="text-left">
-                      <div className="font-medium">{article.name}</div>
+                    <td className="text-left text-xs">{index + 1}</td>
+                    <td className="text-left text-xs">
+                      <div className="text-xs">{article.name}</div>
                       {article.description && (
-                        <div className="text-gray-500 text-xs mt-1">{article.description}</div>
+                        <div className="text-gray-500 text-xs">{article.description}</div>
                       )}
                     </td>
-                    <td className="text-center">{article.quantity}</td>
-                    <td className="text-right">{article?.price?.toLocaleString()} GNF</td>
-                    <td className="text-right font-medium">
+                    <td className="text-center text-xs">{article.quantity}</td>
+                    <td className="text-right text-xs">{article?.price?.toLocaleString()} GNF</td>
+                    <td className="text-right font-medium text-xs">
                       {((article?.price || 0) * (article?.quantity || 0)).toLocaleString()} GNF
                     </td>
                   </tr>
@@ -189,8 +189,8 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
             </div>
           </div>
 
-          <div className="border-t pt-6 mt-6">
-            <h4 className="font-medium mb-2">Notes</h4>
+          <div className="border-t pt-2 mt-2">
+            <h4 className="font-medium mb-1">Notes</h4>
             <p className="text-gray-600 text-sm">
               Merci pour votre confiance. Pour toute question concernant cette facture, veuillez
               nous contacter.
@@ -199,7 +199,7 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
         </div>
 
         {/* Footer */}
-        <div className="bg-gray-50 p-4 text-center text-sm text-gray-500 border-t">
+        <div className="bg-gray-50 p-2 text-center text-xs text-gray-500 border-t">
           <p>Cette facture a été générée électroniquement via SantouPro</p>
         </div>
       </motion.div>
