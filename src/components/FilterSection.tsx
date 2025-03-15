@@ -2,35 +2,46 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useUrlParams } from '../hooks/useUrlParams';
 
-type SelectedPaymentFilterBtn = 'all' | 'draft' | 'paid' | 'cancelled' | 'pending';
-type SelectedDateFilterBtn = 'today' | 'week' | 'month' | 'year';
+// Types définis pour améliorer la type-safety
+type Period = 'all' | 'today' | 'week' | 'month';
+type Status = 'all' | 'draft' | 'paid' | 'cancelled' | 'pending';
+
+// Mappage des libellés pour éviter la répétition
+const periodLabels: Record<Period, string> = {
+  all: 'Toutes',
+  today: 'Aujourdhui',
+  week: 'Cette semaine',
+  month: 'Ce mois',
+};
+
+const statusLabels: Record<Status, string> = {
+  all: 'Toutes',
+  draft: 'Brouillons',
+  pending: 'En attente',
+  paid: 'Payées',
+  cancelled: 'Annulées',
+};
 
 const FilterSection = () => {
-  const { hasParams, setParams, deleteParams, getParams } = useUrlParams();
-  const [selectedPaymentFilterBtn, setSelectPaymentFilterBtn] = useState<
-    'all' | 'draft' | 'paid' | 'cancelled' | 'pending'
-  >('all');
-  const [selectedDateFilterBtn, setSelectedDateFilterBtn] = useState<
-    'today' | 'week' | 'month' | 'year'
-  >('today');
+  const { setParams } = useUrlParams();
+  const [status, setStatus] = useState<Status>('all');
+  const [period, setPeriod] = useState<Period>('today');
 
   useEffect(() => {
-    setParams({ status: 'all', period: 'today' });
+    setParams({ status: 'all', period: 'all' });
   }, []);
 
-  const handleDateFilterChange = (period: 'today' | 'week' | 'month' | 'year') => {
+  const handleDateFilterChange = (period: Period) => {
     setParams({ period });
-    setSelectedDateFilterBtn(period);
+    setPeriod(period);
   };
 
-  const handlePaymentFilterChange = (
-    status: 'all' | 'draft' | 'paid' | 'cancelled' | 'pending'
-  ) => {
+  const handlePaymentFilterChange = (status: Status) => {
     setParams({ status });
-    setSelectPaymentFilterBtn(status);
+    setStatus(status);
   };
 
-  console.log('FilterSection rendered', selectedPaymentFilterBtn, selectedDateFilterBtn);
+  console.log('FilterSection rendered', status, period);
 
   // Animation variants
   const containerVariants = {
@@ -73,9 +84,9 @@ const FilterSection = () => {
               Filtrer par période
             </motion.h3>
             <div className="flex gap-2 relative">
-              {['today', 'week', 'month', 'year'].map(period => (
-                <motion.div key={period} className="relative">
-                  {selectedDateFilterBtn === period && (
+              {Object.keys(periodLabels).map(periodKey => (
+                <motion.div key={periodKey} className="relative">
+                  {period === periodKey && (
                     <motion.div
                       className="absolute inset-0 rounded-md bg-gradient-to-tr from-finance-primary to-finance-secondary"
                       layoutId="dateIndicator"
@@ -89,9 +100,9 @@ const FilterSection = () => {
                     />
                   )}
                   <motion.button
-                    onClick={() => handleDateFilterChange(period as any)}
+                    onClick={() => handleDateFilterChange(periodKey as Period)}
                     className={`px-4 py-2 text-sm font-medium rounded-md shadow-sm relative z-10 ${
-                      selectedDateFilterBtn === period
+                      period === periodKey
                         ? 'text-white'
                         : 'bg-white text-gray-900 hover:bg-gray-100'
                     }`}
@@ -105,10 +116,7 @@ const FilterSection = () => {
                     }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    {period === 'today' && 'Aujourdhui'}
-                    {period === 'week' && 'Cette semaine'}
-                    {period === 'month' && 'Ce mois'}
-                    {period === 'year' && 'Cette année'}
+                    {periodLabels[periodKey as Period]}
                   </motion.button>
                 </motion.div>
               ))}
@@ -124,9 +132,9 @@ const FilterSection = () => {
               Filtrer par statut
             </motion.h3>
             <div className="flex gap-2 flex-wrap relative">
-              {['all', 'draft', 'pending', 'paid', 'cancelled'].map(status => (
-                <motion.div key={status} className="relative">
-                  {selectedPaymentFilterBtn === status && (
+              {Object.keys(statusLabels).map(statusKey => (
+                <motion.div key={statusKey} className="relative">
+                  {status === statusKey && (
                     <motion.div
                       className="absolute inset-0 rounded-md bg-gradient-to-tr from-finance-primary to-finance-secondary"
                       layoutId="paymentIndicator"
@@ -140,9 +148,9 @@ const FilterSection = () => {
                     />
                   )}
                   <motion.button
-                    onClick={() => handlePaymentFilterChange(status as any)}
+                    onClick={() => handlePaymentFilterChange(statusKey as Status)}
                     className={`px-4 py-2 text-sm font-medium rounded-md shadow-sm relative z-10 ${
-                      selectedPaymentFilterBtn === status
+                      status === statusKey
                         ? 'text-white'
                         : 'bg-white text-gray-900 hover:bg-gray-100'
                     }`}
@@ -156,11 +164,7 @@ const FilterSection = () => {
                     }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    {status === 'all' && 'Toutes'}
-                    {status === 'draft' && 'Brouillons'}
-                    {status === 'pending' && 'En attente'}
-                    {status === 'paid' && 'Payées'}
-                    {status === 'cancelled' && 'Annulées'}
+                    {statusLabels[statusKey as Status]}
                   </motion.button>
                 </motion.div>
               ))}

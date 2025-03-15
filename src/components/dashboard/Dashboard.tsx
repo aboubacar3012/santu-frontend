@@ -8,7 +8,7 @@ import { RootState } from '@/src/redux/store';
 import { Invoice, StatusEnum } from '@/src/types';
 import { LiaFileInvoiceDollarSolid } from 'react-icons/lia';
 import { GiMoneyStack } from 'react-icons/gi';
-import { FaUserFriends } from 'react-icons/fa';
+import { FaTrash, FaUserFriends } from 'react-icons/fa';
 import { formatCurrency } from '@/src/libs/formatCurrency';
 import { useUrlParams } from '@/src/hooks/useUrlParams';
 import { toast } from 'react-toastify';
@@ -80,29 +80,29 @@ const Dashboard = () => {
         return null;
       },
     },
-    {
-      header: 'Action',
-      className: 'w-28 text-center',
-      accessor: invoice => (
-        <div className="flex justify-center gap-3">
-          {/* <button
-            onClick={e => handleEditInvoice(e, invoice._id!)}
-            className="text-blue-600 hover:text-blue-800 p-1.5 rounded-full hover:bg-blue-100"
-            title="Modifier"
-          >
-            <FaEdit size={18} />
-          </button> */}
-          <button
-            onClick={e => handleCancelInvoice(e, invoice._id!)}
-            className="text-primary hover:text-primary p-2 rounded-full bg-finance-error/60 hover:bg-finance-error/80"
-            // title="Supprimer"s
-          >
-            {/* <FaTrash size={18} /> */}
-            Abandonner
-          </button>
-        </div>
-      ),
-    },
+    // {
+    //   header: 'Action',
+    //   className: 'w-28 text-center',
+    //   accessor: invoice => (
+    //     <div className="flex justify-center gap-3">
+    //       {/* <button
+    //         onClick={e => handleEditInvoice(e, invoice._id!)}
+    //         className="text-blue-600 hover:text-blue-800 p-1.5 rounded-full hover:bg-blue-100"
+    //         title="Modifier"
+    //       >
+    //         <FaEdit size={18} />
+    //       </button> */}
+    //       {/* <button
+    //         onClick={e => handleCancelInvoice(e, invoice._id!)}
+    //         className="text-primary hover:text-primary p-2 rounded-full bg-finance-error/60 hover:bg-finance-error/80"
+    //         title="Supprimer"
+    //       >
+    //         <FaTrash size={18} />
+    //         Abandonner
+    //       </button> */}
+    //     </div>
+    //   ),
+    // },
   ];
 
   if (isLoading) {
@@ -128,7 +128,7 @@ const Dashboard = () => {
         />
         <StatCard
           title="Ce mois-ci"
-          value={`${formatCurrency(data.dashboardData.total)}`}
+          value={`${formatCurrency(data.dashboardData.totalthisMonth)}`}
           unit="Toute les factures"
           icon={<GiMoneyStack className="w-8 h-8 text-blue-500" />}
           isVisible={false}
