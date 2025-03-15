@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@/src/redux/features/authSlice';
 import { useRouter, usePathname } from 'next/navigation';
 import { FaUserCog, FaUsers } from 'react-icons/fa';
-import { LogOut, Settings, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { LogOut, Settings, PanelLeftClose, PanelLeftOpen, LayoutList } from 'lucide-react';
 import { RootState } from '@/src/redux/store';
 import { useCallback, memo, useState } from 'react';
 import Button from './shared/Button';
@@ -80,6 +80,13 @@ const Sidebar = () => {
       icon: <FaUsers className="w-6 h-6" />,
       href: `/dashboard/clients`,
       isActive: pathname.includes('/dashboard/clients'),
+    },
+    {
+      roles: ['partner'],
+      name: 'Tâches',
+      icon: <LayoutList className="w-6 h-6" />,
+      href: `/dashboard/tasks`,
+      isActive: pathname.includes('/dashboard/tasks'),
     },
   ];
 
