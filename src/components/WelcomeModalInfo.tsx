@@ -10,16 +10,22 @@ const WelcomeModalInfo: React.FC<WelcomeModalProps> = ({ onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Vérifier si l'utilisateur a déjà vu le message
-    const hasSeenWelcome = localStorage.getItem('hasSeenWelcomeModal');
-    if (!hasSeenWelcome) {
+    // Récupérer le timestamp du dernier affichage
+    const lastShownTimestamp = localStorage.getItem('welcomeModalLastShown');
+    const currentTime = Date.now();
+
+    // Vérifier si une heure s'est écoulée ou si c'est la première visite
+    const shouldShow =
+      !lastShownTimestamp || currentTime - parseInt(lastShownTimestamp) > 60 * 60 * 1000; // 60min * 60sec * 1000ms
+
+    if (shouldShow) {
       setIsOpen(true);
     }
   }, []);
 
   const handleClose = () => {
-    // Marquer le message comme lu
-    localStorage.setItem('hasSeenWelcomeModal', 'true');
+    // Sauvegarder le timestamp actuel lors de la fermeture
+    localStorage.setItem('welcomeModalLastShown', Date.now().toString());
     setIsOpen(false);
 
     if (onClose) {
@@ -52,7 +58,7 @@ const WelcomeModalInfo: React.FC<WelcomeModalProps> = ({ onClose }) => {
         <div className="flex justify-center w-full">
           <button
             onClick={handleClose}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105"
+            className="px-6 py-2 bg-finance-primary hover:bg-finance-secondary text-white font-semibold rounded-md shadow-md transition-all duration-300 transform hover:scale-105"
           >
             J'ai compris
           </button>
@@ -62,7 +68,7 @@ const WelcomeModalInfo: React.FC<WelcomeModalProps> = ({ onClose }) => {
       <div className="flex flex-col items-center text-center space-y-6">
         {/* Icône ou illustration */}
         <motion.div
-          className="text-blue-500"
+          className="text-finance-primary"
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.2 }}
@@ -83,7 +89,7 @@ const WelcomeModalInfo: React.FC<WelcomeModalProps> = ({ onClose }) => {
 
         {/* Titre */}
         <motion.h2
-          className="text-2xl font-bold text-gray-800"
+          className="text-2xl font-bold text-finance-text-primary"
           custom={0}
           variants={itemAnimation}
           initial="hidden"
@@ -94,20 +100,20 @@ const WelcomeModalInfo: React.FC<WelcomeModalProps> = ({ onClose }) => {
 
         {/* Message principal */}
         <motion.p
-          className="text-lg text-gray-600"
+          className="text-lg text-finance-text-secondary"
           custom={1}
           variants={itemAnimation}
           initial="hidden"
           animate="visible"
         >
           Merci d'essayer notre application. Sachez que vous utilisez actuellement une{' '}
-          <span className="font-semibold text-blue-600">version bêta</span> qui est encore en
-          développement.
+          <span className="font-semibold text-finance-secondary">version bêta</span> qui est encore
+          en développement.
         </motion.p>
 
         {/* Avertissement */}
         <motion.div
-          className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-md text-left w-full"
+          className="bg-finance-bg-light border-l-4 border-finance-warning p-4 rounded-md text-left w-full"
           custom={2}
           variants={itemAnimation}
           initial="hidden"
@@ -116,7 +122,7 @@ const WelcomeModalInfo: React.FC<WelcomeModalProps> = ({ onClose }) => {
           <div className="flex">
             <div className="flex-shrink-0">
               <svg
-                className="h-5 w-5 text-amber-500"
+                className="h-5 w-5 text-finance-warning"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -129,7 +135,7 @@ const WelcomeModalInfo: React.FC<WelcomeModalProps> = ({ onClose }) => {
               </svg>
             </div>
             <div className="ml-3">
-              <p className="text-sm text-amber-700">
+              <p className="text-sm text-finance-text-primary">
                 <strong>Attention :</strong> Les données que vous enregistrez durant la phase bêta
                 pourraient être effacées lors des mises à jour futures.
               </p>
@@ -139,7 +145,7 @@ const WelcomeModalInfo: React.FC<WelcomeModalProps> = ({ onClose }) => {
 
         {/* Message supplémentaire */}
         <motion.p
-          className="text-gray-600"
+          className="text-finance-text-secondary"
           custom={3}
           variants={itemAnimation}
           initial="hidden"
@@ -157,10 +163,10 @@ const WelcomeModalInfo: React.FC<WelcomeModalProps> = ({ onClose }) => {
           initial="hidden"
           animate="visible"
         >
-          <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-semibold rounded-full">
+          <span className="px-3 py-1 bg-finance-bg-medium text-finance-primary text-sm font-semibold rounded-full">
             Version bêta
           </span>
-          <span className="px-3 py-1 bg-purple-100 text-purple-800 text-sm font-semibold rounded-full">
+          <span className="px-3 py-1 bg-finance-bg-medium text-finance-accent text-sm font-semibold rounded-full">
             En développement
           </span>
         </motion.div>
