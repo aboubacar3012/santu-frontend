@@ -53,14 +53,14 @@ const Table = <T extends Record<string, any>>({
 
   return (
     <motion.div
-      className="relative overflow-hidden shadow-md rounded-lg mt-4 bg-white"
+      className="relative overflow-y-auto overflow-x-hidden shadow-md rounded-lg mt-4 h-[29rem]"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
       whileHover={{ boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.08)' }}
       transition={{ duration: 0.4 }}
     >
-      <motion.div className="overflow-x-auto overflow-y-hidden" layout>
+      <motion.div className="overflow-x-hidden overflow-y-hidden" layout>
         <table className={className}>
           <motion.thead className={headerClassName} variants={headerVariants}>
             <tr>
