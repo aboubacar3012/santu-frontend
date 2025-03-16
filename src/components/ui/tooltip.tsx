@@ -84,10 +84,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
             transition={{ duration: 0.2 }}
             style={{
               position: 'absolute',
-              [currentPosition.bottom]: '0',
-              [currentPosition.top]: '0',
-              [currentPosition.left]: '0',
-              [currentPosition.right]: '0',
+              ...(position === 'top' && { bottom: '100%' }),
+              ...(position === 'bottom' && { top: '100%' }),
+              ...(position === 'left' && { right: '100%' }),
+              ...(position === 'right' && { left: '100%' }),
               transform: currentPosition.transform,
               marginBottom: position === 'top' ? '8px' : undefined,
               marginTop: position === 'bottom' ? '8px' : undefined,
