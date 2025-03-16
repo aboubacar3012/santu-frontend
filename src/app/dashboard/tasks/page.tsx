@@ -2,12 +2,22 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { DragDropContext } from '@hello-pangea/dnd';
-import { ArrowRight, ArrowLeft, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
+import {
+  ArrowRight,
+  ArrowLeft,
+  CheckCircle,
+  Clock,
+  PlusCircle,
+  Search,
+  Filter,
+  Plus,
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Column, Task } from '@/src/types/task';
 import { TaskForm } from '@/src/components/tasks/TaskForm';
 import { TaskFilters } from '@/src/components/tasks/TaskFilters';
 import { TaskColumn } from '@/src/components/tasks/TaskColumn';
+import Modal from '@/src/components/ui/Modal';
 
 const TasksPage = () => {
   const [columns, setColumns] = useState<{ [key: string]: Column }>({
@@ -169,6 +179,9 @@ const TasksPage = () => {
     setNewTaskContent('');
     setNewTaskDueDate('');
     setNewTaskPriority('medium');
+
+    // Fermer le modal après l'ajout
+    setIsAddTaskModalOpen(false);
   };
 
   const deleteTask = (taskId: string, columnId: string) => {
@@ -247,8 +260,14 @@ const TasksPage = () => {
 
   const filteredColumns = getFilteredColumns();
 
+  // État pour suivre l'onglet actif sur mobile
+  const [activeTab, setActiveTab] = useState<'add' | 'filter'>('add');
+
+  // État pour gérer l'ouverture du modal d'ajout de tâche
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+
   return (
-    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+    <div className="relative p-4 md:p-8 bg-gray-50 min-h-screen">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -264,29 +283,13 @@ const TasksPage = () => {
         <p className="text-gray-600 text-lg">Gérez et organisez vos tâches professionnelles</p>
       </motion.div>
 
-      <div className="mb-10 space-y-6 md:space-y-0 md:flex md:flex-row md:gap-6 md:items-start md:justify-between">
+      {/* Section de filtre avec ajustements */}
+      <div className="mb-10">
         <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 w-full md:w-auto"
-        >
-          <TaskForm
-            content={newTaskContent}
-            dueDate={newTaskDueDate}
-            priority={newTaskPriority}
-            onContentChange={setNewTaskContent}
-            onDueDateChange={setNewTaskDueDate}
-            onPriorityChange={setNewTaskPriority}
-            onAddTask={addTask}
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: 0, y: 10 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 w-full md:w-auto"
+          className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 w-full"
         >
           <TaskFilters
             searchTerm={searchTerm}
@@ -348,6 +351,43 @@ const TasksPage = () => {
           </DragDropContext>
         </div>
       </div>
+
+      {/* Bouton flottant pour ouvrir le modal d'ajout de tâche */}
+      <motion.button
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{
+          type: 'spring',
+          stiffness: 260,
+          damping: 20,
+          delay: 0.5,
+        }}
+        onClick={() => setIsAddTaskModalOpen(true)}
+        className="absolute right-6 bottom-6 z-30 flex items-center justify-center w-14 h-14 rounded-full bg-finance-primary shadow-lg hover:bg-finance-primary-dark transition-colors"
+        aria-label="Ajouter une tâche"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <Plus size={24} className="text-white" />
+      </motion.button>
+
+      {/* Modal pour l'ajout de tâche */}
+      <Modal
+        isOpen={isAddTaskModalOpen}
+        onClose={() => setIsAddTaskModalOpen(false)}
+        title="Ajouter une nouvelle tâche"
+        size="medium"
+      >
+        <TaskForm
+          content={newTaskContent}
+          dueDate={newTaskDueDate}
+          priority={newTaskPriority}
+          onContentChange={setNewTaskContent}
+          onDueDateChange={setNewTaskDueDate}
+          onPriorityChange={setNewTaskPriority}
+          onAddTask={addTask}
+        />
+      </Modal>
     </div>
   );
 };

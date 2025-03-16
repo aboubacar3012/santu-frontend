@@ -19,13 +19,11 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3, delay: 0.2 }}
-      className="p-4 bg-white rounded-xl shadow-sm border border-gray-200 w-full"
+      transition={{ duration: 0.3 }}
+      className="w-full"
     >
-      <div className="w-full md:min-w-[300px] space-y-4">
-        <h3 className="font-semibold text-gray-800 mb-2">Filtrer les tâches</h3>
-
-        <div className="relative">
+      <div className="flex flex-col md:flex-row md:items-center md:gap-4 space-y-4 md:space-y-0">
+        <div className="relative flex-grow">
           <Search
             size={18}
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -39,10 +37,10 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
           />
         </div>
 
-        <div>
+        <div className="md:w-52">
           <label
             htmlFor="filterPriority"
-            className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1"
+            className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1 md:sr-only"
           >
             <Filter size={16} />
             Priorité
@@ -54,9 +52,9 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
             className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-finance-primary/50 focus:border-finance-primary appearance-none bg-white"
           >
             <option value="all">Toutes les priorités</option>
-            <option value="low">Faible</option>
-            <option value="medium">Moyenne</option>
-            <option value="high">Élevée</option>
+            <option value="low">Priorité: Faible</option>
+            <option value="medium">Priorité: Moyenne</option>
+            <option value="high">Priorité: Élevée</option>
           </select>
         </div>
       </div>
