@@ -1,14 +1,14 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { loginReducer, updateToken } from '../redux/features/authSlice';
-import { changePassword, authenticate } from '../services/account';
-import { RootState } from '../redux/store';
 import RegistrationInfoForm from '../components/auth/RegistrationInfoForm';
 import SuccessRegistration from '../components/auth/SuccessRegistration';
 import { motion } from 'framer-motion';
+import { checkUserExist } from '../services/auth';
+
+const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
 const LoginPage = () => {
   const router = useRouter();
@@ -17,6 +17,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [registrationStep, setRegistrationStep] = useState(1);
+  const [userOnlyExists, setUserOnlyExists] = useState(false);
 
   // Animation variants
   const containerVariants = {
@@ -85,31 +86,44 @@ const LoginPage = () => {
   };
 
   const handleLogin = () => {
+    if (!email || !emailRegex.test(email)) {
+      toast.error('Veuillez entrer votre adresse email valide');
+      return;
+    }
+    checkUserExist(email).then(data => {
+      if (data.exists) {
+        setUserOnlyExists(true);
+        setShowPasswordInput(true);
+      } else {
+        setUserOnlyExists(false);
+        setShowPasswordInput(false);
+      }
+    });
     // setUserOnlyExists(true)
     // setShowPasswordInput(true)
 
-    return authenticate(email, password).then(data => {
-      if (data.success) {
-        console.log(data);
-        if (data.account && data.created) {
-          setShowPasswordInput(true);
-        } else if (data.account && data.exist) {
-          setShowPasswordInput(true);
-        } else if (data.token) {
-          dispatch(
-            loginReducer({
-              isAuthenticated: true,
-              loggedAccountInfos: data.account,
-            })
-          );
-          dispatch(updateToken(data.token));
-          if (data.account.isFirstLogin) setRegistrationStep(2);
-          else router.push('/dashboard');
-        }
-      } else {
-        toast.error(data.message);
-      }
-    });
+    // return authenticate(email, password).then(data => {
+    //   if (data.success) {
+    //     console.log(data);
+    //     if (data.account && data.created) {
+    //       setShowPasswordInput(true);
+    //     } else if (data.account && data.exist) {
+    //       setShowPasswordInput(true);
+    //     } else if (data.token) {
+    //       dispatch(
+    //         loginReducer({
+    //           isAuthenticated: true,
+    //           loggedAccountInfos: data.account,
+    //         })
+    //       );
+    //       dispatch(updateToken(data.token));
+    //       if (data.account.isFirstLogin) setRegistrationStep(2);
+    //       else router.push('/dashboard');
+    //     }
+    //   } else {
+    //     toast.error(data.message);
+    //   }
+    // });
   };
 
   return (
@@ -126,15 +140,8 @@ const LoginPage = () => {
         </div>
         {registrationStep === 1 && (
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={logoVariants}
-            >
-              <img
-                src="/images/logo.png"
-                className="w-32 mx-auto rounded-full"
-              />
+            <motion.div initial="hidden" animate="visible" variants={logoVariants}>
+              <img src="/images/logo.png" className="w-32 mx-auto rounded-full" />
             </motion.div>
             <motion.div
               className="mt-12 md:mt-36 flex flex-col items-center justify-center"
@@ -142,10 +149,7 @@ const LoginPage = () => {
               initial="hidden"
               animate="visible"
             >
-              <motion.h1
-                className="text-xl font-extrabold"
-                variants={itemVariants}
-              >
+              <motion.h1 className="text-xl font-extrabold" variants={itemVariants}>
                 Authentification
               </motion.h1>
               <div className="w-full flex-1 mt-8">
@@ -154,10 +158,7 @@ const LoginPage = () => {
                     className="flex items-center justify-between mb-2"
                     variants={itemVariants}
                   >
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-black"
-                    >
+                    <label htmlFor="email" className="block text-sm font-medium text-black">
                       Entrez votre adresse email
                     </label>
                     {showPasswordInput && (
@@ -222,22 +223,13 @@ const LoginPage = () => {
                   >
                     {showPasswordInput ? 'Se connecter' : 'Continuer'}
                   </motion.button>
-                  <motion.p
-                    className="mt-6 text-xs text-black text-center"
-                    variants={itemVariants}
-                  >
+                  <motion.p className="mt-6 text-xs text-black text-center" variants={itemVariants}>
                     J&apos;accepte les{' '}
-                    <a
-                      href="#"
-                      className="border-b border-gray-500 border-dotted"
-                    >
+                    <a href="#" className="border-b border-gray-500 border-dotted">
                       Conditions d&apos;utilisation{' '}
                     </a>
                     et la{' '}
-                    <a
-                      href="#"
-                      className="border-b border-gray-500 border-dotted"
-                    >
+                    <a href="#" className="border-b border-gray-500 border-dotted">
                       Politique de confidentialité
                     </a>
                   </motion.p>

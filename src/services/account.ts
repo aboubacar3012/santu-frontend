@@ -46,20 +46,6 @@ export const getAccountById = async (userId: string, token?: string) => {
   return response.json();
 };
 
-// authenticates a user
-export const authenticate = async (email: string, password: string) => {
-  const response = await fetch(`${baseUrl}/auth`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
-
-  const data = await response.json();
-
-  return data;
-};
 
 // Change a user's password
 export const changePassword = async (userId?: string, password?: string) => {
