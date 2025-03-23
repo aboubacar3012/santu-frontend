@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = {
-  key: "santupro_v0.1.1",
+  key: "santou-pro_v0.1.2",
   storage,
 };
 
