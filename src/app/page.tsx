@@ -6,18 +6,19 @@ import { toast } from 'react-toastify';
 import RegistrationInfoForm from '../components/auth/RegistrationInfoForm';
 import SuccessRegistration from '../components/auth/SuccessRegistration';
 import { motion } from 'framer-motion';
-import { checkUserExist } from '../services/auth';
+import { checkUserExist, login, signup } from '../services/auth';
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
 const LoginPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [showPasswordInput, setShowPasswordInput] = useState(false);
   const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
   const [email, setEmail] = useState('');
   const [registrationStep, setRegistrationStep] = useState(1);
   const [userOnlyExists, setUserOnlyExists] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
 
   // Animation variants
   const containerVariants = {
@@ -90,40 +91,54 @@ const LoginPage = () => {
       toast.error('Veuillez entrer votre adresse email valide');
       return;
     }
-    checkUserExist(email).then(data => {
-      if (data.exists) {
-        setUserOnlyExists(true);
-        setShowPasswordInput(true);
-      } else {
-        setUserOnlyExists(false);
-        setShowPasswordInput(false);
-      }
-    });
-    // setUserOnlyExists(true)
-    // setShowPasswordInput(true)
+    if (!emailVerified) {
+      checkUserExist(email).then(data => {
+        setEmailVerified(true);
+        if (data.exists) {
+          setUserOnlyExists(true);
+        } else {
+          setUserOnlyExists(false);
+        }
+      });
+      return;
+    }
 
-    // return authenticate(email, password).then(data => {
-    //   if (data.success) {
-    //     console.log(data);
-    //     if (data.account && data.created) {
-    //       setShowPasswordInput(true);
-    //     } else if (data.account && data.exist) {
-    //       setShowPasswordInput(true);
-    //     } else if (data.token) {
-    //       dispatch(
-    //         loginReducer({
-    //           isAuthenticated: true,
-    //           loggedAccountInfos: data.account,
-    //         })
-    //       );
-    //       dispatch(updateToken(data.token));
-    //       if (data.account.isFirstLogin) setRegistrationStep(2);
-    //       else router.push('/dashboard');
-    //     }
-    //   } else {
-    //     toast.error(data.message);
-    //   }
-    // });
+    if (!userOnlyExists) {
+      if (!password || password !== repeatPassword) {
+        toast.error('Les mots de passe ne correspondent pas');
+        return;
+      }
+
+      return signup(email, password).then(data => {
+        if (data.success) {
+          console.log(data);
+          if (data.account && data.created) {
+            setRegistrationStep(2);
+          } else if (data.account && data.exist) {
+          } else if (data.token) {
+            router.push('/dashboard');
+          }
+        }
+      });
+    } else {
+      if (!password) {
+        toast.error('Veuillez entrer votre mot de passe');
+        return;
+      }
+      return login(email, password).then(data => {
+        if (data.success) {
+          console.log(data);
+          if (data.account && data.created) {
+          } else if (data.account && data.exist) {
+          } else if (data.token) {
+            if (data.account.isFirstLogin) setRegistrationStep(2);
+            else router.push('/dashboard');
+          }
+        } else {
+          toast.error(data.message);
+        }
+      });
+    }
   };
 
   return (
@@ -161,10 +176,10 @@ const LoginPage = () => {
                     <label htmlFor="email" className="block text-sm font-medium text-black">
                       Entrez votre adresse email
                     </label>
-                    {showPasswordInput && (
+                    {emailVerified && (
                       <p
                         className="mt-2 text-xs text-black text-right hover:underline cursor-pointer"
-                        onClick={() => setShowPasswordInput(false)}
+                        onClick={() => setEmailVerified(false)}
                       >
                         Modifier
                       </p>
@@ -172,8 +187,8 @@ const LoginPage = () => {
                   </motion.div>
                   <motion.input
                     variants={itemVariants}
-                    onClick={() => setShowPasswordInput(false)}
-                    disabled={showPasswordInput}
+                    disabled={emailVerified}
+                    onClick={() => setEmailVerified(false)}
                     id="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
@@ -184,7 +199,7 @@ const LoginPage = () => {
                     transition={{ type: 'spring', stiffness: 300 }}
                   />
 
-                  {showPasswordInput && (
+                  {userOnlyExists && emailVerified && (
                     <motion.div
                       className="mt-3"
                       initial={{ height: 0, opacity: 0 }}
@@ -213,6 +228,64 @@ const LoginPage = () => {
                       />
                     </motion.div>
                   )}
+                  {emailVerified && !userOnlyExists && (
+                    <>
+                      <motion.div
+                        className="mt-3"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 300,
+                          damping: 24,
+                        }}
+                      >
+                        <label
+                          htmlFor="password"
+                          className="block mb-2 text-sm font-medium text-black"
+                        >
+                          Entrez votre mot de passe
+                        </label>
+                        <motion.input
+                          id="password"
+                          value={password}
+                          onChange={e => setPassword(e.target.value)}
+                          className="w-full px-4 py-3 rounded-lg font-medium border border-gray-200 placeholder-gray-500 text-sm"
+                          type="password"
+                          placeholder="Entrez votre mot de passe"
+                          whileFocus={{ scale: 1.02, borderColor: '#3B82F6' }}
+                          transition={{ type: 'spring', stiffness: 300 }}
+                        />
+                      </motion.div>
+                      <motion.div
+                        className="mt-3"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 300,
+                          damping: 24,
+                        }}
+                      >
+                        <label
+                          htmlFor="repeatPassword"
+                          className="block mb-2 text-sm font-medium text-black"
+                        >
+                          Répétez votre mot de passe
+                        </label>
+                        <motion.input
+                          id="repeatPassword"
+                          value={repeatPassword}
+                          onChange={e => setRepeatPassword(e.target.value)}
+                          className="w-full px-4 py-3 rounded-lg font-medium border border-gray-200 placeholder-gray-500 text-sm"
+                          type="password"
+                          placeholder="Répétez votre mot de passe"
+                          whileFocus={{ scale: 1.02, borderColor: '#3B82F6' }}
+                          transition={{ type: 'spring', stiffness: 300 }}
+                        />
+                      </motion.div>
+                    </>
+                  )}
 
                   <motion.button
                     onClick={handleLogin}
@@ -221,7 +294,7 @@ const LoginPage = () => {
                     whileHover="hover"
                     whileTap="tap"
                   >
-                    {showPasswordInput ? 'Se connecter' : 'Continuer'}
+                    {emailVerified ? 'Se connecter' : 'Continuer'}
                   </motion.button>
                   <motion.p className="mt-6 text-xs text-black text-center" variants={itemVariants}>
                     J&apos;accepte les{' '}
