@@ -1,12 +1,13 @@
 // Role enum
 export enum RoleEnum {
   ADMIN = 'ADMIN',
-  PARTNER = 'PARTNER',
+  ENTERPRISE = 'ENTERPRISE',
+  USER = 'USER',
 }
 
 export enum StatusEnum {
   DRAFT = 'DRAFT',
-  PENDING = 'PENDING',
+  SENT = 'SENT',
   PAID = 'PAID',
   CANCELLED = 'CANCELLED',
 }
@@ -16,38 +17,70 @@ export enum TypeEnum {
   PROFESSIONAL = 'PROFESSIONAL',
 }
 
+export enum PaymentModeEnum {
+  CASH = 'CASH',
+  OM = 'OM',
+  CB = 'CB',
+  VIREMENT = 'VIREMENT',
+}
+
+export enum PaymentConditionEnum {
+  NOW = 'NOW',
+  FIFTEEN = '15',
+  THIRTY = '30',
+  FORTYFIVE = '45',
+  SIXTY = '60',
+  UPONRECEIPT = 'UPONRECEIPT',
+}
+
+export enum AccountStatusEnum {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  SUSPENDED = 'SUSPENDED',
+  DELETED = 'DELETED',
+}
+
+export enum PermissionsEnum {
+  CREATE = 'CREATE',
+  READ = 'READ',
+  UPDATE = 'UPDATE',
+  DELETE = 'DELETE',
+}
+
 export type Article = {
-  _id?: string;
+  id?: string;
   name: string;
   description: string;
-  quantity: number;
-  price: number;
+  quantity: string;
+  price: string;
+  invoiceId?: string;
   createdAt?: string;
   updatedAt?: string;
 };
 
 export type Invoice = {
-  _id?: string;
+  id?: string;
   invoiceNumber: string;
-  account: string;
   name: string;
-  link: string;
+  link?: string;
   date: string;
-  amount: number;
-  paymentMode: string;
-  paymentCondition: string;
+  amount: string;
+  paymentMode: PaymentModeEnum;
+  paymentCondition: PaymentConditionEnum;
   status: StatusEnum;
-  tva: number;
-  remark: string;
-  client: string | Client;
-  articles: Partial<Article>[];
+  tva?: string;
+  remark?: string;
+  clientId: string;
+  enterpriseId: string;
+  client?: Client;
+  articles: Article[];
   createdAt?: string;
   updatedAt?: string;
 };
 
 export type Client = {
-  _id: string;
-  type: 'PARTICULAR' | 'PROFESSIONAL';
+  id: string;
+  type: TypeEnum;
   firstName?: string;
   lastName?: string;
   company?: string;
@@ -56,28 +89,46 @@ export type Client = {
   website?: string;
   email: string;
   phone: string;
-  account: string;
-  invoices: string[];
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
+  enterpriseId: string;
+  invoices?: Invoice[];
+  accounts?: Account[];
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type Enterprise = {
+  id: string;
+  name: string;
+  legalForm?: string;
+  registrationNum?: string;
+  taxId?: string;
+  vatNumber?: string;
+  industry?: string;
+  numberOfEmployees?: number;
+  website?: string;
+  description?: string;
+  currency: string;
+  accounts?: Account[];
+  clients?: Client[];
+  invoices?: Invoice[];
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type Account = {
-  _id: string;
-  logo?: string;
-  firstName?: string;
-  lastName?: string;
-  company?: string;
-  address: string;
+  id: string;
   email: string;
-  phone: string;
+  password?: string;
   role: RoleEnum;
-  clients: Client[];
-  invoices: Invoice[];
-  password: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-  currency?: string;
+  status: AccountStatusEnum;
+  permissions: PermissionsEnum[];
+  isFirstLogin: boolean;
+  enterpriseId?: string;
+  clientId?: string;
+  enterprise?: Enterprise;
+  client?: Client;
+  createdAt?: string;
+  updatedAt?: string;
 };
+
+

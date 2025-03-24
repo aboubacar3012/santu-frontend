@@ -38,7 +38,7 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
   const [articleDescription, setProductDescription] = useState<string>('');
 
   const auth = useSelector((state: RootState) => state.auth);
-  const accountId = auth.loggedAccountInfos?._id;
+  const accountId = auth.loggedAccountInfos?.id;
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -4,11 +4,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 type Auth = {
   token?: string | null;
-  loggedAccountInfos?: {
-    _id: string;
-    email: string;
-    role: string;
-  } | null;
+  loggedAccountInfos?: Account | null;
 };
 
 let initialState: Auth = {
@@ -31,6 +27,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { updateToken } = authSlice.actions;
+export const { updateToken, updateLoggedAccountInfos } = authSlice.actions;
 
 export default authSlice.reducer;

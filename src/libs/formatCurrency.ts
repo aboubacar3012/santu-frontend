@@ -1,5 +1,7 @@
-export function formatCurrency(amount: number | string, currency?: string): string {
+export function formatCurrency(amount: number, currency?: string): string {
   // Si aucune devise n'est fournie, on essaie d'utiliser celle stockée dans le localStorage
+  if(!amount) return `0 ${currency || 'GNF'}`;
+  console.log('amount', amount);
   if (!currency) {
     try {
       const authData = localStorage.getItem('auth');

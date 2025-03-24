@@ -59,7 +59,7 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const auth = useSelector((state: RootState) => state.auth);
-  const accountId = auth.loggedAccountInfos?._id;
+  const accountId = auth.loggedAccountInfos?.id;
   const [collapsed, setCollapsed] = useState(false);
 
   const toggleSidebar = () => {

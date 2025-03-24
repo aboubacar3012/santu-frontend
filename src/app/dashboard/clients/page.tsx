@@ -22,7 +22,7 @@ const ClientsPage = () => {
   const showClientForm = hasParams('clientForm');
   const auth = useSelector((state: RootState) => state.auth);
   const { data, isLoading, error } = useGetClientsAccountById(
-    auth.loggedAccountInfos?._id!,
+    auth.loggedAccountInfos?.id!,
     auth.token!
   );
   const deleteClientMutation = useDeleteClientById(auth.token!);
@@ -92,14 +92,14 @@ const ClientsPage = () => {
       accessor: client => (
         <div className="flex justify-center gap-3">
           <button
-            onClick={e => handleEditClient(e, client._id)}
+            onClick={e => handleEditClient(e, client.id)}
             className="text-blue-600 hover:text-blue-800 p-1.5 rounded-full hover:bg-blue-100"
             title="Modifier"
           >
             <FaEdit size={18} />
           </button>
           <button
-            onClick={e => handleDeleteClient(e, client._id)}
+            onClick={e => handleDeleteClient(e, client.id)}
             className="text-red-600 hover:text-red-800 p-1.5 rounded-full hover:bg-red-100"
             title="Supprimer"
           >
@@ -111,7 +111,7 @@ const ClientsPage = () => {
   ];
 
   const handleClientClick = (client: Client) => {
-    router.push(`/dashboard/clients/${client._id}`);
+    router.push(`/dashboard/clients/${client.id}`);
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -130,7 +130,7 @@ const ClientsPage = () => {
     const phoneInfo = client.phone ? `| ${client.phone}` : '';
 
     return {
-      value: client._id,
+      value: client.id,
       label: `${clientName} ${emailInfo} ${phoneInfo}`,
       email: client.email,
       phone: client.phone,

@@ -84,7 +84,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
 
   // Fonction pour naviguer vers la page de facture
   const navigateToInvoice = (invoice: any) => {
-    router.push(`/dashboard/invoice/${invoice._id}`);
+    router.push(`/dashboard/invoice/${invoice.id}`);
   };
 
   if (!client) return <div>Not found</div>;

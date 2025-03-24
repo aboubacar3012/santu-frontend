@@ -16,13 +16,13 @@ const ClientsSelect = ({ selectedClient, setSelectedClient }: ClientsSelectProps
     data = { clients: [] },
     isLoading,
     error,
-  } = useGetClientsAccountById(auth.loggedAccountInfos?._id!, auth.token!);
+  } = useGetClientsAccountById(auth.loggedAccountInfos?.id!, auth.token!);
 
   const clients = data?.clients || [];
 
   // Préparation des options pour react-select
   const clientOptions = clients.map((client: Client) => ({
-    value: client._id,
+    value: client.id,
     label: client.company || `${client.firstName} ${client.lastName}`,
   }));
 

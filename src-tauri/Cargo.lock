@@ -1813,7 +1813,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "objc_id"
+name = "objcid"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c92d4ddb4bd7b50d730c215ff871754d0da6b2178849f8a2a2ab69712d0c073b"
@@ -3840,7 +3840,7 @@ dependencies = [
  "libc",
  "log",
  "objc",
- "objc_id",
+ "objcid",
  "once_cell",
  "serde",
  "serde_json",

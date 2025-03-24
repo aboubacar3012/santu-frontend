@@ -42,7 +42,7 @@ export const useClientForm = ({
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   const auth = useSelector((state: RootState) => state.auth);
-  const accountId = auth.loggedAccountInfos?._id;
+  const accountId = auth.loggedAccountInfos?.id;
 
   // Hooks de requête API
   const { mutate: createClientMutation, isPending } = useCreateClient(

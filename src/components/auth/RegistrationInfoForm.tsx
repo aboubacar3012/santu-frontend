@@ -18,7 +18,7 @@ const RegistrationInfoForm = ({ setRegistrationStep }: RegistrationInfoFormProps
   const [address, setAddress] = useState('');
 
   const auth = useSelector((state: RootState) => state.auth);
-  const userId = auth.loggedAccountInfos?._id;
+  const userId = auth.loggedAccountInfos?.id;
 
   const dispatch = useDispatch();
 

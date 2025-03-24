@@ -10,15 +10,15 @@ import { getDashboard } from '../services/invoice';
  * @returns Données du tableau de bord avec état de chargement
  */
 const useGetDashboardData = (
-  accountId: string,
+  enterpriseId: string,
   token?: string,
   period: string = 'today',
   status: string = 'all'
 ) => {
   return useQuery({
-    queryKey: ['dashboard', accountId, period, status],
-    queryFn: () => getDashboard(accountId, token || '', period, status),
-    enabled: !!accountId && !!token, // Seulement si accountId et token sont définis
+    queryKey: ['dashboard', period, status],
+    queryFn: () => getDashboard(token || '', enterpriseId, period, status),
+    enabled: !!enterpriseId && !!token, // Seulement si accountId et token sont définis
     staleTime: 5 * 60 * 1000, // 5 minutes de mise en cache
     refetchOnWindowFocus: true,
   });

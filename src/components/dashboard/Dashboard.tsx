@@ -25,7 +25,7 @@ const Dashboard = () => {
   const updateInvoiceMutation = useUpdateInvoice('token');
 
   const { data, isLoading, error } = useGetDashboardData(
-    auth.loggedAccountInfos?._id!,
+    auth.loggedAccountInfos?.enterpriseId!,
     auth.token!,
     (getParams('period') as string) || undefined,
     (getParams('status') as string) || undefined
@@ -40,21 +40,21 @@ const Dashboard = () => {
   };
 
   const handleOpenInvoice = (invoice: Partial<Invoice>) => {
-    router.push(`/dashboard/invoice/${invoice._id}`);
+    router.push(`/dashboard/invoice/${invoice.id}`);
   };
 
   const handleCancelInvoice = (e: React.MouseEvent, invoiceId: string) => {
     e.stopPropagation(); // Empêche la navigation vers la page de la facture
     if (confirm('Êtes-vous sûr de vouloir abandonner cette facture?')) {
       const invoice = {
-        _id: invoiceId,
+        id: invoiceId,
         status: StatusEnum.CANCELLED,
       };
 
       updateInvoiceMutation.mutate(invoice, {
         onSuccess: () => {
           toast.success('La facture a été annulée avec succès');
-          queryClient.invalidateQueries({ queryKey: ['clients', auth.loggedAccountInfos?._id] });
+          queryClient.invalidateQueries({ queryKey: ['clients', auth.loggedAccountInfos?.id] });
         },
         onError: error => {
           toast.error("Une erreur est survenue lors de l'annulation de la facture");
@@ -74,7 +74,7 @@ const Dashboard = () => {
       header: 'Status',
       accessor: invoice => {
         if (invoice.status === StatusEnum.DRAFT) return <Badge type="warning" text="Brouillon" />;
-        if (invoice.status === StatusEnum.PENDING) return <Badge type="info" text="Envoyée" />;
+        if (invoice.status === StatusEnum.SENT) return <Badge type="info" text="Envoyée" />;
         if (invoice.status === StatusEnum.PAID) return <Badge type="success" text="Déjà payée" />;
         if (invoice.status === StatusEnum.CANCELLED) return <Badge type="error" text="Annulée" />;
         return null;
@@ -86,14 +86,14 @@ const Dashboard = () => {
     //   accessor: invoice => (
     //     <div className="flex justify-center gap-3">
     //       {/* <button
-    //         onClick={e => handleEditInvoice(e, invoice._id!)}
+    //         onClick={e => handleEditInvoice(e, invoice.id!)}
     //         className="text-blue-600 hover:text-blue-800 p-1.5 rounded-full hover:bg-blue-100"
     //         title="Modifier"
     //       >
     //         <FaEdit size={18} />
     //       </button> */}
     //       {/* <button
-    //         onClick={e => handleCancelInvoice(e, invoice._id!)}
+    //         onClick={e => handleCancelInvoice(e, invoice.id!)}
     //         className="text-primary hover:text-primary p-2 rounded-full bg-finance-error/60 hover:bg-finance-error/80"
     //         title="Supprimer"
     //       >
@@ -122,26 +122,26 @@ const Dashboard = () => {
       <div className="grid grid-cols-4 gap-4 py-2">
         <StatCard
           title="Aujourd'hui"
-          value={`${formatCurrency(data.dashboardData.totalToday)}`}
+          value={`${formatCurrency(data?.totalToday)}`}
           unit="Total vendu"
           icon={<GiMoneyStack className="w-8 h-8 text-green-500" />}
         />
         <StatCard
           title="Ce mois-ci"
-          value={`${formatCurrency(data.dashboardData.totalthisMonth)}`}
+          value={`${formatCurrency(data?.totalthisMonth)}`}
           unit="Toute les factures"
           icon={<GiMoneyStack className="w-8 h-8 text-blue-500" />}
           isVisible={false}
         />
         <StatCard
           title="Nombre de clients"
-          value={data.dashboardData.clientsCount}
+          value={data.clientsCount}
           unit="clients"
           icon={<FaUserFriends className="w-8 h-8 text-purple-500" />}
         />
         <StatCard
           title="Nombre de factures"
-          value={data.dashboardData.invoicesCount}
+          value={data.invoicesCount}
           unit="factures"
           icon={<LiaFileInvoiceDollarSolid className="w-8 h-8 text-yellow-500" />}
         />
@@ -155,7 +155,7 @@ const Dashboard = () => {
       {/* Utilisation du composant Table réutilisable */}
       <Table
         columns={invoiceColumns}
-        data={data.dashboardData.invoices}
+        data={data.invoices}
         onRowClick={handleOpenInvoice}
       />
     </>

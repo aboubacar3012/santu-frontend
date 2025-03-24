@@ -15,9 +15,9 @@ export const useUpdateInvoice = (token?: string) => {
     onSuccess: (data, variables) => {
       // Invalider les requêtes pertinentes après une mise à jour réussie
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
-      queryClient.invalidateQueries({ queryKey: ['invoice', variables._id] });
-      if (variables._id) {
-        queryClient.invalidateQueries({ queryKey: ['clientInvoices', variables._id] });
+      queryClient.invalidateQueries({ queryKey: ['invoice', variables.id] });
+      if (variables.id) {
+        queryClient.invalidateQueries({ queryKey: ['clientInvoices', variables.id] });
       }
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },

@@ -50,7 +50,7 @@ export const useInvoiceForm = ({
 
   // Redux
   const auth = useSelector((state: RootState) => state.auth);
-  const accountId = auth.loggedAccountInfos?._id;
+  const accountId = auth.loggedAccountInfos?.id;
   const dispatch = useDispatch();
 
   // État pour le chargement

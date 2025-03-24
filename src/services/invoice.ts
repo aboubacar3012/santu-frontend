@@ -5,14 +5,14 @@ console.log('baseUrl:', baseUrl);
 
 // Get all invoices
 export const getDashboard = async (
-  accountId: string,
   token: string,
+  enterpriseId: string,
   period: string = 'today',
   status: string = 'all'
 ) => {
   try {
     const response = await fetch(
-      `${baseUrl}/dashboard/${accountId}?period=${period}&status=${status}`,
+      `${baseUrl}/dashboard?period=${period}&status=${status}&enterpriseId=${enterpriseId}`,
       {
         method: 'GET',
         headers: {
@@ -86,7 +86,7 @@ export const getInvoicesByClientId = async (clientId: string, token?: string) =>
 // Update invoice
 export const updateInvoice = async (invoice: Partial<Invoice>, token?: string) => {
   try {
-    const response = await fetch(`${baseUrl}/update/${invoice._id}`, {
+    const response = await fetch(`${baseUrl}/update/${invoice.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

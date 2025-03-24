@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import { checkUserExist, login, signup } from '../../services/auth';
-import { updateToken } from '../../redux/features/authSlice';
+import { updateLoggedAccountInfos, updateToken } from '../../redux/features/authSlice';
 import { containerVariants, itemVariants, logoVariants, buttonVariants } from './AnimationVariants';
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -51,6 +51,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setRegistrationStep }) => {
       const data = await signup(email, password);
       if (data) {
         dispatch(updateToken(data.accessToken));
+        dispatch(updateLoggedAccountInfos(data.account));
         setRegistrationStep(2);
         router.push('/dashboard');
       }
@@ -69,6 +70,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setRegistrationStep }) => {
       const data = await login(email, password);
       if (data) {
         dispatch(updateToken(data.accessToken));
+        dispatch(updateLoggedAccountInfos(data.account));
         router.push('/dashboard');
       } else if (data.message) {
         toast.error(data.message);
