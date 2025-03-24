@@ -4,10 +4,16 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 type Auth = {
   token?: string | null;
+  loggedAccountInfos?: {
+    _id: string;
+    email: string;
+    role: string;
+  } | null;
 };
 
 let initialState: Auth = {
   token: null,
+  loggedAccountInfos: null,
 };
 
 export const authSlice = createSlice({
@@ -16,6 +22,10 @@ export const authSlice = createSlice({
   reducers: {
     updateToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
+      return state;
+    },
+    updateLoggedAccountInfos: (state, action: PayloadAction<Account>) => {
+      state.loggedAccountInfos = action.payload;
       return state;
     },
   },

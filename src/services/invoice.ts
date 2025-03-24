@@ -1,6 +1,7 @@
 import { apiUrl } from '../constants';
 import { Invoice } from '../types';
 const baseUrl = `${apiUrl}/invoices`;
+console.log('baseUrl:', baseUrl);
 
 // Get all invoices
 export const getDashboard = async (
