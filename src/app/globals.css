@@ -25,6 +25,32 @@ body {
   margin: 0;
 }
 
+/* Ultra-minimal scrollbar styles */
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(113, 128, 150, 0.1); /* Reduced opacity */
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(113, 128, 150, 0.25); /* Still subtle on hover */
+}
+
+/* Firefox scrollbar styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(113, 128, 150, 0.1) transparent;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -40,5 +66,25 @@ body {
 
   .no-print {
     display: none !important;
+  }
+
+  /* Hide scrollbars when printing */
+  ::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  * {
+    -ms-overflow-style: none !important; /* IE and Edge */
+    scrollbar-width: none !important; /* Firefox */
+  }
+
+  /* Ensure overflows don't cut off content */
+  body,
+  div,
+  section,
+  article {
+    overflow: visible !important;
   }
 }
