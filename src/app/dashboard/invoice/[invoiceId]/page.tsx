@@ -32,10 +32,10 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
   const fetchData = async () => {
     getInvoiceById(params.invoiceId, auth.token!)
       .then(data => {
-        if (data.success) {
-          setInvoiceData(data.invoice);
+        if (data) {
+          setInvoiceData(data);
           setLoading(false);
-        } else if (!data.success) {
+        } else if (!data) {
           setError("Une erreur s'est produite lors de la récupération de la facture");
           setLoading(false);
         }

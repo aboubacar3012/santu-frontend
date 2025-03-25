@@ -54,18 +54,16 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                 De
               </h3>
               <div className="flex items-start gap-4">
-                {loggedAccount && loggedAccount.logo && (
+                {/* {loggedAccount && loggedAccount.enterprise && (
                   <img src={loggedAccount.logo} alt="Logo" className="w-16 h-16 object-contain" />
-                )}
+                )} */}
                 <div>
                   <h4 className="font-bold text-lg text-gray-900">
-                    {loggedAccount && loggedAccount.company && loggedAccount.company?.length > 0
-                      ? loggedAccount.company
-                      : `${loggedAccount?.firstName} ${loggedAccount?.lastName}`}
+                    {loggedAccount?.enterprise?.name}
                   </h4>
-                  <p className="text-gray-900 mt-1">{loggedAccount?.address}</p>
-                  <p className="text-gray-900">{loggedAccount?.phone}</p>
-                  <p className="text-gray-900">{loggedAccount?.email}</p>
+                  {/* <p className="text-gray-900 mt-1">{loggedAccount?.enterprise.address}</p> */}
+                  {/* <p className="text-gray-900">{loggedAccount?.enterprise.}</p> */}
+                  {/* <p className="text-gray-900">{loggedAccount?.enterprise.email}</p> */}
                 </div>
               </div>
             </div>
@@ -77,13 +75,13 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
               </h3>
               <div>
                 <h4 className="font-bold text-lg text-gray-900">
-                  {client && client.company && client.company?.length > 0
-                    ? client.company
-                    : `${client.firstName} ${client.lastName}`}
+                  {client && client?.company && client?.company?.length > 0
+                    ? client?.company
+                    : `${client?.firstName} ${client?.lastName}`}
                 </h4>
-                <p className="text-gray-900 mt-1">{client.address}</p>
-                <p className="text-gray-900">{client.phone}</p>
-                <p className="text-gray-900">{client.email}</p>
+                {/* <p className="text-gray-900 mt-1">{client.address}</p> */}
+                {/* <p className="text-gray-900">{client.phone}</p> */}
+                {/* <p className="text-gray-900">{client.email}</p> */}
               </div>
             </div>
           </div>
@@ -133,7 +131,10 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                     <td className="text-center text-xs">{article.quantity}</td>
                     <td className="text-right text-xs">{article?.price?.toLocaleString()} GNF</td>
                     <td className="text-right font-medium text-xs">
-                      {((article?.price || 0) * (article?.quantity || 0)).toLocaleString()} GNF
+                      {(
+                        (Number(article?.price) || 0) * (Number(article?.quantity) || 0)
+                      ).toLocaleString()}{' '}
+                      GNF
                     </td>
                   </tr>
                 ))}
@@ -162,7 +163,7 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
               invoice.status !== StatusEnum.PAID &&
               invoice.status !== StatusEnum.CANCELLED && (
                 <div className="absolute transform -rotate-12 top-12 left-16">
-                  <Stamp type={StatusEnum.PENDING} />
+                  <Stamp type={StatusEnum.SENT} />
                 </div>
               )}
 

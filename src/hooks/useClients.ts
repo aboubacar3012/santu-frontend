@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  getClientsByAccountId,
+  getAllClients,
   createClient,
   getClientById,
   updateClient,
@@ -8,11 +8,11 @@ import {
 } from '../services/client';
 import { Client } from '../types';
 
-const useGetClientsAccountById = (accountId: string, token?: string) => {
+const useGetAllClients = (enterpriseId: string, token?: string) => {
   return useQuery({
-    queryKey: ['clients', accountId],
-    queryFn: () => getClientsByAccountId(accountId, token),
-    enabled: !!accountId, // Seulement si accountId est défini
+    queryKey: ['clients', enterpriseId],
+    queryFn: () => getAllClients(enterpriseId, token),
+    enabled: !!enterpriseId, // Seulement si enterpriseId est défini
   });
 };
 
@@ -22,9 +22,9 @@ const useCreateClient = (token?: string) => {
   return useMutation({
     mutationFn: (newClient: Partial<Client>) => createClient(newClient, token),
     onSuccess: (data, variables) => {
-      if (variables.account) {
+      if (variables.enterpriseId) {
         console.log('Invalidate query');
-        queryClient.invalidateQueries({ queryKey: ['clients', variables.account] });
+        queryClient.invalidateQueries({ queryKey: ['clients', variables.enterpriseId] });
       }
       return data;
     },
@@ -51,8 +51,8 @@ const useUpdateClient = (token?: string) => {
       queryClient.invalidateQueries({ queryKey: ['client', variables.clientId] });
 
       // Si le client a un compte associé, invalider également la liste des clients
-      if (variables.clientData.account) {
-        queryClient.invalidateQueries({ queryKey: ['clients', variables.clientData.account] });
+      if (variables.clientData.enterpriseId) {
+        queryClient.invalidateQueries({ queryKey: ['clients', variables.clientData.enterpriseId] });
       }
 
       return data;
@@ -78,7 +78,7 @@ const useDeleteClientById = (token?: string) => {
 };
 
 export {
-  useGetClientsAccountById,
+  useGetAllClients,
   useCreateClient,
   useGetClientById,
   useUpdateClient,

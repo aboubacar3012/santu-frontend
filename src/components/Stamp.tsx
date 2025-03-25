@@ -31,12 +31,12 @@ const Stamp = ({ type = StatusEnum.PAID }: StampProps) => {
       icon: <XCircle size={32} className="text-red-600" />,
       text: 'ANNULÉ',
     },
-    PENDING: {
+    SENT: {
       borderColor: 'border-blue-500',
       textColor: 'text-blue-600',
       shadowColor: 'rgba(59, 130, 246, 0.3)',
       icon: <FileEdit size={32} className="text-blue-600" />,
-      text: 'EN ATTENTE',
+      text: 'ENVOYÉ',
     },
   };
 

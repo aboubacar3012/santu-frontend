@@ -32,9 +32,9 @@ export const getClientById = async (id: string, token?: string) => {
 }
 
 // Get all clients by account id
-export const getClientsByAccountId = async (accountId: string, token?: string) => {
+export const getAllClients = async (enterpriseId?: string, token?: string) => {
   try {
-    const response = await fetch(`${baseUrl}?accountId=${accountId}`, {
+    const response = await fetch(`${baseUrl}?enterpriseId=${enterpriseId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -113,7 +113,7 @@ const Dashboard = () => {
     return <div>Erreur lors du chargement des données du tableau de bord</div>;
   }
 
-  if (!data) {
+  if (!data.invoices) {
     return <div>Dashboard data not found</div>;
   }
 

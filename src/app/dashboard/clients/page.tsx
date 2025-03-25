@@ -1,7 +1,7 @@
 'use client';
 import Badge from '@/src/components/Badge';
 import ClientForm from '@/src/components/client/ClientForm';
-import { useGetClientsAccountById, useDeleteClientById } from '@/src/hooks/useClients';
+import { useGetAllClients, useDeleteClientById } from '@/src/hooks/useClients';
 import { useUrlParams } from '@/src/hooks/useUrlParams';
 import { RootState } from '@/src/redux/store';
 import { useRouter } from 'next/navigation';
@@ -21,8 +21,8 @@ const ClientsPage = () => {
   const { hasParams, setParams, deleteParams } = useUrlParams();
   const showClientForm = hasParams('clientForm');
   const auth = useSelector((state: RootState) => state.auth);
-  const { data, isLoading, error } = useGetClientsAccountById(
-    auth.loggedAccountInfos?.id!,
+  const { data, isLoading, error } = useGetAllClients(
+    auth.loggedAccountInfos?.enterpriseId!,
     auth.token!
   );
   const deleteClientMutation = useDeleteClientById(auth.token!);
@@ -84,7 +84,7 @@ const ClientsPage = () => {
     { header: 'Téléphone', accessor: 'phone' },
     {
       header: 'Nb de factures',
-      accessor: client => client.invoices.length,
+      accessor: client => client?.invoices?.length || 0,
     },
     {
       header: 'Actions',
@@ -117,7 +117,7 @@ const ClientsPage = () => {
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching clients: {error.message}</p>;
 
-  const clients = data.clients;
+  const clients = data.items;
 
   if (!clients || clients.length === 0) {
     return <p>Aucun client enregistré.</p>;
