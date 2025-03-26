@@ -71,8 +71,9 @@ export type Invoice = {
   tva?: string;
   remark?: string;
   clientId: string;
-  enterpriseId: string;
   client?: Client;
+  enterpriseId: string;
+  enterprise: Enterprise;
   articles: Article[];
   createdAt?: string;
   updatedAt?: string;
@@ -108,6 +109,10 @@ export type Enterprise = {
   website?: string;
   description?: string;
   currency: string;
+  logo?: string;
+  address: string;
+  email: string;
+  phone: string;
   accounts?: Account[];
   clients?: Client[];
   invoices?: Invoice[];

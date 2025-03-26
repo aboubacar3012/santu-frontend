@@ -35,13 +35,13 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                 <span className="font-semibold">{invoice.invoiceNumber}</span>
               </div>
             </div>
-            {/* <div
+            <div
               className={`${getStatusColor(
                 invoice.status
               )} status-badge px-4 py-2 rounded-full font-medium text-sm`}
             >
               {getStatusText(invoice.status)}
-            </div> */}
+            </div>
           </div>
         </div>
 
@@ -54,16 +54,17 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                 De
               </h3>
               <div className="flex items-start gap-4">
-                {/* {loggedAccount && loggedAccount.enterprise && (
-                  <img src={loggedAccount.logo} alt="Logo" className="w-16 h-16 object-contain" />
-                )} */}
+                <img
+                  src={invoice?.enterprise?.logo}
+                  alt="Logo"
+                  className="w-16 h-16 object-contain"
+                />
+
                 <div>
-                  <h4 className="font-bold text-lg text-gray-900">
-                    {loggedAccount?.enterprise?.name}
-                  </h4>
-                  {/* <p className="text-gray-900 mt-1">{loggedAccount?.enterprise.address}</p> */}
-                  {/* <p className="text-gray-900">{loggedAccount?.enterprise.}</p> */}
-                  {/* <p className="text-gray-900">{loggedAccount?.enterprise.email}</p> */}
+                  <h4 className="font-bold text-lg text-gray-900">{invoice?.enterprise?.name}</h4>
+                  <p className="text-gray-900 mt-1">{invoice?.enterprise?.address}</p>
+                  <p className="text-gray-900">{invoice?.enterprise?.phone}</p>
+                  <p className="text-gray-900">{invoice?.enterprise?.email}</p>
                 </div>
               </div>
             </div>
@@ -71,17 +72,17 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
             {/* Destinataire de la facture */}
             <div className="md:w-1/2">
               <h3 className="text-xs uppercase text-gray-500 font-medium tracking-wider mb-3">
-                Facturer à
+                Facturer au nom de
               </h3>
               <div>
                 <h4 className="font-bold text-lg text-gray-900">
-                  {client && client?.company && client?.company?.length > 0
-                    ? client?.company
-                    : `${client?.firstName} ${client?.lastName}`}
+                  {invoice.client && invoice.client?.company && invoice.client?.company?.length > 0
+                    ? invoice.client?.company
+                    : `${invoice.client?.firstName} ${invoice.client?.lastName}`}
                 </h4>
-                {/* <p className="text-gray-900 mt-1">{client.address}</p> */}
-                {/* <p className="text-gray-900">{client.phone}</p> */}
-                {/* <p className="text-gray-900">{client.email}</p> */}
+                <p className="text-gray-900 mt-1">{invoice?.client?.address}</p>
+                <p className="text-gray-900">{invoice?.client?.phone}</p>
+                <p className="text-gray-900">{invoice?.client?.email}</p>
               </div>
             </div>
           </div>

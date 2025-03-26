@@ -56,13 +56,13 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
     window.print();
   };
 
-  // const calculateTotal = () => {
-  //   if (!invoiceData?.articles) return 0;
-  //   return invoiceData.articles.reduce(
-  //     (sum, article) => sum + article.price * article.quantity,
-  //     0
-  //   );
-  // };
+  const calculateTotal = () => {
+    if (!invoiceData?.articles) return 0;
+    return invoiceData.articles.reduce(
+      (sum, article) => sum + Number(article.price) * Number(article.quantity),
+      0
+    );
+  };
 
   if (loading)
     return (
