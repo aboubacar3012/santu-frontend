@@ -1,13 +1,4 @@
-'use client';
-import Link from 'next/link';
-import { MdDashboard, MdOutlinePhoneInTalk } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '@/src/redux/features/authSlice';
-import { useRouter } from 'next/navigation';
-import { usePathname } from 'next/navigation';
-import { FaUserCog, FaUsers } from 'react-icons/fa';
-import { Settings } from 'lucide-react';
-import { RootState } from '@/src/redux/store';
+'use client';;
 import Sidebar from '@/src/components/Sidebar';
 
 export default function DashboardLayout({

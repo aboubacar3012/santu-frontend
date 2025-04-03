@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import { Article, StatusEnum } from '../types';
 import { generateInvoiceId } from '../libs/generateInvoiceId';
 import { createInvoice } from '../services/invoice';
-import { loginReducer } from '../redux/features/authSlice';
 
 // Interface pour gérer les erreurs par champ
 export interface InvoiceFormErrors {
@@ -139,14 +138,14 @@ export const useInvoiceForm = ({
   const addArticle = () => {
     if (!validateArticle()) return;
 
-    const newArticle: Partial<Article> = {
-      name: articleName,
-      quantity: Number(articleQuantity),
-      price: Number(articlePrice),
-      description: articleDescription,
-    };
+    // const newArticle: Partial<Article> = {
+    //   name: articleName,
+    //   quantity: Number(articleQuantity),
+    //   price: Number(articlePrice),
+    //   description: articleDescription,
+    // };
 
-    setArticles([...articles, newArticle]);
+    // setArticles([...articles, newArticle]);
 
     // Réinitialisation des champs
     setArticleName('');
@@ -223,19 +222,19 @@ export const useInvoiceForm = ({
     };
 
     try {
-      const response = await createInvoice(invoiceToAdd, auth.token!);
-      if (response.success) {
-        dispatch(
-          loginReducer({
-            isAuthenticated: true,
-            loggedAccountInfos: response.account,
-          })
-        );
-        toast.success('Facture créée avec succès');
-        onClose();
-      } else {
-        setErrorMessage(response.message || 'Erreur lors de la création de la facture');
-      }
+      // const response = await createInvoice(invoiceToAdd, auth.token!);
+      // if (response.success) {
+      //   dispatch(
+      //     loginReducer({
+      //       isAuthenticated: true,
+      //       loggedAccountInfos: response.account,
+      //     })
+      //   );
+      //   toast.success('Facture créée avec succès');
+      //   onClose();
+      // } else {
+      //   setErrorMessage(response.message || 'Erreur lors de la création de la facture');
+      // }
     } catch (error) {
       setErrorMessage('Erreur de connexion au serveur');
     } finally {

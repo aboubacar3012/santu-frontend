@@ -61,7 +61,7 @@ const ArticleAddForm = ({
 
     const article: Partial<Article> = {
       name: articleName,
-      price: parseInt(articlePrice),
+      // price: parseInt(articlePrice),
       description: articleDescription,
     };
 

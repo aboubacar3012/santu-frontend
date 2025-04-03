@@ -4,7 +4,7 @@ export const getStatusColor = (status: string) => {
   switch (status) {
     case StatusEnum.DRAFT:
       return 'bg-finance-bg-medium text-finance-text-secondary';
-    case StatusEnum.PENDING:
+    case StatusEnum.SENT:
       return 'bg-finance-info/20 text-finance-info';
     case StatusEnum.PAID:
       return 'bg-finance-success/20 text-finance-success';

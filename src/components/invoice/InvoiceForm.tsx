@@ -1,14 +1,9 @@
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/src/redux/store';
-import { toast } from 'react-toastify';
-import InvoiceFormStep from '../InvoiceFormStep';
 import InvoiceInfoForm from './InvoiceInfoForm';
 import { generateInvoiceId } from '@/src/libs/generateInvoiceId';
 import SuccessAddInvoice from './SuccessAddInvoice';
-import { createInvoice } from '@/src/services/invoice';
-import { loginReducer } from '@/src/redux/features/authSlice';
 import { StatusEnum } from '@/src/types';
 import Modal from '../ui/Modal';
 
@@ -94,22 +89,22 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
       amount,
     };
 
-    createInvoice(invoiceToAdd, auth.token!).then(async response => {
-      if (response.success) {
-        dispatch(
-          loginReducer({
-            isAuthenticated: true,
-            loggedAccountInfos: response.account,
-          })
-        );
-        toast.success('Facture créé avec succès');
-        onClose();
-      } else if (!response.success) {
-        setErrorMessage(response.message);
-      } else {
-        setErrorMessage('Erreur lors de la création de la facture');
-      }
-    });
+    // createInvoice(invoiceToAdd, auth.token!).then(async response => {
+    //   if (response.success) {
+    //     // dispatch(
+    //     //   loginReducer({
+    //     //     isAuthenticated: true,
+    //     //     loggedAccountInfos: response.account,
+    //     //   })
+    //     // );
+    //     toast.success('Facture créé avec succès');
+    //     onClose();
+    //   } else if (!response.success) {
+    //     setErrorMessage(response.message);
+    //   } else {
+    //     setErrorMessage('Erreur lors de la création de la facture');
+    //   }
+    // });
   };
 
   return (

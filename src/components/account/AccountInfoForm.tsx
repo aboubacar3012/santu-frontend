@@ -20,12 +20,12 @@ const AccountInfoForm = ({ accountData }: AccountInfoFormProps) => {
 
   useEffect(() => {
     if (accountData) {
-      setLogoUrl(accountData.logo || '');
-      setFirstName(accountData.firstName || '');
-      setLastName(accountData.lastName || '');
-      setCompany(accountData.company || '');
-      setPhone(accountData.phone);
-      setAddress(accountData.address);
+      // setLogoUrl(accountData.logo || '');
+      // setFirstName(accountData.firstName || '');
+      // setLastName(accountData.lastName || '');
+      // setCompany(accountData.company || '');
+      // setPhone(accountData.phone);
+      // setAddress(accountData.address);
     }
   }, [accountData]);
 
@@ -46,7 +46,7 @@ const AccountInfoForm = ({ accountData }: AccountInfoFormProps) => {
       </h3>
 
       <div className="flex items-center">
-        {accountData && accountData.logo && (
+        {accountData && accountData && (
           <div className="w-full flex flex-col gap-1 p-6">
             <div className="relative h-11 w-full min-w-[200px]">
               <label htmlFor="title" className="block mb-2 text-sm font-medium text-black">

@@ -144,7 +144,7 @@ export const useClientForm = ({
     let clientToAdd: Partial<Client> = {};
     if (clientType === TypeEnum.PROFESSIONAL) {
       clientToAdd = {
-        account: accountId,
+        // account: accountId,
         company: clientName,
         phone: clientPhone,
         email: clientEmail,
@@ -154,7 +154,7 @@ export const useClientForm = ({
       };
     } else {
       clientToAdd = {
-        account: accountId,
+        // account: accountId,
         firstName: clientFirstName,
         lastName: clientLastName,
         phone: clientPhone,
@@ -233,7 +233,7 @@ export const useClientForm = ({
       return;
     }
 
-    updatedClientData.account = client.account;
+    // updatedClientData.account = client.account;
 
     updateClientMutation(
       {

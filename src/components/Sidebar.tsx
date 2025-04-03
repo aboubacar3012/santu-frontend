@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { MdDashboard } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '@/src/redux/features/authSlice';
+// import { logout } from '@/src/redux/features/authSlice';
 import { useRouter, usePathname } from 'next/navigation';
 import { FaUserCog, FaUsers } from 'react-icons/fa';
 import { LogOut, Settings, PanelLeftClose, PanelLeftOpen, LayoutList } from 'lucide-react';
@@ -91,7 +91,7 @@ const Sidebar = () => {
   ];
 
   const handleLogout = useCallback(() => {
-    dispatch(logout());
+    // dispatch(logout());
     return router.push('/');
   }, [dispatch, router]);
 

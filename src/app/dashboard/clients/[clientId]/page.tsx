@@ -67,7 +67,7 @@ const SingleClient = ({ params }: { params: { clientId: string } }) => {
                 return 'Brouillon';
               case StatusEnum.PAID:
                 return 'Payée';
-              case StatusEnum.PENDING:
+              case StatusEnum.SENT:
                 return 'En attente';
               default:
                 return invoice.status;

@@ -4,7 +4,7 @@ export const getStatusText = (status: string) => {
   switch (status) {
     case StatusEnum.DRAFT:
       return 'Brouillon';
-    case StatusEnum.PENDING:
+    case StatusEnum.SENT:
       return 'En attente';
     case StatusEnum.PAID:
       return 'Payée';

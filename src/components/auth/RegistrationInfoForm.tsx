@@ -1,9 +1,6 @@
-import { loginReducer, updateToken } from '@/src/redux/features/authSlice';
 import { RootState } from '@/src/redux/store';
-import { updateAccount } from '@/src/services/account';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 
 type RegistrationInfoFormProps = {
   setRegistrationStep: Dispatch<SetStateAction<number>>;
@@ -23,9 +20,9 @@ const RegistrationInfoForm = ({ setRegistrationStep }: RegistrationInfoFormProps
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (auth.isAuthenticated && auth.loggedAccountInfos) {
-      setEmail(auth.loggedAccountInfos.email);
-    }
+    // if (auth.isAuthenticated && auth.loggedAccountInfos) {
+    //   setEmail(auth.loggedAccountInfos.email);
+    // }
   }, []);
 
   const handleUpdateAccount = () => {
