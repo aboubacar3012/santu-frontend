@@ -17,7 +17,7 @@ const ClientsSelect = ({ selectedClient, setSelectedClient }: ClientsSelectProps
     auth.token!
   );
 
-  const clients = data?.items || [];
+  const clients = data?.clients || [];
 
   // Préparation des options pour react-select
   const clientOptions = clients.map((client: Client) => ({
