@@ -4,7 +4,7 @@ import { RootState } from '../redux/store';
 import { toast } from 'react-toastify';
 import { Article, StatusEnum } from '../types';
 import { generateInvoiceId } from '../libs/generateInvoiceId';
-import { createInvoice } from '../services/invoice';
+import { createInvoice, getInvoiceById, updateInvoice } from '../services/invoice';
 
 // Interface pour gérer les erreurs par champ
 export interface InvoiceFormErrors {
@@ -50,23 +50,43 @@ export const useInvoiceForm = ({
   // Redux
   const auth = useSelector((state: RootState) => state.auth);
   const accountId = auth.loggedAccountInfos?.id;
+  const enterpriseId = auth.loggedAccountInfos?.enterpriseId || '';
   const dispatch = useDispatch();
 
   // État pour le chargement
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Initialisation de l'ID de la facture
+  // Initialisation de l'ID de la facture et récupération des données si en mode édition
   useEffect(() => {
     if (!existingInvoiceId) {
       const newInvoiceId = generateInvoiceId();
       setInvoiceNumber(newInvoiceId);
     } else {
       setInvoiceNumber(existingInvoiceId);
-      // Ici vous pourriez ajouter un appel API pour récupérer les détails de la facture existante
-      // si isEdit est true
+      
+      if (isEdit && existingInvoiceId) {
+        setIsLoading(true);
+        getInvoiceById(existingInvoiceId, auth.token).then((response) => {
+          if (response.success) {
+            const invoice = response.invoice;
+            setInvoiceName(invoice.name);
+            setInvoiceDate(invoice.date);
+            setInvoiceTva(Number(invoice.tva || 0));
+            setInvoicePaymentMode(invoice.paymentMode);
+            setInvoicePaymentCondition(invoice.paymentCondition);
+            setInvoiceRemark(invoice.remark || '');
+            setSelectedClient(invoice.clientId);
+            setArticles(invoice.articles || []);
+          } else {
+            setErrorMessage("Impossible de récupérer les détails de la facture");
+          }
+        }).finally(() => {
+          setIsLoading(false);
+        });
+      }
     }
-  }, [existingInvoiceId]);
+  }, [existingInvoiceId, isEdit, auth.token]);
 
   // Nettoyage du message d'erreur après 5 secondes
   useEffect(() => {
@@ -138,14 +158,14 @@ export const useInvoiceForm = ({
   const addArticle = () => {
     if (!validateArticle()) return;
 
-    // const newArticle: Partial<Article> = {
-    //   name: articleName,
-    //   quantity: Number(articleQuantity),
-    //   price: Number(articlePrice),
-    //   description: articleDescription,
-    // };
+    const newArticle: Partial<Article> = {
+      name: articleName,
+      quantity: articleQuantity,
+      price: articlePrice,
+      description: articleDescription,
+    };
 
-    // setArticles([...articles, newArticle]);
+    setArticles([...articles, newArticle]);
 
     // Réinitialisation des champs
     setArticleName('');
@@ -193,50 +213,62 @@ export const useInvoiceForm = ({
     }
   };
 
+  // Calcul du montant total de la facture
+  const calculateTotalAmount = (): string => {
+    let total = 0;
+    articles.forEach(article => {
+      total += Number(article.price) * Number(article.quantity || 1);
+    });
+    return total.toString();
+  };
+
   // Envoi des données à l'API
   const submitInvoice = async () => {
     if (!validateForm()) return;
 
     setIsPending(true);
 
-    let amount = 0;
-    if (articles.length > 0) {
-      articles.forEach(article => {
-        amount += Number(article.price) * Number(article.quantity || 1);
-      });
-    }
+    const amount = calculateTotalAmount();
+    const status = invoicePaymentCondition === 'NOW' ? StatusEnum.PAID : StatusEnum.DRAFT;
 
-    const invoiceToAdd = {
-      account: accountId,
-      invoiceNumber: invoiceNumber,
-      client: selectedClient,
+    const invoiceData = {
+      invoiceNumber,
       name: invoiceName,
       date: invoiceDate,
+      amount,
       paymentMode: invoicePaymentMode,
       paymentCondition: invoicePaymentCondition,
-      status: invoicePaymentCondition === 'NOW' ? StatusEnum.PAID : StatusEnum.DRAFT,
-      tva: invoiceTva,
-      articles,
-      amount,
+      status,
+      tva: invoiceTva.toString(),
       remark: invoiceRemark,
+      clientId: selectedClient,
+      enterpriseId,
+      articles: articles.map(article => ({
+        name: article.name,
+        description: article.description || '',
+        quantity: article.quantity,
+        price: article.price
+      }))
     };
 
     try {
-      // const response = await createInvoice(invoiceToAdd, auth.token!);
-      // if (response.success) {
-      //   dispatch(
-      //     loginReducer({
-      //       isAuthenticated: true,
-      //       loggedAccountInfos: response.account,
-      //     })
-      //   );
-      //   toast.success('Facture créée avec succès');
-      //   onClose();
-      // } else {
-      //   setErrorMessage(response.message || 'Erreur lors de la création de la facture');
-      // }
+      let response;
+      
+      if (isEdit && existingInvoiceId) {
+        response = await updateInvoice(existingInvoiceId, invoiceData, auth.token);
+      } else {
+        response = await createInvoice(invoiceData, auth.token);
+      }
+      
+      if (response.success) {
+        toast.success(`Facture ${isEdit ? 'modifiée' : 'créée'} avec succès`);
+        onClose();
+      } else {
+        setErrorMessage(response.message || `Erreur lors de la ${isEdit ? 'modification' : 'création'} de la facture`);
+      }
     } catch (error) {
       setErrorMessage('Erreur de connexion au serveur');
+      console.error('Erreur lors de la soumission de la facture:', error);
     } finally {
       setIsPending(false);
     }

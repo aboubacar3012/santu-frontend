@@ -56,8 +56,8 @@ const ArticleTable: React.FC<ArticleTableProps> = ({
     },
     {
       header: 'Montant (GNF)',
-      accessor: (article: { price: { toLocaleString: () => any } }) =>
-        `${article.price?.toLocaleString()} GNF`,
+      accessor: (article: { price: string }) =>
+        `${Number(article.price).toLocaleString()} GNF`,
       className: 'text-right',
     },
     ...(onDeleteArticle

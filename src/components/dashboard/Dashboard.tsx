@@ -113,35 +113,37 @@ const Dashboard = () => {
     return <div>Erreur lors du chargement des données du tableau de bord</div>;
   }
 
-  if (!data?.invoices) {
+  if (!data?.success || !data?.dashboardData) {
     return <div>Dashboard data not found</div>;
   }
+
+  const dashboardData = data.dashboardData;
 
   return (
     <>
       <div className="grid grid-cols-4 gap-4 py-2">
         <StatCard
           title="Aujourd'hui"
-          value={`${formatCurrency(data?.totalToday)}`}
+          value={`${formatCurrency(dashboardData?.totalToday)}`}
           unit="Total vendu"
           icon={<GiMoneyStack className="w-8 h-8 text-green-500" />}
         />
         <StatCard
           title="Ce mois-ci"
-          value={`${formatCurrency(data?.totalthisMonth)}`}
+          value={`${formatCurrency(dashboardData?.totalthisMonth)}`}
           unit="Toute les factures"
           icon={<GiMoneyStack className="w-8 h-8 text-blue-500" />}
           isVisible={false}
         />
         <StatCard
           title="Nombre de clients"
-          value={data.clientsCount}
+          value={dashboardData.clientsCount}
           unit="clients"
           icon={<FaUserFriends className="w-8 h-8 text-purple-500" />}
         />
         <StatCard
           title="Nombre de factures"
-          value={data.invoicesCount}
+          value={dashboardData.invoicesCount}
           unit="factures"
           icon={<LiaFileInvoiceDollarSolid className="w-8 h-8 text-yellow-500" />}
         />
@@ -155,7 +157,7 @@ const Dashboard = () => {
       {/* Utilisation du composant Table réutilisable */}
       <Table
         columns={invoiceColumns}
-        data={data.invoices}
+        data={dashboardData.invoices}
         onRowClick={handleOpenInvoice}
       />
     </>

@@ -1,80 +1,62 @@
 import { apiUrl } from '../constants';
 import { Account } from '../types';
+import httpClient, { FetchError } from './custom-fetch';
+
 const baseUrl = `${apiUrl}/accounts`;
 
-export type AccountToAdd = Omit<Account, 'partnerId'> & { partnerId: string };
-
 // Create a new user
-export const createAccount = async (user: Partial<AccountToAdd>, token?: string) => {
-  const response = await fetch(`${baseUrl}/create`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      // Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(user),
-  });
-
-  const data = await response.json();
-
-  return data;
+export const createAccount = async (user: Partial<Account>, token?: string) => {
+  try {
+    const response = await httpClient.post(baseUrl, user, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating account:', error);
+    return {
+      success: false,
+      message: "Une erreur s'est produite lors de la création du compte",
+    };
+  }
 };
 
 // Get all accounts
-export const getAccounts = async () => {
-  const response = await fetch(baseUrl);
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch accounts');
+export const getAccounts = async (token?: string) => {
+  try {
+    const response = await httpClient.get(baseUrl, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    });
+    return {
+      success: true,
+      accounts: response.data.items,
+      pagination: response.data.pagination,
+    };
+  } catch (error) {
+    console.error('Failed to fetch accounts:', error);
+    return {
+      success: false,
+      message: "Une erreur s'est produite lors de la récupération des comptes",
+    };
   }
-
-  return response.json();
 };
 
 // Get a single account
-export const getAccountById = async (userId: string, token?: string) => {
-  const response = await fetch(`${baseUrl}/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch account');
+export const getAccountById = async (accountId: string, token?: string) => {
+  try {
+    const response = await httpClient.get(`${baseUrl}/${accountId}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    });
+    return {
+      success: true,
+      account: response.data,
+    };
+  } catch (error) {
+    console.error('Failed to fetch account:', error);
+    return {
+      success: false,
+      message: "Une erreur s'est produite lors de la récupération du compte",
+    };
   }
-
-  return response.json();
-};
-
-
-// Change a user's password
-export const changePassword = async (userId?: string, password?: string) => {
-  const response = await fetch(`${baseUrl}/updatepassword/${userId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ password }),
-  });
-
-  const data = await response.json();
-
-  return data;
-};
-
-// Delete a user
-export const deleteAccount = async (userId: string, token?: string) => {
-  const response = await fetch(`${baseUrl}/${userId}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      // Authorization: `Bearer ${token}`,
-    },
-  });
-
-  const data = await response.json();
-
-  return data;
 };
 
 // Update a user
@@ -84,21 +66,38 @@ export const updateAccount = async (
   token: string
 ) => {
   try {
-    const response = await fetch(`${baseUrl}/update/${accountId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(accountData),
+    const response = await httpClient.patch(`${baseUrl}/${accountId}`, accountData, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
-
-    return await response.json();
+    return {
+      success: true,
+      account: response.data,
+      message: "Compte mis à jour avec succès"
+    };
   } catch (error) {
     console.error('Error updating account:', error);
     return {
       success: false,
       message: "Une erreur s'est produite lors de la mise à jour du compte",
+    };
+  }
+};
+
+// Delete a user
+export const deleteAccount = async (userId: string, token?: string) => {
+  try {
+    const response = await httpClient.delete(`${baseUrl}/${userId}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    });
+    return {
+      success: true,
+      message: "Compte supprimé avec succès"
+    };
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    return {
+      success: false,
+      message: "Une erreur s'est produite lors de la suppression du compte",
     };
   }
 };

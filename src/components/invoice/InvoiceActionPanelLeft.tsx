@@ -9,13 +9,11 @@ import { RootState } from '@/src/redux/store';
 
 interface InvoiceActionPanelLeftProps {
   invoice: Invoice;
-  handlePrintSection: () => void;
 }
 
-const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPanelLeftProps) => {
+const InvoiceActionPanelLeft = ({ invoice }: InvoiceActionPanelLeftProps) => {
   const auth = useSelector((state: RootState) => state.auth);
-  const loggedAccount = auth.loggedAccountInfos;
-  const client = invoice.client as Client;
+
 
   return (
     <section ref={undefined} className="print-section md:w-3/4 w-full order-2 md:order-1">
@@ -54,11 +52,13 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                 De
               </h3>
               <div className="flex items-start gap-4">
-                <img
-                  src={invoice?.enterprise?.logo}
-                  alt="Logo"
-                  className="w-16 h-16 object-contain"
-                />
+                {invoice?.enterprise?.logo && (
+                  <img
+                    src={invoice?.enterprise?.logo}
+                    alt="Logo"
+                    className="w-16 h-16 object-contain"
+                  />
+                )}
 
                 <div>
                   <h4 className="font-bold text-lg text-gray-900">{invoice?.enterprise?.name}</h4>
@@ -120,7 +120,7 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                 </tr>
               </thead>
               <tbody>
-                {invoice?.articles.map((article, index) => (
+                {invoice?.articles?.map((article, index) => (
                   <tr key={index}>
                     <td className="text-left text-xs">{index + 1}</td>
                     <td className="text-left text-xs">
@@ -130,7 +130,9 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                       )}
                     </td>
                     <td className="text-center text-xs">{article.quantity}</td>
-                    <td className="text-right text-xs">{article?.price?.toLocaleString()} GNF</td>
+                    <td className="text-right text-xs">
+                      {Number(article.price).toLocaleString()} GNF
+                    </td>
                     <td className="text-right font-medium text-xs">
                       {(
                         (Number(article?.price) || 0) * (Number(article?.quantity) || 0)
@@ -173,7 +175,9 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex justify-between py-2">
                     <span className="text-gray-600">Sous-total</span>
-                    <span className="font-medium">{invoice.amount.toLocaleString()} GNF</span>
+                    <span className="font-medium">
+                      {Number(invoice.amount).toLocaleString()} GNF
+                    </span>
                   </div>
                   <div className="flex justify-between py-2">
                     <span className="text-gray-600">TVA (0%)</span>
@@ -183,7 +187,7 @@ const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPa
                   <div className="flex justify-between py-2 text-lg">
                     <span className="font-semibold">Total</span>
                     <span className="font-bold text-indigo-600">
-                      {invoice.amount.toLocaleString()} GNF
+                      {Number(invoice.amount).toLocaleString()} GNF
                     </span>
                   </div>
                 </div>

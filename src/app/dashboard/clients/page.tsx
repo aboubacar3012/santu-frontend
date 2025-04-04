@@ -14,7 +14,6 @@ import { Client } from '@/src/types';
 import { toast } from 'react-toastify';
 import Button from '@/src/components/shared/Button';
 import Table, { Column } from '@/src/components/shared/Table';
-import PrevHeader from '@/src/components/shared/PrevHeader';
 
 const ClientsPage = () => {
   const router = useRouter();
@@ -117,7 +116,7 @@ const ClientsPage = () => {
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching clients: {error.message}</p>;
 
-  const clients = data.items;
+  const clients = data?.clients || [];
 
   if (!clients || clients.length === 0) {
     return <p>Aucun client enregistré.</p>;
