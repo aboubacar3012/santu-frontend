@@ -57,12 +57,29 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
     window.print();
   };
 
-  const calculateTotal = () => {
-    if (!invoiceData?.articles) return 0;
-    return invoiceData.articles.reduce(
-      (sum, article) => sum + Number(article.price) * Number(article.quantity),
-      0
-    );
+  const handleCopyLink = () => {
+    if (sectionRef.current) {
+      navigator.clipboard.writeText(window.location.href);
+      setShowCopiedMessage(true);
+      setTimeout(() => {
+        setShowCopiedMessage(false);
+      }, 2000);
+    }
+  };
+  const handleDownloadPDF = () => {
+    if (sectionRef.current) {
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write('<html><head><title>Facture</title>');
+        printWindow.document.write('<style>' + printStyles + '</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(sectionRef.current.innerHTML);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+        printWindow.close();
+      }
+    }
   };
 
   if (loading)
@@ -94,7 +111,7 @@ const SingleInvoicePage = ({ params }: { params: { invoiceId: string } }) => {
           <InvoiceActionPanelLeft invoice={invoiceData} handlePrintSection={handlePrintSection} />
 
           {/* Actions panel - Using the separated component */}
-          <InvoiceActionPanelRight invoice={invoiceData} handlePrint={handlePrintSection} />
+          <InvoiceActionPanelRight invoice={invoiceData} handlePrint={handlePrintSection} handleDownloadPDF={handleDownloadPDF} handleCopyLink={handleCopyLink} showCopiedMessage={showCopiedMessage} />
         </motion.div>
       </div>
     </div>

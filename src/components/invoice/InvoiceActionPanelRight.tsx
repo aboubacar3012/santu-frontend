@@ -11,17 +11,20 @@ import QRCode from 'react-qr-code';
 interface InvoiceActionPanelProps {
   invoice: Invoice;
   handlePrint: () => void;
+
+  handleDownloadPDF: () => void;
+  handleCopyLink: () => void;
+  showCopiedMessage: boolean;
 }
 
-const InvoiceActionPanelRight = ({ invoice, handlePrint }: InvoiceActionPanelProps) => {
-  const [showCopiedMessage, setShowCopiedMessage] = useState(false);
+const InvoiceActionPanelRight = ({ invoice, handlePrint, handleDownloadPDF, handleCopyLink, showCopiedMessage }: InvoiceActionPanelProps) => {
+  const [showCopiedMessageState, setShowCopiedMessage] = useState(false);
 
   const handleCopyInvoiceLink = () => {
-    // const url = window.location.href;
-    // navigator.clipboard.writeText(url);
-    // setShowCopiedMessage(true);
-    // setTimeout(() => setShowCopiedMessage(false), 3000);
-    alert('Fonctionnalité en cours de développement');
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+    setShowCopiedMessage(true);
+    setTimeout(() => setShowCopiedMessage(false), 3000);
   };
 
   return (
@@ -75,7 +78,7 @@ const InvoiceActionPanelRight = ({ invoice, handlePrint }: InvoiceActionPanelPro
           )}
 
           <Button
-            onClick={() => alert('Fonctionnalité en cours de développement')}
+            onClick={handleDownloadPDF}
             variant="secondary"
             className="flex items-center justify-start gap-2 hover:bg-gray-100 transition-colors"
             icon={<FaDownload />}
