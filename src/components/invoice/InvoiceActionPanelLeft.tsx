@@ -6,14 +6,15 @@ import { getStatusColor } from '@/src/libs/getStatusColor';
 import { getStatusText } from '@/src/libs/getStatusText';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/src/redux/store';
+import Image from 'next/image';
 
 interface InvoiceActionPanelLeftProps {
   invoice: Invoice;
+  handlePrintSection: () => void;
 }
 
-const InvoiceActionPanelLeft = ({ invoice }: InvoiceActionPanelLeftProps) => {
+const InvoiceActionPanelLeft = ({ invoice, handlePrintSection }: InvoiceActionPanelLeftProps) => {
   const auth = useSelector((state: RootState) => state.auth);
-
 
   return (
     <section ref={undefined} className="print-section md:w-3/4 w-full order-2 md:order-1">
@@ -53,11 +54,16 @@ const InvoiceActionPanelLeft = ({ invoice }: InvoiceActionPanelLeftProps) => {
               </h3>
               <div className="flex items-start gap-4">
                 {invoice?.enterprise?.logo && (
-                  <img
-                    src={invoice?.enterprise?.logo}
-                    alt="Logo"
-                    className="w-16 h-16 object-contain"
-                  />
+                  <div className="relative w-16 h-16">
+                    <Image
+                      src={invoice?.enterprise?.logo}
+                      alt="Logo de l'entreprise"
+                      fill
+                      sizes="64px"
+                      style={{ objectFit: "contain" }}
+                      priority
+                    />
+                  </div>
                 )}
 
                 <div>
