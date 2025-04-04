@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { toast } from 'react-toastify';
-import { Article, StatusEnum } from '../types';
+import { Article, StatusEnum, PaymentModeEnum, PaymentConditionEnum } from '../types';
 import { generateInvoiceId } from '../libs/generateInvoiceId';
 import { createInvoice, getInvoiceById, updateInvoice } from '../services/invoice';
 
@@ -33,8 +33,8 @@ export const useInvoiceForm = ({
   const [invoiceName, setInvoiceName] = useState<string>('');
   const [invoiceDate, setInvoiceDate] = useState<string>('');
   const [invoiceTva, setInvoiceTva] = useState<number>(0);
-  const [invoicePaymentMode, setInvoicePaymentMode] = useState<string>('CASH');
-  const [invoicePaymentCondition, setInvoicePaymentCondition] = useState<string>('NOW');
+  const [invoicePaymentMode, setInvoicePaymentMode] = useState<PaymentModeEnum>(PaymentModeEnum.CASH);
+  const [invoicePaymentCondition, setInvoicePaymentCondition] = useState<PaymentConditionEnum>(PaymentConditionEnum.NOW);
   const [invoiceRemark, setInvoiceRemark] = useState<string>('');
   const [selectedClient, setSelectedClient] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -67,7 +67,7 @@ export const useInvoiceForm = ({
       
       if (isEdit && existingInvoiceId) {
         setIsLoading(true);
-        getInvoiceById(existingInvoiceId, auth.token).then((response) => {
+        getInvoiceById(existingInvoiceId, auth.token as string).then((response) => {
           if (response.success) {
             const invoice = response.invoice;
             setInvoiceName(invoice.name);
@@ -244,10 +244,10 @@ export const useInvoiceForm = ({
       clientId: selectedClient,
       enterpriseId,
       articles: articles.map(article => ({
-        name: article.name,
+        name: article.name || '',
         description: article.description || '',
-        quantity: article.quantity,
-        price: article.price
+        quantity: article.quantity || '0',
+        price: article.price || '0'
       }))
     };
 
@@ -255,9 +255,9 @@ export const useInvoiceForm = ({
       let response;
       
       if (isEdit && existingInvoiceId) {
-        response = await updateInvoice(existingInvoiceId, invoiceData, auth.token);
+        response = await updateInvoice(existingInvoiceId, invoiceData, auth.token!);
       } else {
-        response = await createInvoice(invoiceData, auth.token);
+        response = await createInvoice(invoiceData, auth.token!);
       }
       
       if (response.success) {

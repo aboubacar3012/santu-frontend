@@ -4,7 +4,7 @@ import ClientForm from '../client/ClientForm';
 import { useState } from 'react';
 import Link from 'next/link';
 import ClientsSelect from './ClientsSelect';
-import { Article } from '@/src/types';
+import { Article, PaymentModeEnum, PaymentConditionEnum } from '@/src/types';
 import { toast } from 'react-toastify';
 import ArticleAddForm from './ArticleAddForm';
 import FormInput from '../ui/FormInput';
@@ -19,10 +19,10 @@ type InvoiceInfoFormProps = {
   setInvoiceDate: (date: string) => void;
   invoiceTva: number;
   setInvoiceTva: (tva: number) => void;
-  invoicePaymentMode: string;
-  setInvoicePaymentMode: (method: string) => void;
-  invoicePaymentCondition: string;
-  setInvoicePaymentCondition: (condition: string) => void;
+  invoicePaymentMode: PaymentModeEnum;
+  setInvoicePaymentMode: (method: PaymentModeEnum) => void;
+  invoicePaymentCondition: PaymentConditionEnum;
+  setInvoicePaymentCondition: (condition: PaymentConditionEnum) => void;
   invoiceRemark: string;
   setInvoiceRemark: (remark: string) => void;
   selectedClient: string;
@@ -127,7 +127,7 @@ const InvoiceInfoForm = ({
               >
                 <path
                   fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                   clipRule="evenodd"
                 />
               </svg>

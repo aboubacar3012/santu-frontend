@@ -11,14 +11,16 @@ export const useUpdateInvoice = (token?: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (invoice: Partial<Invoice>) => updateInvoice(invoice, token),
+    mutationFn: (invoice: Partial<Invoice>) => updateInvoice(invoice.id as string, invoice, token),
     onSuccess: (data, variables) => {
       // Invalider les requêtes pertinentes après une mise à jour réussie
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
-      queryClient.invalidateQueries({ queryKey: ['invoice', variables.id] });
+      
       if (variables.id) {
-        queryClient.invalidateQueries({ queryKey: ['clientInvoices', variables.id] });
+        queryClient.invalidateQueries({ queryKey: ['invoice', variables.id] });
+        queryClient.invalidateQueries({ queryKey: ['clientInvoices', variables.clientId || ''] });
       }
+      
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },
     onError: error => {

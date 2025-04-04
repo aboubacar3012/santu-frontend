@@ -4,7 +4,7 @@ import { RootState } from '@/src/redux/store';
 import InvoiceInfoForm from './InvoiceInfoForm';
 import { generateInvoiceId } from '@/src/libs/generateInvoiceId';
 import SuccessAddInvoice from './SuccessAddInvoice';
-import { StatusEnum } from '@/src/types';
+import { StatusEnum, PaymentModeEnum, PaymentConditionEnum } from '@/src/types';
 import Modal from '../ui/Modal';
 
 type InvoiceFormProps = {
@@ -18,9 +18,8 @@ const InvoiceForm = ({ isOpen, onClose, isEdit }: InvoiceFormProps) => {
   const [invoiceName, setInvoiceName] = useState<string>('');
   const [invoiceDate, setInvoiceDate] = useState<string>('');
   const [invoiceTva, setInvoiceTva] = useState<number>(0);
-  const [invoicePaymentMode, setInvoicePaymentMode] = useState<string>('CASH');
-  const [invoicePaymentCondition, setInvoicePaymentCondition] =
-    useState<string>('NOW');
+  const [invoicePaymentMode, setInvoicePaymentMode] = useState<PaymentModeEnum>(PaymentModeEnum.CASH);
+  const [invoicePaymentCondition, setInvoicePaymentCondition] = useState<PaymentConditionEnum>(PaymentConditionEnum.NOW);
   const [invoiceRemark, setInvoiceRemark] = useState<string>('');
   const [selectedClient, setSelectedClient] = useState<string>('');
   const [invoiceId, setInvoiceId] = useState<string>('');
